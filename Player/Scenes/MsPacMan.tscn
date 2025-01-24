@@ -52,6 +52,6 @@ shape = SubResource( 7 )
 
 [node name="MovementComponent" type="Node" parent="."]
 
-[node name="WallDetectorComponent" type="RayCast2D" parent="."]
+[node name="WallDetectorComponent" type="RayCast2D" parent="MovementComponent"]
 enabled = true
 cast_to = Vector2( 0, 16 )
