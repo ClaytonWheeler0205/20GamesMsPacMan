@@ -42,7 +42,11 @@ namespace Game.Player
             if (BodyToMove.IsValid())
             {
                 Vector2 velocity = _currentDirection * _speed;
-                BodyToMove.MoveAndSlide(velocity);
+                velocity = BodyToMove.MoveAndSlide(velocity);
+                if (velocity == Vector2.Zero)
+                {
+                    EmitSignal("MovementStopped");
+                }
             }
         }
 
@@ -101,8 +105,12 @@ namespace Game.Player
         {
             if (!_wallDetector.IsColliding() && !_secondaryWallDetector.IsColliding())
             {
-                _currentDirection = _targetDirection;
-                SetWallDetectorPosition(_currentDirection);
+                if (_currentDirection != _targetDirection)
+                {
+                    _currentDirection = _targetDirection;
+                    SetWallDetectorPosition(_currentDirection);
+                    EmitSignal("DirectionChanged", _currentDirection);
+                }
             }
         }
     }

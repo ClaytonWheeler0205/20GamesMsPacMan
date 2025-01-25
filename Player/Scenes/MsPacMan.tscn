@@ -28,7 +28,7 @@ animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
 "name": "move",
-"speed": 5.0
+"speed": 25.0
 } ]
 
 [sub_resource type="CircleShape2D" id=7]
@@ -38,6 +38,7 @@ radius = 4.0
 collision_layer = 0
 script = ExtResource( 3 )
 _movementComponentPath = NodePath("MovementComponent")
+_spritePath = NodePath("AnimatedSprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.516, 0.444 )
@@ -46,7 +47,6 @@ shape = SubResource( 6 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 5 )
 animation = "move"
-speed_scale = 5.0
 
 [node name="HitboxComponent" type="Area2D" parent="."]
 collision_layer = 2
@@ -73,3 +73,6 @@ cast_to = Vector2( 0, 16 )
 [node name="WallDetectorComponent2" type="RayCast2D" parent="MovementComponent"]
 enabled = true
 cast_to = Vector2( 0, 16 )
+
+[connection signal="DirectionChanged" from="MovementComponent" to="." method="OnDirectionChanged"]
+[connection signal="MovementStopped" from="MovementComponent" to="." method="OnMovementStopped"]
