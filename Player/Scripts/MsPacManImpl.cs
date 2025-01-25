@@ -34,28 +34,5 @@ namespace Game.Player
         {
             _movement.ChangeDirection(direction);
         }
-
-        // To be removed and placed in a player controller node class
-        public override void _Input(InputEvent @event)
-        {
-            if (@event.IsActionPressed("move_up"))
-            {
-                Move(Vector2.Up);
-            }
-            else if (@event.IsActionPressed("move_down"))
-            {
-                Move(Vector2.Down);
-            }
-            else if (@event.IsActionPressed("move_right"))
-            {
-                Move(Vector2.Right);
-            }
-            else if (@event.IsActionPressed("move_left"))
-            {
-                Move(Vector2.Left);
-            }
-        }
-
-
     }
 }
