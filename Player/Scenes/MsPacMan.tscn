@@ -48,7 +48,8 @@ shape = SubResource( 6 )
 frames = SubResource( 5 )
 animation = "move"
 
-[node name="HitboxComponent" type="Area2D" parent="."]
+[node name="HitboxComponent" type="Area2D" parent="." groups=["Player"]]
+position = Vector2( 0.516, 0.444 )
 collision_layer = 2
 collision_mask = 0
 

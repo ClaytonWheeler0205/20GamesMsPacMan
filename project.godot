@@ -14,6 +14,10 @@ config/name="20GamesMsPacMan"
 run/main_scene="res://Game/Scenes/Main.tscn"
 config/icon="res://MsPacManIcon.png"
 
+[autoload]
+
+ScoreEventBus="*res://Buses/Scenes/ScoreEventBus.tscn"
+
 [display]
 
 window/size/width=640
@@ -61,6 +65,7 @@ move_right={
 
 2d_physics/layer_1="Walls"
 2d_physics/layer_2="Player"
+2d_physics/layer_3="Pellet"
 
 [mono]
 
