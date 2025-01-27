@@ -7,6 +7,8 @@ namespace Game.Pellets
 
     public abstract class Pellet : Area2D
     {
+        [Signal]
+        public delegate void PelletCollected();
         [Export]
         private NodePath _visualComponentPath;
         private Sprite _visualComponent;
@@ -72,6 +74,7 @@ namespace Game.Pellets
             _collisionComponent.SetDeferred("disabled", true);
             _audioComponent.Play();
             ScoreEventBus.Instance.EmitSignal("AwardPoints", _pointValue);
+            EmitSignal("PelletCollected");
         }
 
     }

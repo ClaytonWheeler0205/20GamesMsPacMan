@@ -26,7 +26,7 @@ namespace Game.UI
 
         private void CheckNodeReferences()
         {
-            if (_scoreDisplay.IsValid())
+            if (!_scoreDisplay.IsValid())
             {
                 GD.PrintErr("ERROR: Score UI Score Display is not valid!");
             }
