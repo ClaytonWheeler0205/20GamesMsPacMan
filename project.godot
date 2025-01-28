@@ -67,6 +67,7 @@ move_right={
 2d_physics/layer_1="Walls"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Pellet"
+2d_physics/layer_4="Ghost"
 
 [mono]
 
@@ -81,5 +82,4 @@ common/enable_pause_aware_picking=true
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

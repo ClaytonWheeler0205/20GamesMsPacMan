@@ -1,7 +1,7 @@
 using Godot;
 using Util.ExtensionMethods;
 
-namespace Game.Player
+namespace Game
 {
     public abstract class MovementComponent : Node2D
     {
