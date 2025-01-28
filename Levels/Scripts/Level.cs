@@ -1,0 +1,62 @@
+using Game.Pellets;
+using Godot;
+using Util.ExtensionMethods;
+
+namespace Game.Levels
+{
+
+    public abstract class Level : TileMap
+    {
+        [Signal]
+        public delegate void LevelFlashFinished();
+        [Export]
+        private NodePath _levelFlashPath;
+        private CanvasItem _levelFlash;
+        protected CanvasItem LevelFlash
+        {
+            get { return _levelFlash; }
+        }
+        [Export]
+        private NodePath _levelFlashPlayerPath;
+        private AnimationPlayer _levelFlashPlayer;
+        protected AnimationPlayer LevelFlashPlayer
+        {
+            get { return _levelFlashPlayer;}
+        }
+        [Export]
+        private NodePath _pelletsPath;
+        private PelletContainer _pellets;
+        protected PelletContainer Pellets
+        {
+            get { return _pellets; }
+        }
+
+        public override void _Ready()
+        {
+            SetNodeReferences();
+            CheckNodeReferences();
+        }
+
+        private void SetNodeReferences()
+        {
+            _levelFlash = GetNode<CanvasItem>(_levelFlashPath);
+            _levelFlashPlayer = GetNode<AnimationPlayer>(_levelFlashPlayerPath);
+            _pellets = GetNode<PelletContainer>(_pelletsPath);
+        }
+
+        private void CheckNodeReferences()
+        {
+            if (!_levelFlash.IsValid())
+            {
+                GD.PrintErr("ERROR: Level Level Flash is not valid!");
+            }
+            if (!_levelFlashPlayer.IsValid())
+            {
+                GD.PrintErr("ERROR: Level Level Flash Player is not valid!");
+            }
+        }
+
+        public abstract void PlayLevelFlash();
+        public abstract void ResetLevel();
+    }
+}

@@ -17,7 +17,6 @@ namespace Game.Pellets
             if (area.IsInGroup(PlayerNodeGroup))
             {
                 CollectPellet();
-                GD.Print("Wakka");
             }
         }
     }

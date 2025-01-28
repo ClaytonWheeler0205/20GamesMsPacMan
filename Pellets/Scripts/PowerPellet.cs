@@ -22,7 +22,6 @@ namespace Game.Pellets
             {
                 CollectPellet();
                 _isActive = false;
-                GD.Print("Power up!");
             }
         }
 

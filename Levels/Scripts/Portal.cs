@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Util.ExtensionMethods;
 
-namespace Game.Level
+namespace Game.Levels
 {
 
     public class Portal : Area2D

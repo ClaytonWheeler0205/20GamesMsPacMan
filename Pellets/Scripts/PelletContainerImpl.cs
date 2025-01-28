@@ -1,3 +1,4 @@
+using Game.Bus;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -51,8 +52,7 @@ namespace Game.Pellets
             _pelletCount -= 1;
             if (_pelletCount == 0)
             {
-                EmitSignal("PelletsCleared");
-                GD.Print("Level cleared!!!");
+                LevelEventBus.Instance.EmitSignal("LevelCleared");
             }
         }
     }

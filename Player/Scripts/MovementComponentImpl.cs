@@ -79,6 +79,8 @@ namespace Game.Player
         public override void StopMoving()
         {
             _currentDirection = Vector2.Zero;
+            _targetDirection = Vector2.Zero;
+            EmitSignal("MovementStopped");
         }
 
         private void SetWallDetectorPosition(Vector2 targetDirection)

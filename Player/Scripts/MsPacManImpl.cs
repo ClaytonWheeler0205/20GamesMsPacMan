@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -44,6 +43,11 @@ namespace Game.Player
         {
             _movement.ChangeDirection(direction);
             _visual.Play(MOVE_ANIMATION_NAME);
+        }
+
+        public override void Stop()
+        {
+            _movement.StopMoving();
         }
 
         public void OnDirectionChanged(Vector2 newDirection)
