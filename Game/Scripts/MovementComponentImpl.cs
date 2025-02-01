@@ -15,8 +15,7 @@ namespace Game
         [Export]
         private float _wallDetectorDistance = 16.0f;
 
-        [Export]
-        private float _speed = 200;
+
         private Vector2 _currentDirection = Vector2.Zero;
         private Vector2 _targetDirection = Vector2.Zero;
         [Export]
@@ -41,7 +40,7 @@ namespace Game
             AttemptDirectionChange();
             if (BodyToMove.IsValid())
             {
-                Vector2 velocity = _currentDirection * _speed;
+                Vector2 velocity = _currentDirection * Speed;
                 velocity = BodyToMove.MoveAndSlide(velocity);
                 if (velocity == Vector2.Zero)
                 {
@@ -82,6 +81,12 @@ namespace Game
             _targetDirection = Vector2.Zero;
             EmitSignal("MovementStopped");
         }
+
+        public override Vector2 GetCurrentDirection()
+        {
+            return _currentDirection;
+        }
+
 
         private void SetWallDetectorPosition(Vector2 targetDirection)
         {

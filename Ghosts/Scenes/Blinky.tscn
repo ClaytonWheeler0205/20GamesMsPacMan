@@ -1,10 +1,14 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Ghosts/Assets/GhostBaseSpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://Ghosts/Assets/GhostEyesUp.png" type="Texture" id=2]
 [ext_resource path="res://Ghosts/Assets/GhostEyesDown.png" type="Texture" id=3]
 [ext_resource path="res://Ghosts/Assets/GhostEyesRight.png" type="Texture" id=4]
 [ext_resource path="res://Ghosts/Assets/GhostEyesLeft.png" type="Texture" id=5]
+[ext_resource path="res://Game/Scripts/MovementComponentImpl.cs" type="Script" id=6]
+[ext_resource path="res://Ghosts/Scripts/GhostStateMachineImpl.cs" type="Script" id=7]
+[ext_resource path="res://Ghosts/Scripts/ScatterStateImpl.cs" type="Script" id=8]
+[ext_resource path="res://Ghosts/Scripts/Blinky.cs" type="Script" id=9]
 
 [sub_resource type="CircleShape2D" id=5]
 radius = 7.0
@@ -53,6 +57,11 @@ extents = Vector2( 4, 4 )
 
 [node name="Blinky" type="KinematicBody2D"]
 collision_layer = 0
+script = ExtResource( 9 )
+_movementPath = NodePath("MovementComponent")
+_stateMachinePath = NodePath("GhostStateMachine")
+_scatterStatePath = NodePath("GhostStateMachine/ScatterState")
+_eyesPath = NodePath("Visuals/Eyes")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 5 )
@@ -63,6 +72,7 @@ shape = SubResource( 5 )
 modulate = Color( 1, 0, 0, 1 )
 frames = SubResource( 3 )
 animation = "move"
+playing = true
 
 [node name="Eyes" type="AnimatedSprite" parent="Visuals"]
 frames = SubResource( 4 )
@@ -75,11 +85,31 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
 shape = SubResource( 6 )
 
-[node name="MovementComponent" type="Node" parent="."]
+[node name="MovementComponent" type="Node2D" parent="."]
+script = ExtResource( 6 )
+_speed = 50.0
+_wallDetectorNodePath = NodePath("WallDetector")
+_secondaryWallDetectorNodePath = NodePath("WallDetector2")
+_bodyUpPosition = Vector2( 0, -7 )
+_bodyDownPosition = Vector2( 0, 7 )
+_bodyRightPosition = Vector2( 7, 0 )
+_bodyLeftPosition = Vector2( -7, 0 )
+
+[node name="WallDetector" type="RayCast2D" parent="MovementComponent"]
+position = Vector2( 7, 0 )
+enabled = true
+cast_to = Vector2( 0, 16 )
+
+[node name="WallDetector2" type="RayCast2D" parent="MovementComponent"]
+enabled = true
+cast_to = Vector2( 0, 16 )
 
 [node name="GhostStateMachine" type="Node" parent="."]
+script = ExtResource( 7 )
+_initialStatePath = NodePath("ScatterState")
 
 [node name="ScatterState" type="Node" parent="GhostStateMachine"]
+script = ExtResource( 8 )
 
 [node name="ChaseState" type="Node" parent="GhostStateMachine"]
 

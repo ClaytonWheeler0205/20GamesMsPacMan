@@ -3,6 +3,7 @@ using Game.Player;
 using Game.Levels;
 using Godot;
 using Util.ExtensionMethods;
+using Game.Ghosts;
 
 namespace Game
 {
@@ -20,6 +21,9 @@ namespace Game
         [Export]
         private NodePath _levelContainerPath;
         private Node2D _levelContainer;
+        [Export]
+        private NodePath _ghostContainerPath;
+        private Node2D _ghostContainer;
         private PackedScene _worldOne = GD.Load<PackedScene>("res://Levels/Scenes/Level1.tscn");
         private Level _currentLevel;
         private int _currentLevelNumber = 1;
@@ -32,6 +36,8 @@ namespace Game
             _controller.PlayerToControl = _player;
             _playerStartPosition = _player.GlobalPosition;
             SetLevel(_currentLevelNumber);
+            SetupGhosts();
+            StartGhosts();
         }
 
         private void SetNodeReferences()
@@ -39,6 +45,7 @@ namespace Game
             _player = GetNode<MsPacMan>(_msPacManPath);
             _controller = GetNode<PlayerController>(_playerControllerPath);
             _levelContainer = GetNode<Node2D>(_levelContainerPath);
+            _ghostContainer = GetNode<Node2D>(_ghostContainerPath);
         }
 
         private void CheckNodeReferences()
@@ -54,6 +61,10 @@ namespace Game
             if (!_levelContainer.IsValid())
             {
                 GD.PrintErr("ERROR: Main Level Container is not valid!");
+            }
+            if (!_ghostContainer.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Ghost Container is not valid!");
             }
         }
 
@@ -73,6 +84,29 @@ namespace Game
             else
             {
                 _currentLevel.ResetLevel();
+            }
+        }
+
+        private void SetupGhosts()
+        {
+           for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
+            {
+                if (_ghostContainer.GetChild(i) is Ghost ghost)
+                {
+                    ghost.SetLevelReference(_currentLevel);
+                    ghost.PlayerReference = _player;
+                }
+            } 
+        }
+
+        private void StartGhosts()
+        {
+            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
+            {
+                if (_ghostContainer.GetChild(i) is Ghost ghost)
+                {
+                    ghost.StartGhost();
+                }
             }
         }
 

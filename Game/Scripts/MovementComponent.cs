@@ -10,11 +10,19 @@ namespace Game
         [Signal]
         public delegate void MovementStopped();
 
+        [Export]
+        private float _speed = 200;
+        public float Speed 
+        {
+            get { return _speed; }
+            set { _speed = value; }
+        }
         private KinematicBody2D _bodyToMove;
         public KinematicBody2D BodyToMove
         {
             get { return _bodyToMove; }
-            set{
+            set
+            {
                 if (value.IsValid())
                 {
                     _bodyToMove = value;
@@ -24,6 +32,7 @@ namespace Game
 
         public abstract void ChangeDirection(Vector2 newDirection);
         public abstract void StopMoving();
+        public abstract Vector2 GetCurrentDirection();
 
     }
 }

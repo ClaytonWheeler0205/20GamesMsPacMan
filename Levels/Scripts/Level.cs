@@ -30,6 +30,12 @@ namespace Game.Levels
         {
             get { return _pellets; }
         }
+        [Export]
+        private Vector2 _blinkyHomeTilePosition;
+        public Vector2 BlinkyHomeTilePosition
+        {
+            get { return _blinkyHomeTilePosition;}
+        }
 
         public override void _Ready()
         {
