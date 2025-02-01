@@ -31,12 +31,6 @@ namespace Game.Ghosts
                 }
             }
         }
-        private bool _isInitialScatter = true;
-        public bool IsInitialScatter
-        {
-            get { return _isInitialScatter;}
-            set { _isInitialScatter = value;}
-        }
         private Vector2 _homeTilePosition;
         public Vector2 HomeTilePosition
         {

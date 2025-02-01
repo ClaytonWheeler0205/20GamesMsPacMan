@@ -5,18 +5,13 @@ using Util.ExtensionMethods;
 
 public class ScatterStateImpl : ScatterState
 {
-    private bool _reverseDirection = false;
     private bool _inIntersectionTile = false;
     private const int TURN_TILE_CELL_NUMBER = 1;
     private const int PATH_TILE_CELL_NUMBER = 2;
 
     public override void EnterState()
     {
-        if (!IsInitialScatter)
-        {
-            _reverseDirection = true;
-        }
-        _inIntersectionTile = IsAtIntersection();
+
     }
 
     public override void UpdateState(float delta)
@@ -26,14 +21,7 @@ public class ScatterStateImpl : ScatterState
             if (IsAtIntersection() && !_inIntersectionTile)
             {
                 _inIntersectionTile = true;
-                if (_reverseDirection)
-                {
-                    ReverseDirection();
-                }
-                else
-                {
-                    Movement.ChangeDirection(FindShortestPathToHome());
-                }
+                Movement.ChangeDirection(FindShortestPathToHome());
             }
             if (!IsAtIntersection())
             {
@@ -94,7 +82,7 @@ public class ScatterStateImpl : ScatterState
         if (Movement.GetCurrentDirection() != Vector2.Right)
         {
             Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
-            int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int) mapPositionLeft.y);
+            int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
             if (cellNumberLeft == PATH_TILE_CELL_NUMBER)
             {
                 float distance = HomeTilePosition.DistanceTo(mapPositionLeft);
@@ -143,10 +131,7 @@ public class ScatterStateImpl : ScatterState
 
     public override void ExitState()
     {
-        if (IsInitialScatter)
-        {
-            IsInitialScatter = false;
-        }
+        ReverseDirection();
         _inIntersectionTile = false;
     }
 }
