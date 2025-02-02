@@ -19,6 +19,7 @@ namespace Game.Levels
         private Portal _destination;
 
         private const string PLAYER_NODE_GROUP = "Player";
+        private const string GHOST_NODE_GROUP = "Ghost";
 
         public override void _Ready()
         {
@@ -46,7 +47,7 @@ namespace Game.Levels
 
         public void OnBodyEntered(Node body)
         {
-            if (body.IsInGroup(PLAYER_NODE_GROUP))
+            if (body.IsInGroup(PLAYER_NODE_GROUP) || body.IsInGroup(GHOST_NODE_GROUP))
             {
                 if (body is Node2D body2D)
                 {

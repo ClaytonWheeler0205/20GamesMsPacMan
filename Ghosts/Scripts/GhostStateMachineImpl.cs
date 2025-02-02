@@ -81,6 +81,12 @@ namespace Game.Ghosts
             }
         }
 
+        public override void ResetMachine()
+        {
+            _currentState = _initialState;
+            _currentState.EnterState();
+        }
+
         public void OnStateTransitioned(GhostState currentState, string newStateName)
         {
             if (currentState != _currentState)
@@ -90,7 +96,7 @@ namespace Game.Ghosts
             else
             {
                 _currentState.ExitState();
-                GhostState newState = _states[newStateName];
+                GhostState newState = _states[newStateName.ToLower()];
                 if (newState.IsValid())
                 {
                     _currentState = newState;

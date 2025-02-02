@@ -89,14 +89,14 @@ namespace Game
 
         private void SetupGhosts()
         {
-           for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
+            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
             {
                 if (_ghostContainer.GetChild(i) is Ghost ghost)
                 {
                     ghost.SetLevelReference(_currentLevel);
-                    ghost.PlayerReference = _player;
+                    ghost.SetPlayerReference(_player);
                 }
-            } 
+            }
         }
 
         private void StartGhosts()
@@ -110,10 +110,22 @@ namespace Game
             }
         }
 
+        private void StopGhosts()
+        {
+            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
+            {
+                if (_ghostContainer.GetChild(i) is Ghost ghost)
+                {
+                    ghost.StopGhost();
+                }
+            }
+        }
+
         public async void OnLevelCleared()
         {
             _controller.IsControllerActive = false;
             _player.Stop();
+            StopGhosts();
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
             {
@@ -126,6 +138,7 @@ namespace Game
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             _currentLevelNumber++;
             ResetPlayer();
+            ResetGhosts();
             SetLevel(_currentLevelNumber);
         }
 
@@ -133,6 +146,17 @@ namespace Game
         {
             _player.GlobalPosition = _playerStartPosition;
             _controller.IsControllerActive = true;
+        }
+
+        private void ResetGhosts()
+        {
+            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
+            {
+                if (_ghostContainer.GetChild(i) is Ghost ghost)
+                {
+                    ghost.ResetGhost();
+                }
+            }
         }
 
     }

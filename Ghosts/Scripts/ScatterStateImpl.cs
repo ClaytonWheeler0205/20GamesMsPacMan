@@ -8,10 +8,34 @@ public class ScatterStateImpl : ScatterState
     private bool _inIntersectionTile = false;
     private const int TURN_TILE_CELL_NUMBER = 1;
     private const int PATH_TILE_CELL_NUMBER = 2;
+    private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
+    [Export]
+    private NodePath _scatterTimerPath;
+    private Timer _scatterTimer;
+    private float _scatterTime = 7.0f;
+
+    public override void _Ready()
+    {
+        SetNodeReferences();
+        CheckNodeReferences();
+    }
+
+    private void SetNodeReferences()
+    {
+        _scatterTimer = GetNode<Timer>(_scatterTimerPath);
+    }
+
+    private void CheckNodeReferences()
+    {
+        if (!_scatterTimer.IsValid())
+        {
+            GD.PrintErr("ERROR: Scatter State Scatter Timer is not valid!");
+        }
+    }
 
     public override void EnterState()
     {
-
+        _scatterTimer.Start(_scatterTime);
     }
 
     public override void UpdateState(float delta)
@@ -35,7 +59,7 @@ public class ScatterStateImpl : ScatterState
         Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
         Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
         int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
-        return cellNumber == TURN_TILE_CELL_NUMBER;
+        return cellNumber == TURN_TILE_CELL_NUMBER || cellNumber == SPECIAL_TURN_TILE_CELL_NUMBER;
     }
 
     private void ReverseDirection()
@@ -62,10 +86,11 @@ public class ScatterStateImpl : ScatterState
     {
         Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
         Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
+        int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
         float minDistance = float.PositiveInfinity;
         Vector2 newDirection = Vector2.Zero;
         // Priority is Up, Left, Down, Right
-        if (Movement.GetCurrentDirection() != Vector2.Down)
+        if (Movement.GetCurrentDirection() != Vector2.Down && cellNumber != SPECIAL_TURN_TILE_CELL_NUMBER)
         {
             Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
             int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
@@ -133,5 +158,10 @@ public class ScatterStateImpl : ScatterState
     {
         ReverseDirection();
         _inIntersectionTile = false;
+    }
+
+    public void OnTimerTimeout()
+    {
+        EmitSignal("Transitioned", this, "ChaseState");
     }
 }

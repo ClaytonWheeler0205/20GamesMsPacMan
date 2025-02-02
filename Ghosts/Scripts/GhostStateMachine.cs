@@ -13,5 +13,6 @@ namespace Game.Ghosts
         }
         
         public abstract void SetIsMachineActive(bool isActive);
+        public abstract void ResetMachine();
     }
 }
