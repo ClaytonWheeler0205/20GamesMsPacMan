@@ -35,21 +35,6 @@ namespace Game
             SetWallDetectorPosition(Vector2.Left);
         }
 
-        public override void _PhysicsProcess(float delta)
-        {
-            AttemptDirectionChange();
-            if (BodyToMove.IsValid())
-            {
-                Vector2 velocity = _currentDirection * Speed;
-                velocity = BodyToMove.MoveAndSlide(velocity);
-                if (velocity == Vector2.Zero)
-                {
-                    EmitSignal("MovementStopped");
-                }
-            }
-        }
-
-
         private void SetNodeReferences()
         {
             _wallDetector = GetNode<RayCast2D>(_wallDetectorNodePath);
@@ -65,6 +50,53 @@ namespace Game
             if (!_secondaryWallDetector.IsValid())
             {
                 GD.PrintErr("ERROR: Movement Component Secondary Wall Detector is not valid!");
+            }
+        }
+
+        private void SetWallDetectorPosition(Vector2 targetDirection)
+        {
+            if (targetDirection == Vector2.Down)
+            {
+                _wallDetector.Position = _bodyUpPosition;
+            }
+            else if (targetDirection == Vector2.Up)
+            {
+                _wallDetector.Position = _bodyDownPosition;
+            }
+            else if (targetDirection == Vector2.Left)
+            {
+                _wallDetector.Position = _bodyRightPosition;
+            }
+            else if (targetDirection == Vector2.Right)
+            {
+                _wallDetector.Position = _bodyLeftPosition;
+            }
+        }
+
+        public override void _PhysicsProcess(float delta)
+        {
+            AttemptDirectionChange();
+            if (BodyToMove.IsValid())
+            {
+                Vector2 velocity = _currentDirection * Speed;
+                velocity = BodyToMove.MoveAndSlide(velocity);
+                if (velocity == Vector2.Zero)
+                {
+                    EmitSignal("MovementStopped");
+                }
+            }
+        }
+
+        private void AttemptDirectionChange()
+        {
+            if (!_wallDetector.IsColliding() && !_secondaryWallDetector.IsColliding())
+            {
+                if (_currentDirection != _targetDirection)
+                {
+                    _currentDirection = _targetDirection;
+                    SetWallDetectorPosition(_currentDirection);
+                    EmitSignal("DirectionChanged", _currentDirection);
+                }
             }
         }
 
@@ -87,38 +119,5 @@ namespace Game
             return _currentDirection;
         }
 
-
-        private void SetWallDetectorPosition(Vector2 targetDirection)
-        {
-            if (targetDirection == Vector2.Down)
-            {
-                _wallDetector.Position = _bodyUpPosition;
-            }
-            else if (targetDirection == Vector2.Up)
-            {
-                _wallDetector.Position = _bodyDownPosition;
-            }
-            else if (targetDirection == Vector2.Left)
-            {
-                _wallDetector.Position = _bodyRightPosition;
-            }
-            else if (targetDirection == Vector2.Right)
-            {
-                _wallDetector.Position = _bodyLeftPosition;
-            }
-        }
-
-        private void AttemptDirectionChange()
-        {
-            if (!_wallDetector.IsColliding() && !_secondaryWallDetector.IsColliding())
-            {
-                if (_currentDirection != _targetDirection)
-                {
-                    _currentDirection = _targetDirection;
-                    SetWallDetectorPosition(_currentDirection);
-                    EmitSignal("DirectionChanged", _currentDirection);
-                }
-            }
-        }
     }
 }

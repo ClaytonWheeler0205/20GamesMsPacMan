@@ -12,10 +12,16 @@ namespace Game
 
         [Export]
         private float _speed = 200;
-        public float Speed 
+        public float Speed
         {
             get { return _speed; }
-            set { _speed = value; }
+            set
+            {
+                if (value > 0)
+                {
+                    _speed = value;
+                }
+            }
         }
         private KinematicBody2D _bodyToMove;
         public KinematicBody2D BodyToMove
