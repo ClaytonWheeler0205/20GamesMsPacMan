@@ -21,23 +21,28 @@ namespace Game
         [Export]
         private NodePath _levelContainerPath;
         private Node2D _levelContainer;
-        [Export]
-        private NodePath _ghostContainerPath;
-        private Node2D _ghostContainer;
         private PackedScene _worldOne = GD.Load<PackedScene>("res://Levels/Scenes/Level1.tscn");
         private Level _currentLevel;
         private int _currentLevelNumber = 1;
+
+        [Export]
+        private NodePath _ghostContainerPath;
+        private Node2D _ghostContainer;
+
+        [Export]
+        private NodePath _startJinglePath;
+        private AudioStreamPlayer _startJingle;
+
 
         public override void _Ready()
         {
             SetNodeReferences();
             CheckNodeReferences();
             SetNodeConnections();
-            _controller.PlayerToControl = _player;
-            _playerStartPosition = _player.GlobalPosition;
+            SetupPlayer();
             SetLevel(_currentLevelNumber);
             SetupGhosts();
-            StartGhosts();
+            _startJingle.Play();
         }
 
         private void SetNodeReferences()
@@ -46,6 +51,7 @@ namespace Game
             _controller = GetNode<PlayerController>(_playerControllerPath);
             _levelContainer = GetNode<Node2D>(_levelContainerPath);
             _ghostContainer = GetNode<Node2D>(_ghostContainerPath);
+            _startJingle = GetNode<AudioStreamPlayer>(_startJinglePath);
         }
 
         private void CheckNodeReferences()
@@ -66,11 +72,23 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Ghost Container is not valid!");
             }
+            if (!_startJingle.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Start Jingle Player is not valid!");
+            }
         }
 
         private void SetNodeConnections()
         {
-            LevelEventBus.Instance.Connect("LevelCleared", this, "OnLevelCleared");
+            LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
+            _startJingle.Connect("finished", this, nameof(OnStartJingleFinished));
+        }
+
+        private void SetupPlayer()
+        {
+            _controller.PlayerToControl = _player;
+            _playerStartPosition = _player.GlobalPosition;
+            _controller.IsControllerActive = false;
         }
 
         private void SetLevel(int levelNumber)
@@ -79,7 +97,7 @@ namespace Game
             {
                 _currentLevel = _worldOne.Instance<Level>();
                 _levelContainer.AddChild(_currentLevel);
-                _currentLevel.Connect("LevelFlashFinished", this, "OnLevelFlashFinished");
+                _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
                 IntersectionDetector.CurrentLevel = _currentLevel;
             }
             else
@@ -100,6 +118,12 @@ namespace Game
             }
         }
 
+       public void OnStartJingleFinished()
+        {
+            _controller.IsControllerActive = true;
+            StartGhosts();
+        }
+
         private void StartGhosts()
         {
             for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
@@ -107,17 +131,6 @@ namespace Game
                 if (_ghostContainer.GetChild(i) is Ghost ghost)
                 {
                     ghost.StartGhost();
-                }
-            }
-        }
-
-        private void StopGhosts()
-        {
-            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
-            {
-                if (_ghostContainer.GetChild(i) is Ghost ghost)
-                {
-                    ghost.StopGhost();
                 }
             }
         }
@@ -134,6 +147,17 @@ namespace Game
             }
         }
 
+        private void StopGhosts()
+        {
+            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
+            {
+                if (_ghostContainer.GetChild(i) is Ghost ghost)
+                {
+                    ghost.StopGhost();
+                }
+            }
+        }
+
         public async void OnLevelFlashFinished()
         {
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
@@ -141,12 +165,13 @@ namespace Game
             ResetPlayer();
             ResetGhosts();
             SetLevel(_currentLevelNumber);
+            _startJingle.Play();
         }
 
         private void ResetPlayer()
         {
             _player.GlobalPosition = _playerStartPosition;
-            _controller.IsControllerActive = true;
+            _player.ResetOrientation();
         }
 
         private void ResetGhosts()

@@ -24,7 +24,6 @@ namespace Game.Ghosts
         {
             GlobalPosition = startPosition;
             StateMachineReference.ResetMachine();
-            StartGhost();
         }
 
         public override void SetLevelReference(Level level)

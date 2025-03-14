@@ -50,6 +50,14 @@ namespace Game.Player
             _movement.StopMoving();
         }
 
+        public override void ResetOrientation()
+        {
+                _visual.Rotation = 0;
+                _visual.FlipH = false;
+                _visual.Offset = Vector2.Zero;
+                _visual.Frame = 0;
+        }
+
         public void OnDirectionChanged(Vector2 newDirection)
         {
             if (newDirection == Vector2.Right)
