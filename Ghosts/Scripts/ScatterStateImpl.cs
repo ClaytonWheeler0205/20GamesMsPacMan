@@ -1,3 +1,4 @@
+using Game.Bus;
 using Game.Ghosts;
 using Godot;
 using System;
@@ -6,7 +7,6 @@ using Util.ExtensionMethods;
 public class ScatterStateImpl : ScatterState
 {
     private bool _inIntersectionTile = false;
-    private const int TURN_TILE_CELL_NUMBER = 1;
     private const int PATH_TILE_CELL_NUMBER = 2;
     private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
     [Export]
@@ -18,6 +18,7 @@ public class ScatterStateImpl : ScatterState
     {
         SetNodeReferences();
         CheckNodeReferences();
+        SetNodeConnections();
     }
 
     private void SetNodeReferences()
@@ -31,6 +32,17 @@ public class ScatterStateImpl : ScatterState
         {
             GD.PrintErr("ERROR: Scatter State Scatter Timer is not valid!");
         }
+    }
+
+    private void SetNodeConnections()
+    {
+            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
+    }
+
+    public void OnPowerPelletCollected()
+    {
+        GD.Print("Power pellet collected. Blinky entering chase state.");
+        // transition to frightened state
     }
 
     public override void EnterState()
@@ -61,8 +73,10 @@ public class ScatterStateImpl : ScatterState
         int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
         float minDistance = float.PositiveInfinity;
         Vector2 newDirection = Vector2.Zero;
+        Vector2 currentDirection = Movement.GetCurrentDirection();
+
         // Priority is Up, Left, Down, Right
-        if (Movement.GetCurrentDirection() != Vector2.Down && cellNumber != SPECIAL_TURN_TILE_CELL_NUMBER)
+        if (currentDirection != Vector2.Down && cellNumber != SPECIAL_TURN_TILE_CELL_NUMBER)
         {
             Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
             int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
@@ -76,7 +90,7 @@ public class ScatterStateImpl : ScatterState
                 }
             }
         }
-        if (Movement.GetCurrentDirection() != Vector2.Right)
+        if (currentDirection != Vector2.Right)
         {
             Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
             int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
@@ -90,7 +104,7 @@ public class ScatterStateImpl : ScatterState
                 }
             }
         }
-        if (Movement.GetCurrentDirection() != Vector2.Up)
+        if (currentDirection != Vector2.Up)
         {
             Vector2 mapPositionDown = new Vector2(mapPosition.x, mapPosition.y + 1);
             int cellNumberDown = CurrentLevel.GetCell((int)mapPositionDown.x, (int)mapPositionDown.y);
@@ -104,7 +118,7 @@ public class ScatterStateImpl : ScatterState
                 }
             }
         }
-        if (Movement.GetCurrentDirection() != Vector2.Left)
+        if (currentDirection != Vector2.Left)
         {
             Vector2 mapPositionRight = new Vector2(mapPosition.x + 1, mapPosition.y);
             int cellNumberRight = CurrentLevel.GetCell((int)mapPositionRight.x, (int)mapPositionRight.y);
@@ -129,7 +143,7 @@ public class ScatterStateImpl : ScatterState
     public override void ExitState()
     {
         DirectionReverser.ReverseDirection(Movement);
-        _inIntersectionTile = false;
+        //_inIntersectionTile = false; <- uncomment this is you notice any weird behavior in exiting states
     }
 
     public void OnTimerTimeout()

@@ -2,23 +2,27 @@ using Godot;
 using System;
 using Util.ExtensionMethods;
 
-public class PelletEventBus : Node
+namespace Game.Bus
 {
-    public static PelletEventBus Instance { get; private set; }
 
-    [Signal]
-    public delegate void PowerPelletCollected();
-
-    public override void _Ready()
+    public class PelletEventBus : Node
     {
-        if (Instance != null && Instance != this)
-        {
-            this.SafeQueueFree();
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
+        public static PelletEventBus Instance { get; private set; }
 
+        [Signal]
+        public delegate void PowerPelletCollected();
+
+        public override void _Ready()
+        {
+            if (Instance != null && Instance != this)
+            {
+                this.SafeQueueFree();
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
+
+    }
 }

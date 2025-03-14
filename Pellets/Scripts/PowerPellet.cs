@@ -1,4 +1,5 @@
 using Godot;
+using Game.Bus;
 
 namespace Game.Pellets
 {
