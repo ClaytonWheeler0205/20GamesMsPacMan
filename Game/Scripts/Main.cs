@@ -80,6 +80,7 @@ namespace Game
                 _currentLevel = _worldOne.Instance<Level>();
                 _levelContainer.AddChild(_currentLevel);
                 _currentLevel.Connect("LevelFlashFinished", this, "OnLevelFlashFinished");
+                IntersectionDetector.CurrentLevel = _currentLevel;
             }
             else
             {

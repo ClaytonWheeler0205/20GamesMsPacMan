@@ -7,7 +7,6 @@ namespace Game.Ghosts
     public class BlinkyChaseState : ChaseState
     {
         private bool _inIntersectionTile = false;
-        private const int TURN_TILE_CELL_NUMBER = 1;
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
         [Export]
@@ -17,6 +16,7 @@ namespace Game.Ghosts
 
         public override void _Ready()
         {
+            base._Ready();
             SetNodeReferences();
             CheckNodeReferences();
         }
@@ -43,43 +43,15 @@ namespace Game.Ghosts
         {
             if (CurrentLevel.IsValid())
             {
-                if (IsAtIntersection() && !_inIntersectionTile)
+                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
                 {
                     _inIntersectionTile = true;
                     Movement.ChangeDirection(FindShortestPathToPlayer());
                 }
-                if (!IsAtIntersection())
+                if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
                 {
                     _inIntersectionTile = false;
                 }
-            }
-        }
-
-        private bool IsAtIntersection()
-        {
-            Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-            Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
-            int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
-            return cellNumber == TURN_TILE_CELL_NUMBER || cellNumber == SPECIAL_TURN_TILE_CELL_NUMBER;
-        }
-
-        private void ReverseDirection()
-        {
-            if (Movement.GetCurrentDirection() == Vector2.Up)
-            {
-                Movement.ChangeDirection(Vector2.Down);
-            }
-            else if (Movement.GetCurrentDirection() == Vector2.Down)
-            {
-                Movement.ChangeDirection(Vector2.Up);
-            }
-            else if (Movement.GetCurrentDirection() == Vector2.Right)
-            {
-                Movement.ChangeDirection(Vector2.Left);
-            }
-            else if (Movement.GetCurrentDirection() == Vector2.Left)
-            {
-                Movement.ChangeDirection(Vector2.Right);
             }
         }
 
@@ -159,7 +131,7 @@ namespace Game.Ghosts
 
         public override void ExitState()
         {
-            ReverseDirection();
+            DirectionReverser.ReverseDirection(Movement);
             _inIntersectionTile = false;
         }
 

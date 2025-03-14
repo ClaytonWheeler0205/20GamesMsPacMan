@@ -18,6 +18,7 @@ config/icon="res://MsPacManIcon.png"
 
 ScoreEventBus="*res://Buses/Scenes/ScoreEventBus.tscn"
 LevelEventBus="*res://Buses/Scenes/LevelEventBus.tscn"
+PelletEventBus="*res://Buses/Scenes/PelletEventBus.tscn"
 
 [display]
 

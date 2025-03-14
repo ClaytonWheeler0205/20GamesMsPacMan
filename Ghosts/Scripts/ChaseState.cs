@@ -44,5 +44,21 @@ namespace Game.Ghosts
                 }
             }
         }
+
+        public override void _Ready()
+        {
+            SetNodeConnections();
+        }
+
+        private void SetNodeConnections()
+        {
+            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
+        }
+
+        public void OnPowerPelletCollected()
+        {
+            GD.Print("Power Pellet Collected! Blinky enters frightened state.");
+            //EmitSignal("Transitioned", this, "FrightenedState");
+        }
     }
 }

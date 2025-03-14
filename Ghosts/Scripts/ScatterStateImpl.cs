@@ -42,43 +42,15 @@ public class ScatterStateImpl : ScatterState
     {
         if (CurrentLevel.IsValid())
         {
-            if (IsAtIntersection() && !_inIntersectionTile)
+            if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
             {
                 _inIntersectionTile = true;
                 Movement.ChangeDirection(FindShortestPathToHome());
             }
-            if (!IsAtIntersection())
+            if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
             {
                 _inIntersectionTile = false;
             }
-        }
-    }
-
-    private bool IsAtIntersection()
-    {
-        Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-        Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
-        int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
-        return cellNumber == TURN_TILE_CELL_NUMBER || cellNumber == SPECIAL_TURN_TILE_CELL_NUMBER;
-    }
-
-    private void ReverseDirection()
-    {
-        if (Movement.GetCurrentDirection() == Vector2.Up)
-        {
-            Movement.ChangeDirection(Vector2.Down);
-        }
-        else if (Movement.GetCurrentDirection() == Vector2.Down)
-        {
-            Movement.ChangeDirection(Vector2.Up);
-        }
-        else if (Movement.GetCurrentDirection() == Vector2.Right)
-        {
-            Movement.ChangeDirection(Vector2.Left);
-        }
-        else if (Movement.GetCurrentDirection() == Vector2.Left)
-        {
-            Movement.ChangeDirection(Vector2.Right);
         }
     }
 
@@ -156,7 +128,7 @@ public class ScatterStateImpl : ScatterState
 
     public override void ExitState()
     {
-        ReverseDirection();
+        DirectionReverser.ReverseDirection(Movement);
         _inIntersectionTile = false;
     }
 
