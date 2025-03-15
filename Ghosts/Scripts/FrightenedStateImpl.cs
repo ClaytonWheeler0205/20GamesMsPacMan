@@ -10,12 +10,15 @@ namespace Game.Ghosts
     {
         private bool _inIntersectionTile = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
-        private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
 
         [Export]
         private NodePath _frightenedTimerPath;
+        [Export]
+        private NodePath _frightenedFlashTimerPath;
         private Timer _frightenedTimer;
-        private float _frightenedTime = 10.0f;
+        private Timer _frightenedFlashTimer;
+        private float _frightenedTime = 7.0f;
+        private float _frightenedFlashTime = 3.0f;
 
         public override void _Ready()
         {
@@ -27,6 +30,7 @@ namespace Game.Ghosts
         private void SetNodeReferences()
         {
             _frightenedTimer = GetNode<Timer>(_frightenedTimerPath);
+            _frightenedFlashTimer = GetNode<Timer>(_frightenedFlashTimerPath);
         }
 
         private void CheckNodeReferences()
@@ -35,24 +39,37 @@ namespace Game.Ghosts
             {
                 GD.PrintErr("ERROR: Ghost Frightened Timer is not valid!");
             }
+            if (!_frightenedFlashTimer.IsValid())
+            {
+                GD.PrintErr("ERROR: Ghost Frightened Flash Timer is not valid!");
+            }
         }
 
         private void SetNodeConnections()
         {
-            _frightenedTimer.Connect("timeout", this, nameof(OnTimerTimeout));
+            _frightenedTimer.Connect("timeout", this, nameof(OnFrightenedTimerTimeout));
+            _frightenedFlashTimer.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
             PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
         }
 
-        public void OnTimerTimeout()
+        public void OnFrightenedTimerTimeout()
+        {
+            _frightenedFlashTimer.Start(_frightenedFlashTime);
+            EmitSignal("FrightenedFlashStarted");
+        }
+
+        public void OnFrightenedFlashTimerTimeout()
         {
             EmitSignal("Transitioned", this, "PreviousState");
         }
 
         public void OnPowerPelletCollected()
         {
-            if (!_frightenedTimer.IsStopped())
+            if (!_frightenedTimer.IsStopped() || !_frightenedFlashTimer.IsStopped())
             {
+                EmitSignal("FrightenedStateEntered");
                 _frightenedTimer.Start(_frightenedTime);
+                _frightenedFlashTimer.Stop();
             }
         }
 
@@ -134,6 +151,8 @@ namespace Game.Ghosts
 
         public override void ExitState()
         {
+            _frightenedTimer.Stop();
+            _frightenedFlashTimer.Stop();
             EmitSignal("FrightenedStateExited");
         }
     }

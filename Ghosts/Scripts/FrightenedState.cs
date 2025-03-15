@@ -9,6 +9,8 @@ namespace Game.Ghosts
         [Signal]
         public delegate void FrightenedStateEntered();
         [Signal]
+        public delegate void FrightenedFlashStarted();
+        [Signal]
         public delegate void FrightenedStateExited();
 
         private Level _currentLevel;
