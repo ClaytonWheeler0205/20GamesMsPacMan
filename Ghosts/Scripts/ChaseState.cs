@@ -46,20 +46,74 @@ namespace Game.Ghosts
             }
         }
 
+        [Export]
+        private NodePath _chaseTimerPath;
+        private Timer _chaseTimer;
+        protected Timer ChaseTimer
+        {
+            get { return _chaseTimer; }
+        }
+        private float _chaseTime = 20.0f;
+
         public override void _Ready()
         {
+            SetNodeReferences();
+            CheckNodeReferences();
             SetNodeConnections();
+        }
+
+        private void SetNodeReferences()
+        {
+            _chaseTimer = GetNode<Timer>(_chaseTimerPath);
+        }
+
+        private void CheckNodeReferences()
+        {
+            if (!_chaseTimer.IsValid())
+            {
+                GD.PrintErr("ERROR: Ghost Chase Timer is not valid!");
+            }
         }
 
         private void SetNodeConnections()
         {
             PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
+            LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
+            _chaseTimer.Connect("timeout", this, nameof(OnChaseTimerTimeout));
         }
 
         public void OnPowerPelletCollected()
         {
-            GD.Print("Power Pellet Collected! Blinky enters frightened state.");
-            //EmitSignal("Transitioned", this, "FrightenedState");
+            _chaseTimer.Paused = true;
+            EmitSignal("Transitioned", this, "FrightenedState");
+        }
+
+        public void OnLevelCleared()
+        {
+            _chaseTimer.Paused = false;
+            _chaseTimer.Stop();
+        }
+
+        public void OnChaseTimerTimeout()
+        {
+            EmitSignal("Transitioned", this, "ScatterState");
+        }
+
+        public override void EnterState()
+        {
+            if (!_chaseTimer.Paused)
+            {
+                _chaseTimer.Start(_chaseTime);
+            }
+            else
+            {
+                _chaseTimer.Paused = false;
+            }
+        }
+
+        public override void ExitState()
+        {
+            DirectionReverser.ReverseDirection(_movement);
         }
     }
 }

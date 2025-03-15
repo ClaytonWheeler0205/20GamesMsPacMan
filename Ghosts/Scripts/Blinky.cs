@@ -30,6 +30,7 @@ namespace Game.Ghosts
         {
             ScatterStateReference.CurrentLevel = level;
             ChaseStateReference.CurrentLevel = level;
+            FrightenedStateReference.CurrentLevel = level;
             ScatterStateReference.HomeTilePosition = level.BlinkyHomeTilePosition;
         }
 

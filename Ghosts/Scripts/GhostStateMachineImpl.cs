@@ -11,6 +11,7 @@ namespace Game.Ghosts
         private NodePath _initialStatePath;
         private GhostState _initialState;
         private GhostState _currentState;
+        private GhostState _previousState;
 
         public override void _Ready()
         {
@@ -63,14 +64,6 @@ namespace Game.Ghosts
             }
         }
 
-        public override void _PhysicsProcess(float delta)
-        {
-            if (IsMachineActive)
-            {
-                _currentState.PhysicsUpdateState(delta);
-            }
-        }
-
 
         public override void SetIsMachineActive(bool isActive)
         {
@@ -83,6 +76,7 @@ namespace Game.Ghosts
 
         public override void ResetMachine()
         {
+            _currentState.ExitState();
             _currentState = _initialState;
             _currentState.EnterState();
         }
@@ -96,11 +90,20 @@ namespace Game.Ghosts
             else
             {
                 _currentState.ExitState();
-                GhostState newState = _states[newStateName.ToLower()];
-                if (newState.IsValid())
+                if (newStateName == "PreviousState")
                 {
-                    _currentState = newState;
+                    _currentState = _previousState;
                     _currentState.EnterState();
+                }
+                else
+                {
+                    GhostState newState = _states[newStateName.ToLower()];
+                    if (newState.IsValid())
+                    {
+                        _previousState = _currentState;
+                        _currentState = newState;
+                        _currentState.EnterState();
+                    }
                 }
             }
         }

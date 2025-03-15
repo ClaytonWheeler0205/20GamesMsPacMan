@@ -1,7 +1,7 @@
 using Game.Bus;
 using Game.Ghosts;
+using Game.Levels;
 using Godot;
-using System;
 using Util.ExtensionMethods;
 
 public class ScatterStateImpl : ScatterState
@@ -36,18 +36,38 @@ public class ScatterStateImpl : ScatterState
 
     private void SetNodeConnections()
     {
-            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
+        PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
+        LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
+        _scatterTimer.Connect("timeout", this, nameof(OnTimerTimeout));
     }
 
     public void OnPowerPelletCollected()
     {
-        GD.Print("Power pellet collected. Blinky entering chase state.");
-        // transition to frightened state
+        _scatterTimer.Paused = true;
+        EmitSignal("Transitioned", this, "FrightenedState");
+    }
+
+    public void OnLevelCleared()
+    {
+        _scatterTimer.Paused = false;
+        _scatterTimer.Stop();
+    }
+
+    public void OnTimerTimeout()
+    {
+        EmitSignal("Transitioned", this, "ChaseState");
     }
 
     public override void EnterState()
     {
-        _scatterTimer.Start(_scatterTime);
+        if (!_scatterTimer.Paused)
+        {
+            _scatterTimer.Start(_scatterTime);
+        }
+        else
+        {
+            _scatterTimer.Paused = false;
+        }
     }
 
     public override void UpdateState(float delta)
@@ -135,19 +155,9 @@ public class ScatterStateImpl : ScatterState
         return newDirection;
     }
 
-    public override void PhysicsUpdateState(float delta)
-    {
-
-    }
-
     public override void ExitState()
     {
         DirectionReverser.ReverseDirection(Movement);
         //_inIntersectionTile = false; <- uncomment this is you notice any weird behavior in exiting states
-    }
-
-    public void OnTimerTimeout()
-    {
-        EmitSignal("Transitioned", this, "ChaseState");
     }
 }

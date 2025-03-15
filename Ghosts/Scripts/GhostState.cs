@@ -10,7 +10,6 @@ namespace Game.Ghosts
 
         public abstract void EnterState();
         public abstract void UpdateState(float delta);
-        public abstract void PhysicsUpdateState(float delta);
         public abstract void ExitState();
     }
 }

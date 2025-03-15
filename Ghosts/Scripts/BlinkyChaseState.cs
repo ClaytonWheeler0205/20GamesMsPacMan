@@ -9,35 +9,6 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
-        [Export]
-        private NodePath _chasetimerPath;
-        private Timer _chaseTimer;
-        private float _chaseTime = 20.0f;
-
-        public override void _Ready()
-        {
-            base._Ready();
-            SetNodeReferences();
-            CheckNodeReferences();
-        }
-
-        private void SetNodeReferences()
-        {
-            _chaseTimer = GetNode<Timer>(_chasetimerPath);
-        }
-
-        private void CheckNodeReferences()
-        {
-            if (!_chaseTimer.IsValid())
-            {
-                GD.PrintErr("ERROR: Chase State Chase Timer is not valid!");
-            }
-        }
-
-        public override void EnterState()
-        {
-            _chaseTimer.Start(_chaseTime);
-        }
 
         public override void UpdateState(float delta)
         {
@@ -124,22 +95,6 @@ namespace Game.Ghosts
             }
 
             return newDirection;
-        }
-
-        public override void PhysicsUpdateState(float delta)
-        {
-
-        }
-
-        public override void ExitState()
-        {
-            DirectionReverser.ReverseDirection(Movement);
-            //_inIntersectionTile = false; <- uncomment this is you notice any weird behavior in exiting states
-        }
-
-        public void OnTimerTimeout()
-        {
-            EmitSignal("Transitioned", this, "ScatterState");
         }
 
     }
