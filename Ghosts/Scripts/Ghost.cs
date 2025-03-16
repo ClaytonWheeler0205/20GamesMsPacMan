@@ -67,6 +67,10 @@ namespace Game.Ghosts
         private Timer _frightenedFlashTimer;
         private float _frightenedFlashTime;
 
+        [Export]
+        private NodePath _ghostCollisionPath;
+        private GhostCollisionHandler _ghostCollision;
+
         protected Vector2 startPosition;
 
         public override void _Ready()
@@ -93,6 +97,7 @@ namespace Game.Ghosts
             _frightenedBodyVisual = GetNode<AnimatedSprite>(_frightenedBodyVisualPath);
             _frightenedFlashVisual = GetNode<AnimatedSprite>(_frightenedFlashVisualPath);
             _frightenedFlashTimer = GetNode<Timer>(_frightenedFlashTimerPath);
+            _ghostCollision = GetNode<GhostCollisionHandler>(_ghostCollisionPath);
         }
 
         private void CheckNodeReferences()
@@ -136,6 +141,10 @@ namespace Game.Ghosts
             if (!_frightenedFlashTimer.IsValid())
             {
                 GD.PrintErr("ERROR: Ghost Frightened Flash Timer is not valid!");
+            }
+            if (!_ghostCollision.IsValid())
+            {
+                GD.PrintErr("ERROR: Ghost Collision is not valid!");
             }
         }
 
@@ -203,6 +212,7 @@ namespace Game.Ghosts
             _frightenedBodyVisual.Play("frightened_move");
             _frightenedFlashVisual.Play("frightened_flash_move");
             _frightenedFlashTimer.Stop();
+            _ghostCollision.Vulnerable = true;
         }
 
         public void OnFrightenedFlashStarted()
@@ -227,6 +237,7 @@ namespace Game.Ghosts
             _bodyVisual.Visible = true;
             _eyes.Visible = true;
             _bodyVisual.Play("move");
+            _ghostCollision.Vulnerable = false;
         }
 
     }

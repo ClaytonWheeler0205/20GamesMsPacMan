@@ -13,6 +13,11 @@ namespace Game.Player
         private NodePath _spritePath;
         private AnimatedSprite _visual;
         private const string MOVE_ANIMATION_NAME = "move";
+        private const int OPEN_MOUTH_FRAME = 1;
+
+        [Export]
+        private NodePath _deathAnimationPath;
+        private AnimationPlayer _deathAnimation;
 
         public override void _Ready()
         {
@@ -25,6 +30,7 @@ namespace Game.Player
         {
             _movement = GetNode<MovementComponent>(_movementComponentPath);
             _visual = GetNode<AnimatedSprite>(_spritePath);
+            _deathAnimation = GetNode<AnimationPlayer>(_deathAnimationPath);
         }
 
         private void CheckNodeReferences()
@@ -36,6 +42,10 @@ namespace Game.Player
             if (!_visual.IsValid())
             {
                 GD.PrintErr("ERROR: MsPacMan visual is not valid!");
+            }
+            if (!_deathAnimation.IsValid())
+            {
+                GD.PrintErr("ERROR: MsPacMan Death Animation is not valid!");
             }
         }
 
@@ -56,6 +66,14 @@ namespace Game.Player
                 _visual.FlipH = false;
                 _visual.Offset = Vector2.Zero;
                 _visual.Frame = 0;
+                _deathAnimation.Play("reset_values");
+        }
+
+        public override void PlayDeathAnimation()
+        {
+            ResetOrientation();
+            _visual.Frame = OPEN_MOUTH_FRAME;
+            _deathAnimation.Play("death_anim");
         }
 
         public void OnDirectionChanged(Vector2 newDirection)

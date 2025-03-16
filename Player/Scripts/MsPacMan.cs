@@ -8,5 +8,6 @@ namespace Game.Player
         public abstract void Move(Vector2 direction);
         public abstract void Stop();
         public abstract void ResetOrientation();
+        public abstract void PlayDeathAnimation();
     }
 }

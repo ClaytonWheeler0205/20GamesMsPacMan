@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Player/Assets/MsPacManSpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://Game/Scripts/MovementComponentImpl.cs" type="Script" id=2]
@@ -34,11 +34,59 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=7]
 radius = 4.0
 
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "death_anim"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4, 2.7, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 90.0, 180.0, 270.0, 0.0, 90.0, 180.0, 270.0, 0.0, 90.0, 180.0, 270.0 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "reset_values"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+
 [node name="MsPacMan" type="KinematicBody2D" groups=["Player"]]
 collision_layer = 0
 script = ExtResource( 3 )
 _movementComponentPath = NodePath("MovementComponent")
 _spritePath = NodePath("AnimatedSprite")
+_deathAnimationPath = NodePath("DeathAnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.516, 0.444 )
@@ -74,6 +122,12 @@ cast_to = Vector2( 0, 16 )
 [node name="WallDetectorComponent2" type="RayCast2D" parent="MovementComponent"]
 enabled = true
 cast_to = Vector2( 0, 16 )
+
+[node name="DeathAnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 2.0
+anims/RESET = SubResource( 8 )
+anims/death_anim = SubResource( 9 )
+anims/reset_values = SubResource( 10 )
 
 [connection signal="DirectionChanged" from="MovementComponent" to="." method="OnDirectionChanged"]
 [connection signal="MovementStopped" from="MovementComponent" to="." method="OnMovementStopped"]

@@ -32,6 +32,9 @@ namespace Game
         [Export]
         private NodePath _startJinglePath;
         private AudioStreamPlayer _startJingle;
+        [Export]
+        private NodePath _deathJinglePath;
+        private AudioStreamPlayer _deathJingle;
 
 
         public override void _Ready()
@@ -52,6 +55,7 @@ namespace Game
             _levelContainer = GetNode<Node2D>(_levelContainerPath);
             _ghostContainer = GetNode<Node2D>(_ghostContainerPath);
             _startJingle = GetNode<AudioStreamPlayer>(_startJinglePath);
+            _deathJingle = GetNode<AudioStreamPlayer>(_deathJinglePath);
         }
 
         private void CheckNodeReferences()
@@ -76,12 +80,35 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Start Jingle Player is not valid!");
             }
+            if (!_deathJingle.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Death Jingle is not valid!");
+            }
         }
 
         private void SetNodeConnections()
         {
             LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
             _startJingle.Connect("finished", this, nameof(OnStartJingleFinished));
+            PlayerEventBus.Instance.Connect("PlayerHit", this, nameof(OnPlayerHit));
+            _deathJingle.Connect("finished", this, nameof(OnDeathJingleFinished));
+        }
+
+        public async void OnPlayerHit()
+        {
+            _controller.IsControllerActive = false;
+            _player.Stop();
+            StopGhosts();
+            await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+            _player.PlayDeathAnimation();
+            _deathJingle.Play();
+        }
+
+        public void OnDeathJingleFinished()
+        {
+            ResetPlayer();
+            ResetGhosts();
+            _startJingle.Play();
         }
 
         private void SetupPlayer()
@@ -118,7 +145,7 @@ namespace Game
             }
         }
 
-       public void OnStartJingleFinished()
+        public void OnStartJingleFinished()
         {
             _controller.IsControllerActive = true;
             StartGhosts();
