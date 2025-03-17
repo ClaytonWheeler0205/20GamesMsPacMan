@@ -35,6 +35,7 @@ namespace Game
         [Export]
         private NodePath _deathJinglePath;
         private AudioStreamPlayer _deathJingle;
+        private bool _playerDying = false;
 
 
         public override void _Ready()
@@ -96,12 +97,16 @@ namespace Game
 
         public async void OnPlayerHit()
         {
-            _controller.IsControllerActive = false;
-            _player.Stop();
-            StopGhosts();
-            await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
-            _player.PlayDeathAnimation();
-            _deathJingle.Play();
+            if (!_playerDying)
+            {
+                _playerDying = true;
+                _controller.IsControllerActive = false;
+                _player.Stop();
+                StopGhosts();
+                await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+                _player.PlayDeathAnimation();
+                _deathJingle.Play();
+            }
         }
 
         public void OnDeathJingleFinished()
@@ -109,6 +114,7 @@ namespace Game
             ResetPlayer();
             ResetGhosts();
             _startJingle.Play();
+            _playerDying = false;
         }
 
         private void SetupPlayer()
