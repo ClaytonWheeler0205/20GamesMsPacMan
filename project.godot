@@ -20,6 +20,7 @@ ScoreEventBus="*res://Buses/Scenes/ScoreEventBus.tscn"
 LevelEventBus="*res://Buses/Scenes/LevelEventBus.tscn"
 PelletEventBus="*res://Buses/Scenes/PelletEventBus.tscn"
 PlayerEventBus="*res://Buses/Scenes/PlayerEventBus.tscn"
+GhostEventBus="*res://Buses/Scenes/GhostEventBus.tscn"
 
 [display]
 

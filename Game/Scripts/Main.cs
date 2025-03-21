@@ -37,6 +37,20 @@ namespace Game
         private AudioStreamPlayer _deathJingle;
         private bool _playerDying = false;
 
+        private int _ghostPointValue = 200;
+        [Export]
+        private NodePath _200PointsVisualPath;
+        private Sprite _200PointsVisual;
+        [Export]
+        private NodePath _400PointsVisualPath;
+        private Sprite _400PointsVisual;
+        [Export]
+        private NodePath _800PointsVisualPath;
+        private Sprite _800PointsVisual;
+        [Export]
+        private NodePath _1600PointsVisualPath;
+        private Sprite _1600PointsVisual;
+
 
         public override void _Ready()
         {
@@ -57,6 +71,10 @@ namespace Game
             _ghostContainer = GetNode<GhostContainer>(_ghostContainerPath);
             _startJingle = GetNode<AudioStreamPlayer>(_startJinglePath);
             _deathJingle = GetNode<AudioStreamPlayer>(_deathJinglePath);
+            _200PointsVisual = GetNode<Sprite>(_200PointsVisualPath);
+            _400PointsVisual = GetNode<Sprite>(_400PointsVisualPath);
+            _800PointsVisual = GetNode<Sprite>(_800PointsVisualPath);
+            _1600PointsVisual = GetNode<Sprite>(_1600PointsVisualPath);
         }
 
         private void CheckNodeReferences()
@@ -85,6 +103,22 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Death Jingle is not valid!");
             }
+            if (!_200PointsVisual.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 200 Points Visual is not valid!");
+            }
+            if (!_400PointsVisual.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 400 Points Visual is not valid!");
+            }
+            if (!_800PointsVisual.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 800 Points Visual is not valid!");
+            }
+            if (!_1600PointsVisual.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 1600 Points Visual is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -93,6 +127,7 @@ namespace Game
             _startJingle.Connect("finished", this, nameof(OnStartJingleFinished));
             PlayerEventBus.Instance.Connect("PlayerHit", this, nameof(OnPlayerHit));
             _deathJingle.Connect("finished", this, nameof(OnDeathJingleFinished));
+            GhostEventBus.Instance.Connect("GhostEaten", this, nameof(OnGhostEaten));
         }
 
         public async void OnPlayerHit()
@@ -171,6 +206,45 @@ namespace Game
         {
             _player.GlobalPosition = _playerStartPosition;
             _player.ResetOrientation();
+        }
+
+        public async void OnGhostEaten(Ghost ghostEaten)
+        {
+            _player.Visible = false;
+            _player.Pause();
+            _controller.IsControllerActive = false;
+            _ghostContainer.PauseGhosts();
+
+            switch (_ghostPointValue)
+            {
+                case 200:
+                    _200PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
+                    _200PointsVisual.Visible = true;
+                    break;
+                case 400:
+                    _400PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
+                    _400PointsVisual.Visible = true;
+                    break;
+                case 800:
+                    _800PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
+                    _800PointsVisual.Visible = true;
+                    break;
+                case 1600:
+                    _1600PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
+                    _1600PointsVisual.Visible = true;
+                    break;
+            }
+            await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+            _200PointsVisual.Visible = false;
+            _400PointsVisual.Visible = false;
+            _800PointsVisual.Visible = false;
+            _1600PointsVisual.Visible = false;
+            _player.Visible = true;
+            _player.Resume();
+            _controller.IsControllerActive = true;
+            _ghostContainer.ResumeGhosts();
+            ghostEaten.ReturnGhost();
+            _ghostPointValue *= 2;
         }
     }
 }

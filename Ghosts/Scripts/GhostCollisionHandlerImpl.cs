@@ -28,7 +28,7 @@ namespace Game.Ghosts
                 }
                 else if (!Fleeing)
                 {
-                    GD.Print("Ghost Eaten!");
+                    EmitSignal("GhostEaten");
                 }
             }
         }

@@ -119,5 +119,13 @@ namespace Game
             return _currentDirection;
         }
 
+        public override void OverrideDirection(Vector2 newDirection)
+        {
+            _currentDirection = newDirection;
+            ChangeDirection(newDirection);
+            SetWallDetectorPosition(newDirection);
+            EmitSignal("DirectionChanged", _currentDirection);
+        }
+
     }
 }

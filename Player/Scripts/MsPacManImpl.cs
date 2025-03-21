@@ -19,6 +19,8 @@ namespace Game.Player
         private NodePath _deathAnimationPath;
         private AnimationPlayer _deathAnimation;
 
+        private Vector2 _previousDirection = Vector2.Zero;
+
         public override void _Ready()
         {
             SetNodeReferences();
@@ -58,6 +60,18 @@ namespace Game.Player
         public override void Stop()
         {
             _movement.StopMoving();
+        }
+
+        public override void Pause()
+        {
+            _previousDirection = _movement.GetCurrentDirection();
+            _movement.StopMoving();
+        }
+
+        public override void Resume()
+        {
+            _movement.OverrideDirection(_previousDirection);
+            _visual.Play(MOVE_ANIMATION_NAME);
         }
 
         public override void ResetOrientation()

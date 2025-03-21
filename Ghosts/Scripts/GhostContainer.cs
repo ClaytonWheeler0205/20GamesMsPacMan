@@ -11,5 +11,7 @@ namespace Game.Ghosts
         public abstract void StartGhosts();
         public abstract void StopGhosts();
         public abstract void ResetGhosts();
+        public abstract void PauseGhosts();
+        public abstract void ResumeGhosts();
     }
 }

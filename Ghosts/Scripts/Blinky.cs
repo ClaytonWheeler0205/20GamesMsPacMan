@@ -40,5 +40,23 @@ namespace Game.Ghosts
             ChaseStateReference.Player = player;
         }
 
+        public override void ReturnGhost()
+        {
+            Visible = true;
+            GD.Print("Set to return state");
+        }
+
+        public override void PauseGhost()
+        {
+            previousDirection = MovementReference.GetCurrentDirection();
+            StopGhost();
+        }
+
+        public override void ResumeGhost()
+        {
+            MovementReference.OverrideDirection(previousDirection);
+            StateMachineReference.SetIsMachineActive(true);
+        }
+
     }
 }

@@ -5,6 +5,9 @@ namespace Game.Ghosts
 
     public abstract class GhostCollisionHandler : Area2D
     {
+        [Signal]
+        public delegate void GhostEaten();
+
         private bool _vulnerable = false;
         public bool Vulnerable
         {

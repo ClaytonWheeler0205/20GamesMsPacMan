@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Godot;
 
 namespace Game.Player
@@ -7,6 +8,8 @@ namespace Game.Player
     {
         public abstract void Move(Vector2 direction);
         public abstract void Stop();
+        public abstract void Pause();
+        public abstract void Resume();
         public abstract void ResetOrientation();
         public abstract void PlayDeathAnimation();
     }

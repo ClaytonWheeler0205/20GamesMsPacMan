@@ -39,6 +39,7 @@ namespace Game
         public abstract void ChangeDirection(Vector2 newDirection);
         public abstract void StopMoving();
         public abstract Vector2 GetCurrentDirection();
+        public abstract void OverrideDirection(Vector2 newDirection);
 
     }
 }

@@ -55,5 +55,21 @@ namespace Game.Ghosts
                 ghost.ResetGhost();
             }
         }
+
+        public override void PauseGhosts()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.PauseGhost();
+            }
+        }
+
+        public override void ResumeGhosts()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.ResumeGhost();
+            }
+        }
     }
 }

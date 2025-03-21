@@ -1,3 +1,4 @@
+using Game.Bus;
 using Game.Levels;
 using Game.Player;
 using Godot;
@@ -72,6 +73,7 @@ namespace Game.Ghosts
         private GhostCollisionHandler _ghostCollision;
 
         protected Vector2 startPosition;
+        protected Vector2 previousDirection = Vector2.Zero;
 
         public override void _Ready()
         {
@@ -156,6 +158,7 @@ namespace Game.Ghosts
             _frightenedStateReference.Connect("FrightenedFlashStarted", this, nameof(OnFrightenedFlashStarted));
             _frightenedStateReference.Connect("FrightenedStateExited", this, nameof(OnFrightenedStateExited));
             _frightenedFlashTimer.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
+            _ghostCollision.Connect("GhostEaten", this, nameof(OnGhostEaten));
         }
 
         public abstract void StartGhost();
@@ -163,6 +166,9 @@ namespace Game.Ghosts
         public abstract void ResetGhost();
         public abstract void SetLevelReference(Level level);
         public abstract void SetPlayerReference(MsPacMan player);
+        public abstract void ReturnGhost();
+        public abstract void PauseGhost();
+        public abstract void ResumeGhost();
 
         public void OnDirectionChanged(Vector2 newDirection)
         {
@@ -238,6 +244,12 @@ namespace Game.Ghosts
             _eyes.Visible = true;
             _bodyVisual.Play("move");
             _ghostCollision.Vulnerable = false;
+        }
+
+        public void OnGhostEaten()
+        {
+            Visible = false;
+            GhostEventBus.Instance.EmitSignal("GhostEaten", this);
         }
 
     }
