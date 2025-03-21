@@ -1,17 +1,18 @@
 using Game.Levels;
-using Util.ExtensionMethods;
 using Godot;
+using Util.ExtensionMethods;
 
 namespace Game.Ghosts
 {
-    public abstract class FrightenedState : GhostState
+
+    public abstract class ReturnState : GhostState
     {
         [Signal]
-        public delegate void FrightenedStateEntered();
+        public delegate void ReturnStateEntered();
         [Signal]
-        public delegate void FrightenedFlashStarted();
+        public delegate void GhostHouseEntered();
         [Signal]
-        public delegate void FrightenedStateExited();
+        public delegate void ReturnStateExited();
 
         private Level _currentLevel;
         public Level CurrentLevel
@@ -37,7 +38,11 @@ namespace Game.Ghosts
                 }
             }
         }
-
-        public abstract void TransitionToReturnState();
+        public Vector2 _ghostHouseTilePosition;
+        public Vector2 GhostHouseTilePosition
+        {
+            get { return _ghostHouseTilePosition;}
+            set { _ghostHouseTilePosition = value; }
+        }
     }
 }

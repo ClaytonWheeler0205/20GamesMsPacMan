@@ -155,5 +155,10 @@ namespace Game.Ghosts
             _frightenedFlashTimer.Stop();
             EmitSignal("FrightenedStateExited");
         }
+
+        public override void TransitionToReturnState()
+        {
+            EmitSignal("Transitioned", this, "ReturnState");
+        }
     }
 }

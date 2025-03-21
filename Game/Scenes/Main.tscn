@@ -25,6 +25,7 @@ _200PointsVisualPath = NodePath("PointsContainer/200Points")
 _400PointsVisualPath = NodePath("PointsContainer/400Points")
 _800PointsVisualPath = NodePath("PointsContainer/800Points")
 _1600PointsVisualPath = NodePath("PointsContainer/1600Points")
+_frightenedTimerPath = NodePath("GhostFrightenedTimer")
 
 [node name="LevelContainer" type="Node2D" parent="."]
 
@@ -72,3 +73,7 @@ stream = ExtResource( 6 )
 
 [node name="DeathJinglePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
+
+[node name="GhostFrightenedTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true

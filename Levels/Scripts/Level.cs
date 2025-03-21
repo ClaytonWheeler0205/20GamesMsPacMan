@@ -37,6 +37,13 @@ namespace Game.Levels
             get { return _blinkyHomeTilePosition;}
         }
 
+        [Export]
+        private Vector2 _ghostHousePosition;
+        public Vector2 GhostHousePosition
+        {
+            get { return _ghostHousePosition;}
+        }
+
         public override void _Ready()
         {
             SetNodeReferences();

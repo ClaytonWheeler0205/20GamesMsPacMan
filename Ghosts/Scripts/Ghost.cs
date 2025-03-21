@@ -46,6 +46,13 @@ namespace Game.Ghosts
         {
             get { return _frightenedStateReference; }
         }
+        [Export]
+        private NodePath _returnStatePath;
+        private ReturnState _returnStateReference;
+        protected ReturnState ReturnStateReference
+        {
+            get { return _returnStateReference; }
+        }
 
         [Export]
         private NodePath _eyesPath;
@@ -71,6 +78,10 @@ namespace Game.Ghosts
         [Export]
         private NodePath _ghostCollisionPath;
         private GhostCollisionHandler _ghostCollision;
+        protected GhostCollisionHandler GhostCollision
+        {
+            get { return _ghostCollision; }
+        }
 
         protected Vector2 startPosition;
         protected Vector2 previousDirection = Vector2.Zero;
@@ -84,21 +95,26 @@ namespace Game.Ghosts
             _scatterStateReference.Movement = _movementReference;
             _chaseStateReference.Movement = _movementReference;
             _frightenedStateReference.Movement = _movementReference;
+            _returnStateReference.Movement = _movementReference;
             startPosition = GlobalPosition;
         }
 
         private void SetNodeReferences()
         {
             _movementReference = GetNode<MovementComponent>(_movementPath);
+
             _stateMachineReference = GetNode<GhostStateMachine>(_stateMachinePath);
             _scatterStateReference = GetNode<ScatterState>(_scatterStatePath);
             _chaseStateReference = GetNode<ChaseState>(_chaseStatePath);
             _frightenedStateReference = GetNode<FrightenedState>(_frightenedStatePath);
+            _returnStateReference = GetNode<ReturnState>(_returnStatePath);
+
             _eyes = GetNode<AnimatedSprite>(_eyesPath);
             _bodyVisual = GetNode<AnimatedSprite>(_bodyVisualPath);
             _frightenedBodyVisual = GetNode<AnimatedSprite>(_frightenedBodyVisualPath);
             _frightenedFlashVisual = GetNode<AnimatedSprite>(_frightenedFlashVisualPath);
             _frightenedFlashTimer = GetNode<Timer>(_frightenedFlashTimerPath);
+
             _ghostCollision = GetNode<GhostCollisionHandler>(_ghostCollisionPath);
         }
 
@@ -123,6 +139,10 @@ namespace Game.Ghosts
             if (!_frightenedStateReference.IsValid())
             {
                 GD.PrintErr("ERROR: Ghost Frightened State Reference is not valid!");
+            }
+            if (!_returnStateReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Ghost Return State Reference is not valid!");
             }
             if (!_eyes.IsValid())
             {
@@ -159,6 +179,9 @@ namespace Game.Ghosts
             _frightenedStateReference.Connect("FrightenedStateExited", this, nameof(OnFrightenedStateExited));
             _frightenedFlashTimer.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
             _ghostCollision.Connect("GhostEaten", this, nameof(OnGhostEaten));
+            _returnStateReference.Connect("ReturnStateEntered", this, nameof(OnReturnStateEntered));
+            _returnStateReference.Connect("GhostHouseEntered", this, nameof(OnGhostHouseEntered));
+            _returnStateReference.Connect("ReturnStateExited", this, nameof(OnReturnStateExited));
         }
 
         public abstract void StartGhost();
@@ -250,6 +273,26 @@ namespace Game.Ghosts
         {
             Visible = false;
             GhostEventBus.Instance.EmitSignal("GhostEaten", this);
+        }
+
+        public void OnReturnStateEntered()
+        {
+            _bodyVisual.Stop();
+            _bodyVisual.Visible = false;
+            _ghostCollision.Fleeing = true;
+        }
+
+        public void OnGhostHouseEntered()
+        {
+            _bodyVisual.Visible = true;
+            _bodyVisual.Play("move");
+            _ghostCollision.Fleeing = false;
+        }
+
+        public void OnReturnStateExited()
+        {
+            _bodyVisual.Visible = true;
+            _ghostCollision.Fleeing = false;
         }
 
     }

@@ -32,7 +32,9 @@ namespace Game.Ghosts
             ScatterStateReference.CurrentLevel = level;
             ChaseStateReference.CurrentLevel = level;
             FrightenedStateReference.CurrentLevel = level;
+            ReturnStateReference.CurrentLevel = level;
             ScatterStateReference.HomeTilePosition = level.BlinkyHomeTilePosition;
+            ReturnStateReference.GhostHouseTilePosition = level.GhostHousePosition;
         }
 
         public override void SetPlayerReference(MsPacMan player)
@@ -43,19 +45,25 @@ namespace Game.Ghosts
         public override void ReturnGhost()
         {
             Visible = true;
-            GD.Print("Set to return state");
+            FrightenedStateReference.TransitionToReturnState();
         }
 
         public override void PauseGhost()
         {
-            previousDirection = MovementReference.GetCurrentDirection();
-            StopGhost();
+            if (!GhostCollision.Fleeing)
+            {
+                previousDirection = MovementReference.GetCurrentDirection();
+                StopGhost();
+            }
         }
 
         public override void ResumeGhost()
         {
-            MovementReference.OverrideDirection(previousDirection);
-            StateMachineReference.SetIsMachineActive(true);
+            if (!GhostCollision.Fleeing)
+            {
+                MovementReference.OverrideDirection(previousDirection);
+                StateMachineReference.SetIsMachineActive(true);
+            }
         }
 
     }

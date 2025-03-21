@@ -90,10 +90,19 @@ namespace Game.Ghosts
             else
             {
                 _currentState.ExitState();
-                if (newStateName == "PreviousState")
+                if (newStateName.ToLower() == "previousstate")
                 {
                     _currentState = _previousState;
                     _currentState.EnterState();
+                }
+                else if (newStateName.ToLower() == "returnstate")
+                {
+                    GhostState returnState = _states[newStateName.ToLower()];
+                    if (returnState.IsValid())
+                    {
+                        _currentState = returnState;
+                        _currentState.EnterState();
+                    }
                 }
                 else
                 {

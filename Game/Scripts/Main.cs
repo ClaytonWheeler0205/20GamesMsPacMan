@@ -50,6 +50,11 @@ namespace Game
         [Export]
         private NodePath _1600PointsVisualPath;
         private Sprite _1600PointsVisual;
+        [Export]
+        private NodePath _frightenedTimerPath;
+        private Timer _frightenedTimerReference;
+        private float _frightenedTimerDuration = 10.0f;
+        private int _ghostsEaten = 0;
 
 
         public override void _Ready()
@@ -75,6 +80,7 @@ namespace Game
             _400PointsVisual = GetNode<Sprite>(_400PointsVisualPath);
             _800PointsVisual = GetNode<Sprite>(_800PointsVisualPath);
             _1600PointsVisual = GetNode<Sprite>(_1600PointsVisualPath);
+            _frightenedTimerReference = GetNode<Timer>(_frightenedTimerPath);
         }
 
         private void CheckNodeReferences()
@@ -119,6 +125,10 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main 1600 Points Visual is not valid!");
             }
+            if (!_frightenedTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Frightened Timer Reference is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -128,6 +138,8 @@ namespace Game
             PlayerEventBus.Instance.Connect("PlayerHit", this, nameof(OnPlayerHit));
             _deathJingle.Connect("finished", this, nameof(OnDeathJingleFinished));
             GhostEventBus.Instance.Connect("GhostEaten", this, nameof(OnGhostEaten));
+            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelledCollected));
+            _frightenedTimerReference.Connect("timeout", this, nameof(OnFrightenedTimerTimeout));
         }
 
         public async void OnPlayerHit()
@@ -229,11 +241,12 @@ namespace Game
                     _800PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
                     _800PointsVisual.Visible = true;
                     break;
-                case 1600:
+                default:
                     _1600PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
                     _1600PointsVisual.Visible = true;
                     break;
             }
+            ScoreEventBus.Instance.EmitSignal("AwardPoints", _ghostPointValue);
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             _200PointsVisual.Visible = false;
             _400PointsVisual.Visible = false;
@@ -245,6 +258,22 @@ namespace Game
             _ghostContainer.ResumeGhosts();
             ghostEaten.ReturnGhost();
             _ghostPointValue *= 2;
+            _ghostsEaten++;
+            if (_ghostsEaten == _ghostContainer.GetChildCount())
+            {
+                _frightenedTimerReference.Stop();
+                _ghostPointValue = 200;
+            }
+        }
+
+        public void OnPowerPelledCollected()
+        {
+            _frightenedTimerReference.Start(_frightenedTimerDuration);
+        }
+
+        public void OnFrightenedTimerTimeout()
+        {
+            _ghostPointValue = 200;
         }
     }
 }
