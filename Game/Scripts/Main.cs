@@ -27,7 +27,7 @@ namespace Game
 
         [Export]
         private NodePath _ghostContainerPath;
-        private Node2D _ghostContainer;
+        private GhostContainer _ghostContainer;
 
         [Export]
         private NodePath _startJinglePath;
@@ -45,7 +45,7 @@ namespace Game
             SetNodeConnections();
             SetupPlayer();
             SetLevel(_currentLevelNumber);
-            SetupGhosts();
+            _ghostContainer.SetupGhosts(_currentLevel, _player);
             _startJingle.Play();
         }
 
@@ -54,7 +54,7 @@ namespace Game
             _player = GetNode<MsPacMan>(_msPacManPath);
             _controller = GetNode<PlayerController>(_playerControllerPath);
             _levelContainer = GetNode<Node2D>(_levelContainerPath);
-            _ghostContainer = GetNode<Node2D>(_ghostContainerPath);
+            _ghostContainer = GetNode<GhostContainer>(_ghostContainerPath);
             _startJingle = GetNode<AudioStreamPlayer>(_startJinglePath);
             _deathJingle = GetNode<AudioStreamPlayer>(_deathJinglePath);
         }
@@ -102,7 +102,7 @@ namespace Game
                 _playerDying = true;
                 _controller.IsControllerActive = false;
                 _player.Stop();
-                StopGhosts();
+                _ghostContainer.StopGhosts();
                 await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
                 _player.PlayDeathAnimation();
                 _deathJingle.Play();
@@ -112,7 +112,7 @@ namespace Game
         public void OnDeathJingleFinished()
         {
             ResetPlayer();
-            ResetGhosts();
+            _ghostContainer.ResetGhosts();
             _startJingle.Play();
             _playerDying = false;
         }
@@ -139,55 +139,21 @@ namespace Game
             }
         }
 
-        private void SetupGhosts()
-        {
-            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
-            {
-                if (_ghostContainer.GetChild(i) is Ghost ghost)
-                {
-                    ghost.SetLevelReference(_currentLevel);
-                    ghost.SetPlayerReference(_player);
-                }
-            }
-        }
-
         public void OnStartJingleFinished()
         {
             _controller.IsControllerActive = true;
-            StartGhosts();
-        }
-
-        private void StartGhosts()
-        {
-            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
-            {
-                if (_ghostContainer.GetChild(i) is Ghost ghost)
-                {
-                    ghost.StartGhost();
-                }
-            }
+            _ghostContainer.StartGhosts();
         }
 
         public async void OnLevelCleared()
         {
             _controller.IsControllerActive = false;
             _player.Stop();
-            StopGhosts();
+            _ghostContainer.StopGhosts();
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
             {
                 _currentLevel.PlayLevelFlash();
-            }
-        }
-
-        private void StopGhosts()
-        {
-            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
-            {
-                if (_ghostContainer.GetChild(i) is Ghost ghost)
-                {
-                    ghost.StopGhost();
-                }
             }
         }
 
@@ -196,7 +162,7 @@ namespace Game
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             _currentLevelNumber++;
             ResetPlayer();
-            ResetGhosts();
+            _ghostContainer.ResetGhosts();
             SetLevel(_currentLevelNumber);
             _startJingle.Play();
         }
@@ -206,17 +172,5 @@ namespace Game
             _player.GlobalPosition = _playerStartPosition;
             _player.ResetOrientation();
         }
-
-        private void ResetGhosts()
-        {
-            for (int i = 0; i < _ghostContainer.GetChildCount(); i++)
-            {
-                if (_ghostContainer.GetChild(i) is Ghost ghost)
-                {
-                    ghost.ResetGhost();
-                }
-            }
-        }
-
     }
 }
