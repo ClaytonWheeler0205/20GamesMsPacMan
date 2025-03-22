@@ -197,6 +197,8 @@ namespace Game
             _controller.IsControllerActive = false;
             _player.Stop();
             _ghostContainer.StopGhosts();
+            _frightenedTimerReference.Stop();
+            _ghostPointValue = 200;
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
             {
