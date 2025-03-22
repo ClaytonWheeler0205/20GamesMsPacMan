@@ -6,12 +6,6 @@ namespace Game.Ghosts
 {
     public abstract class FrightenedState : GhostState
     {
-        [Signal]
-        public delegate void FrightenedStateEntered();
-        [Signal]
-        public delegate void FrightenedFlashStarted();
-        [Signal]
-        public delegate void FrightenedStateExited();
 
         private Level _currentLevel;
         public Level CurrentLevel
@@ -37,7 +31,17 @@ namespace Game.Ghosts
                 }
             }
         }
-
-        public abstract void TransitionToReturnState();
+        private GhostCollisionHandler _ghostCollision;
+        public GhostCollisionHandler GhostCollision
+        {
+            get { return _ghostCollision; }
+            set
+            {
+                if (value.IsValid())
+                {
+                    _ghostCollision = value;
+                }
+            }
+        }
     }
 }

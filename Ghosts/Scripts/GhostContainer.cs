@@ -13,5 +13,8 @@ namespace Game.Ghosts
         public abstract void ResetGhosts();
         public abstract void PauseGhosts();
         public abstract void ResumeGhosts();
+        public abstract void SetGhostsVulnerability();
+        public abstract void SetGhostsInvulnerable();
+        public abstract void SetGhostsFlash();
     }
 }

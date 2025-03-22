@@ -12,16 +12,23 @@ namespace Game.Ghosts
 
         public override void UpdateState(float delta)
         {
-            if (CurrentLevel.IsValid())
+            if (GhostCollision.Vulnerable)
             {
-                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                EmitSignal("Transitioned", this, "FrightenedState");
+            }
+            else
+            {
+                if (CurrentLevel.IsValid())
                 {
-                    _inIntersectionTile = true;
-                    Movement.ChangeDirection(FindShortestPathToPlayer());
-                }
-                if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
-                {
-                    _inIntersectionTile = false;
+                    if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                    {
+                        _inIntersectionTile = true;
+                        Movement.ChangeDirection(FindShortestPathToPlayer());
+                    }
+                    if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
+                    {
+                        _inIntersectionTile = false;
+                    }
                 }
             }
         }

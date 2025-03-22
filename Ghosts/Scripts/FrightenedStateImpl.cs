@@ -1,4 +1,3 @@
-using Game.Bus;
 using Godot;
 using Util;
 using Util.ExtensionMethods;
@@ -11,86 +10,34 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
 
-        [Export]
-        private NodePath _frightenedTimerPath;
-        [Export]
-        private NodePath _frightenedFlashTimerPath;
-        private Timer _frightenedTimer;
-        private Timer _frightenedFlashTimer;
-        private float _frightenedTime = 7.0f;
-        private float _frightenedFlashTime = 3.0f;
-
-        public override void _Ready()
-        {
-            SetNodeReferences();
-            CheckNodeReferences();
-            SetNodeConnections();
-        }
-
-        private void SetNodeReferences()
-        {
-            _frightenedTimer = GetNode<Timer>(_frightenedTimerPath);
-            _frightenedFlashTimer = GetNode<Timer>(_frightenedFlashTimerPath);
-        }
-
-        private void CheckNodeReferences()
-        {
-            if (!_frightenedTimer.IsValid())
-            {
-                GD.PrintErr("ERROR: Ghost Frightened Timer is not valid!");
-            }
-            if (!_frightenedFlashTimer.IsValid())
-            {
-                GD.PrintErr("ERROR: Ghost Frightened Flash Timer is not valid!");
-            }
-        }
-
-        private void SetNodeConnections()
-        {
-            _frightenedTimer.Connect("timeout", this, nameof(OnFrightenedTimerTimeout));
-            _frightenedFlashTimer.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
-            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
-        }
-
-        public void OnFrightenedTimerTimeout()
-        {
-            _frightenedFlashTimer.Start(_frightenedFlashTime);
-            EmitSignal("FrightenedFlashStarted");
-        }
-
-        public void OnFrightenedFlashTimerTimeout()
-        {
-            EmitSignal("Transitioned", this, "PreviousState");
-        }
-
-        public void OnPowerPelletCollected()
-        {
-            if (!_frightenedTimer.IsStopped() || !_frightenedFlashTimer.IsStopped())
-            {
-                EmitSignal("FrightenedStateEntered");
-                _frightenedTimer.Start(_frightenedTime);
-                _frightenedFlashTimer.Stop();
-            }
-        }
-
         public override void EnterState()
         {
-            EmitSignal("FrightenedStateEntered");
-            _frightenedTimer.Start(_frightenedTime);
+
         }
 
         public override void UpdateState(float delta)
         {
-            if (CurrentLevel.IsValid())
+            if (GhostCollision.Fleeing)
             {
-                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                EmitSignal("Transitioned", this, "ReturnState");
+            }
+            else if (!GhostCollision.Vulnerable)
+            {
+                EmitSignal("Transitioned", this, "PreviousState");
+            }
+            else
+            {
+                if (CurrentLevel.IsValid())
                 {
-                    _inIntersectionTile = true;
-                    Movement.ChangeDirection(GetRandomDirection());
-                }
-                if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
-                {
-                    _inIntersectionTile = false;
+                    if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                    {
+                        _inIntersectionTile = true;
+                        Movement.ChangeDirection(GetRandomDirection());
+                    }
+                    if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
+                    {
+                        _inIntersectionTile = false;
+                    }
                 }
             }
         }
@@ -151,14 +98,7 @@ namespace Game.Ghosts
 
         public override void ExitState()
         {
-            _frightenedTimer.Stop();
-            _frightenedFlashTimer.Stop();
-            EmitSignal("FrightenedStateExited");
-        }
-
-        public override void TransitionToReturnState()
-        {
-            EmitSignal("Transitioned", this, "ReturnState");
+            GhostCollision.Vulnerable = false;
         }
     }
 }

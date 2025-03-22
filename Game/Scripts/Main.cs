@@ -53,8 +53,16 @@ namespace Game
         [Export]
         private NodePath _frightenedTimerPath;
         private Timer _frightenedTimerReference;
-        private float _frightenedTimerDuration = 10.0f;
+        private float _frightenedTimerDuration = 7.0f;
+        [Export]
+        private NodePath _frightenedFlashTimerPath;
+        private Timer _frightenedFlashTimerReference;
+        private float _frightenedFlashTimerDuration = 3.0f;
         private int _ghostsEaten = 0;
+        [Export]
+        private NodePath _frightenedFlashingTimerPath;
+        private Timer _frightenedFlashingTimerReference;
+        private float _frightenedFlashingTimerDuration = 0.25f;
 
 
         public override void _Ready()
@@ -81,6 +89,8 @@ namespace Game
             _800PointsVisual = GetNode<Sprite>(_800PointsVisualPath);
             _1600PointsVisual = GetNode<Sprite>(_1600PointsVisualPath);
             _frightenedTimerReference = GetNode<Timer>(_frightenedTimerPath);
+            _frightenedFlashTimerReference = GetNode<Timer>(_frightenedFlashTimerPath);
+            _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
         }
 
         private void CheckNodeReferences()
@@ -129,6 +139,14 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Frightened Timer Reference is not valid!");
             }
+            if (!_frightenedFlashTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Frightened Flash Timer Reference is not valid!");
+            }
+            if (!_frightenedFlashingTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Frightened Flashing Timer is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -140,6 +158,8 @@ namespace Game
             GhostEventBus.Instance.Connect("GhostEaten", this, nameof(OnGhostEaten));
             PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelledCollected));
             _frightenedTimerReference.Connect("timeout", this, nameof(OnFrightenedTimerTimeout));
+            _frightenedFlashTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
+            _frightenedFlashingTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashingTimerTimeout));
         }
 
         public async void OnPlayerHit()
@@ -198,6 +218,8 @@ namespace Game
             _player.Stop();
             _ghostContainer.StopGhosts();
             _frightenedTimerReference.Stop();
+            _frightenedFlashTimerReference.Stop();
+            _frightenedFlashingTimerReference.Stop();
             _ghostPointValue = 200;
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
@@ -258,7 +280,8 @@ namespace Game
             _player.Resume();
             _controller.IsControllerActive = true;
             _ghostContainer.ResumeGhosts();
-            ghostEaten.ReturnGhost();
+            ghostEaten.Visible = true;
+            ghostEaten.SetGhostFleeing();
             _ghostPointValue *= 2;
             _ghostsEaten++;
             if (_ghostsEaten == _ghostContainer.GetChildCount())
@@ -271,11 +294,27 @@ namespace Game
         public void OnPowerPelledCollected()
         {
             _frightenedTimerReference.Start(_frightenedTimerDuration);
+            _frightenedFlashTimerReference.Stop();
+            _frightenedFlashingTimerReference.Stop();
+            _ghostContainer.SetGhostsVulnerability();
         }
 
         public void OnFrightenedTimerTimeout()
         {
+            _frightenedFlashTimerReference.Start(_frightenedFlashTimerDuration);
+            _frightenedFlashingTimerReference.Start(_frightenedFlashingTimerDuration);
+        }
+
+        public void OnFrightenedFlashTimerTimeout()
+        {
+            _frightenedFlashingTimerReference.Stop();
+            _ghostContainer.SetGhostsInvulnerable();
             _ghostPointValue = 200;
+        }
+
+        public void OnFrightenedFlashingTimerTimeout()
+        {
+            _ghostContainer.SetGhostsFlash();
         }
     }
 }

@@ -37,5 +37,17 @@ namespace Game.Ghosts
             get { return _homeTilePosition; }
             set { _homeTilePosition = value; }
         }
+        private GhostCollisionHandler _ghostCollision;
+        public GhostCollisionHandler GhostCollision
+        {
+            get { return _ghostCollision; }
+            set
+            {
+                if (value.IsValid())
+                {
+                    _ghostCollision = value;
+                }
+            }
+        }
     }
 }

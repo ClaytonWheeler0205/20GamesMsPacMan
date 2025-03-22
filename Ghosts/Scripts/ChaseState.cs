@@ -45,6 +45,18 @@ namespace Game.Ghosts
                 }
             }
         }
+        private GhostCollisionHandler _ghostCollision;
+        public GhostCollisionHandler GhostCollision
+        {
+            get { return _ghostCollision; }
+            set
+            {
+                if (value.IsValid())
+                {
+                    _ghostCollision = value;
+                }
+            }
+        }
 
         [Export]
         private NodePath _chaseTimerPath;
@@ -77,16 +89,10 @@ namespace Game.Ghosts
 
         private void SetNodeConnections()
         {
-            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
             LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
             _chaseTimer.Connect("timeout", this, nameof(OnChaseTimerTimeout));
         }
 
-        public void OnPowerPelletCollected()
-        {
-            _chaseTimer.Paused = true;
-            EmitSignal("Transitioned", this, "FrightenedState");
-        }
 
         public void OnLevelCleared()
         {

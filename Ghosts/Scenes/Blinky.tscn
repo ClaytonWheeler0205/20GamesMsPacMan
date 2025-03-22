@@ -106,7 +106,6 @@ _eyesPath = NodePath("Visuals/Eyes")
 _bodyVisualPath = NodePath("Visuals/Body")
 _frightenedBodyVisualPath = NodePath("Visuals/FrightenedBody")
 _frightenedFlashVisualPath = NodePath("Visuals/FrightenedFlashBody")
-_frightenedFlashTimerPath = NodePath("Visuals/FrightenedFlashBody/FrightenedFlashTimer")
 _ghostCollisionPath = NodePath("HitboxComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -132,9 +131,6 @@ animation = "frightened_move"
 visible = false
 frames = SubResource( 12 )
 animation = "frightened_flash_move"
-
-[node name="FrightenedFlashTimer" type="Timer" parent="Visuals/FrightenedFlashBody"]
-wait_time = 0.25
 
 [node name="HitboxComponent" type="Area2D" parent="."]
 collision_layer = 8
@@ -185,15 +181,6 @@ one_shot = true
 
 [node name="FrightenedState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 12 )
-_frightenedTimerPath = NodePath("FrightenedTimer")
-_frightenedFlashTimerPath = NodePath("FrightenedFlashTimer")
-
-[node name="FrightenedTimer" type="Timer" parent="GhostStateMachine/FrightenedState"]
-wait_time = 10.0
-one_shot = true
-
-[node name="FrightenedFlashTimer" type="Timer" parent="GhostStateMachine/FrightenedState"]
-one_shot = true
 
 [node name="ReturnState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 15 )

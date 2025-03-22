@@ -36,15 +36,8 @@ public class ScatterStateImpl : ScatterState
 
     private void SetNodeConnections()
     {
-        PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
         LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
         _scatterTimer.Connect("timeout", this, nameof(OnTimerTimeout));
-    }
-
-    public void OnPowerPelletCollected()
-    {
-        _scatterTimer.Paused = true;
-        EmitSignal("Transitioned", this, "FrightenedState");
     }
 
     public void OnLevelCleared()
@@ -72,16 +65,23 @@ public class ScatterStateImpl : ScatterState
 
     public override void UpdateState(float delta)
     {
-        if (CurrentLevel.IsValid())
+        if (GhostCollision.Vulnerable)
         {
-            if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+            EmitSignal("Transitioned", this, "FrightenedState");
+        }
+        else
+        {
+            if (CurrentLevel.IsValid())
             {
-                _inIntersectionTile = true;
-                Movement.ChangeDirection(FindShortestPathToHome());
-            }
-            if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
-            {
-                _inIntersectionTile = false;
+                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                {
+                    _inIntersectionTile = true;
+                    Movement.ChangeDirection(FindShortestPathToHome());
+                }
+                if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
+                {
+                    _inIntersectionTile = false;
+                }
             }
         }
     }

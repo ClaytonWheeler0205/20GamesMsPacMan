@@ -15,6 +15,7 @@ namespace Game.Ghosts
 
         public override void ResetGhost()
         {
+            base.ResetGhost();
             GlobalPosition = startPosition;
             Eyes.Play("look_left");
             StateMachineReference.ResetMachine();

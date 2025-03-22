@@ -71,5 +71,30 @@ namespace Game.Ghosts
                 ghost.ResumeGhost();
             }
         }
+
+        public override void SetGhostsVulnerability()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.SetGhostVulnerability();
+            }
+        }
+
+        public override void SetGhostsInvulnerable()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.SetGhostInvulnerable();
+            }
+        }
+
+        public override void SetGhostsFlash()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.SetGhostFlash();
+            }
+        }
+
     }
 }
