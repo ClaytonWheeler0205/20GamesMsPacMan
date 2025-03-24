@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Ghosts/Scenes/Blinky.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Scenes/MsPacMan.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Ghosts/Assets/1600Points.png" type="Texture" id=10]
 [ext_resource path="res://Ghosts/Assets/400Points.png" type="Texture" id=11]
 [ext_resource path="res://Ghosts/Assets/800Points.png" type="Texture" id=12]
+[ext_resource path="res://Ghosts/Scenes/Pinky.tscn" type="PackedScene" id=14]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -41,6 +42,9 @@ script = ExtResource( 8 )
 
 [node name="Blinky" parent="GhostContainer" instance=ExtResource( 1 )]
 position = Vector2( 112, 92 )
+
+[node name="Pinky" parent="GhostContainer" instance=ExtResource( 14 )]
+position = Vector2( 112, 115 )
 
 [node name="MsPacMan" parent="." instance=ExtResource( 2 )]
 position = Vector2( 112, 187 )

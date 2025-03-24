@@ -1,5 +1,7 @@
 using Game.Levels;
 using Game.Player;
+using Godot;
+using Util.ExtensionMethods;
 
 namespace Game.Ghosts
 {
@@ -17,6 +19,8 @@ namespace Game.Ghosts
             GhostCollision.Vulnerable = false;
             GhostCollision.Fleeing = false;
             ReturnGhostVisuals();
+            GlobalPosition = startPosition;
+            StateMachineReference.ResetMachine();
         }
 
         public override void SetPlayerReference(MsPacMan player)

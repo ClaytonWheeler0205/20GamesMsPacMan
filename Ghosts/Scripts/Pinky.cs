@@ -1,28 +1,26 @@
 using Game.Levels;
 using Godot;
+using System;
 
 namespace Game.Ghosts
 {
 
-    public class Blinky : GhostImpl
+    public class Pinky : IdleGhost
     {
-
         public override void StartGhost()
         {
-            MovementReference.ChangeDirection(Vector2.Left);
-            StateMachineReference.SetIsMachineActive(true);
+            StateMachineReference.SetIsMachineActive(false);
         }
 
         public override void ResetGhost()
         {
             base.ResetGhost();
-            Eyes.Play("look_left");
+            Eyes.Play("look_down");
         }
 
         public override void SetLevelReference(Level level)
         {
             base.SetLevelReference(level);
-            ScatterStateReference.HomeTilePosition = level.BlinkyHomeTilePosition;
         }
     }
 }
