@@ -36,6 +36,12 @@ namespace Game.Levels
         {
             get { return _blinkyHomeTilePosition;}
         }
+        [Export]
+        private Vector2 _pinkyHomeTilePosition;
+        public Vector2 PinkyHomeTilePosition
+        {
+            get { return _pinkyHomeTilePosition;}
+        }
 
         [Export]
         private Vector2 _ghostHousePosition;

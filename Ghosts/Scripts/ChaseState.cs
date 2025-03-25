@@ -119,6 +119,7 @@ namespace Game.Ghosts
 
         public override void ExitState()
         {
+            _chaseTimer.Stop();
             DirectionReverser.ReverseDirection(_movement);
         }
     }

@@ -9,7 +9,7 @@ namespace Game.Ghosts
     {
         public override void StartGhost()
         {
-            StateMachineReference.SetIsMachineActive(false);
+            StateMachineReference.SetIsMachineActive(true);
         }
 
         public override void ResetGhost()
@@ -21,6 +21,7 @@ namespace Game.Ghosts
         public override void SetLevelReference(Level level)
         {
             base.SetLevelReference(level);
+            ScatterStateReference.HomeTilePosition = level.PinkyHomeTilePosition;
         }
     }
 }

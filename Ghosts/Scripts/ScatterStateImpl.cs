@@ -157,6 +157,7 @@ public class ScatterStateImpl : ScatterState
 
     public override void ExitState()
     {
+        _scatterTimer.Stop();
         DirectionReverser.ReverseDirection(Movement);
         //_inIntersectionTile = false; <- uncomment this is you notice any weird behavior in exiting states
     }

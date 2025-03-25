@@ -78,7 +78,7 @@ namespace Game.Ghosts
         {
             _currentState.ExitState();
             _currentState = _initialState;
-            _currentState.EnterState();
+            //_currentState.EnterState(); Unecessary line since start ghost implicitly calls to enter the initial state
         }
 
         public void OnStateTransitioned(GhostState currentState, string newStateName)

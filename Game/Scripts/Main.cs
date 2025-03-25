@@ -210,6 +210,7 @@ namespace Game
         {
             _controller.IsControllerActive = true;
             _ghostContainer.StartGhosts();
+            GhostEventBus.Instance.EmitSignal("PinkyReleased");
         }
 
         public async void OnLevelCleared()

@@ -472,6 +472,7 @@ _levelFlashPath = NodePath("LevelFlash")
 _levelFlashPlayerPath = NodePath("LevelFlashPlayer")
 _pelletsPath = NodePath("Pellets")
 _blinkyHomeTilePosition = Vector2( 27, -3 )
+_pinkyHomeTilePosition = Vector2( 0, -3 )
 _ghostHousePosition = Vector2( 13.5, 11 )
 
 [node name="LevelFlash" type="TileMap" parent="."]
