@@ -12,5 +12,6 @@ namespace Game.Player
         public abstract void Resume();
         public abstract void ResetOrientation();
         public abstract void PlayDeathAnimation();
+        public abstract Vector2 GetPlayerDirection();
     }
 }

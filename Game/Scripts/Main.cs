@@ -251,6 +251,9 @@ namespace Game
             _player.Pause();
             _controller.IsControllerActive = false;
             _ghostContainer.PauseGhosts();
+            _frightenedTimerReference.Paused = true;
+            _frightenedFlashTimerReference.Paused = true;
+            _frightenedFlashingTimerReference.Paused = true;
 
             switch (_ghostPointValue)
             {
@@ -281,6 +284,9 @@ namespace Game
             _player.Resume();
             _controller.IsControllerActive = true;
             _ghostContainer.ResumeGhosts();
+            _frightenedTimerReference.Paused = false;
+            _frightenedFlashTimerReference.Paused = false;
+            _frightenedFlashingTimerReference.Paused = false;
             ghostEaten.Visible = true;
             ghostEaten.SetGhostFleeing();
             _ghostPointValue *= 2;

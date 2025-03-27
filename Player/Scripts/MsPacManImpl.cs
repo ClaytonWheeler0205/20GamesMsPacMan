@@ -122,5 +122,11 @@ namespace Game.Player
         {
             _visual.Stop();
         }
+
+        public override Vector2 GetPlayerDirection()
+        {
+            return _movement.GetCurrentDirection();
+        }
+
     }
 }

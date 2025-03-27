@@ -60,6 +60,7 @@ public class ScatterStateImpl : ScatterState
         else
         {
             _scatterTimer.Paused = false;
+            _scatterTimer.Start();
         }
     }
 
@@ -67,6 +68,7 @@ public class ScatterStateImpl : ScatterState
     {
         if (GhostCollision.Vulnerable)
         {
+            _scatterTimer.Paused = true;
             EmitSignal("Transitioned", this, "FrightenedState");
         }
         else

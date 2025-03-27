@@ -114,6 +114,16 @@ namespace Game.Ghosts
             else
             {
                 _chaseTimer.Paused = false;
+                _chaseTimer.Start();
+            }
+        }
+
+        public override void UpdateState(float delta)
+        {
+            if (GhostCollision.Vulnerable)
+            {
+                _chaseTimer.Paused = true;
+                EmitSignal("Transitioned", this, "FrightenedState");
             }
         }
 

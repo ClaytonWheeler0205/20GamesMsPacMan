@@ -14,7 +14,7 @@
 [ext_resource path="res://Ghosts/Scripts/GhostCollisionHandlerImpl.cs" type="Script" id=12]
 [ext_resource path="res://Game/Scripts/MovementComponentImpl.cs" type="Script" id=13]
 [ext_resource path="res://Ghosts/Scripts/Pinky.cs" type="Script" id=14]
-[ext_resource path="res://Ghosts/Scripts/BlinkyChaseState.cs" type="Script" id=15]
+[ext_resource path="res://Ghosts/Scripts/PinkyChaseState.cs" type="Script" id=15]
 [ext_resource path="res://Ghosts/Scripts/PinkyIdleState.cs" type="Script" id=16]
 
 [sub_resource type="CircleShape2D" id=5]
