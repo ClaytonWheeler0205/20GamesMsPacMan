@@ -12,6 +12,10 @@ namespace Game.Bus
         public static GhostEventBus Instance { get; private set; }
 
         [Signal]
+        public delegate void ScatterStateEntered();
+        [Signal]
+        public delegate void ChaseStateEntered();
+        [Signal]
         public delegate void GhostEaten(Ghost ghostEaten);
         [Signal]
         public delegate void PinkyReleased();

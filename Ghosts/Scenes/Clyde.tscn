@@ -99,7 +99,7 @@ tracks/1/keys = {
 } ]
 }
 
-[node name="Clyde" type="KinematicBody2D"]
+[node name="Clyde" type="KinematicBody2D" groups=["Ghost"]]
 collision_layer = 0
 script = ExtResource( 15 )
 _movementPath = NodePath("MovementComponent")
@@ -177,19 +177,9 @@ script = ExtResource( 14 )
 
 [node name="ScatterState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 11 )
-_scatterTimerPath = NodePath("ScatterTimer")
-
-[node name="ScatterTimer" type="Timer" parent="GhostStateMachine/ScatterState"]
-wait_time = 7.0
-one_shot = true
 
 [node name="ChaseState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 16 )
-_chaseTimerPath = NodePath("ChaseTimer")
-
-[node name="ChaseTimer" type="Timer" parent="GhostStateMachine/ChaseState"]
-wait_time = 20.0
-one_shot = true
 
 [node name="FrightenedState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 13 )

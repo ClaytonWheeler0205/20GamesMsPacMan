@@ -58,11 +58,18 @@ namespace Game
         private NodePath _frightenedFlashTimerPath;
         private Timer _frightenedFlashTimerReference;
         private float _frightenedFlashTimerDuration = 3.0f;
-        private int _ghostsEaten = 0;
         [Export]
         private NodePath _frightenedFlashingTimerPath;
         private Timer _frightenedFlashingTimerReference;
         private float _frightenedFlashingTimerDuration = 0.25f;
+        [Export]
+        private NodePath _scatterTimerPath;
+        private Timer _scatterTimerReference;
+        private float _scatterTimerDuration = 7.0f;
+        [Export]
+        private NodePath _chaseTimerPath;
+        private Timer _chaseTimerReference;
+        private float _chaseTimerDuration = 20.0f;
 
 
         public override void _Ready()
@@ -91,6 +98,8 @@ namespace Game
             _frightenedTimerReference = GetNode<Timer>(_frightenedTimerPath);
             _frightenedFlashTimerReference = GetNode<Timer>(_frightenedFlashTimerPath);
             _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
+            _scatterTimerReference = GetNode<Timer>(_scatterTimerPath);
+            _chaseTimerReference = GetNode<Timer>(_chaseTimerPath);
         }
 
         private void CheckNodeReferences()
@@ -147,6 +156,14 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Frightened Flashing Timer is not valid!");
             }
+            if (!_scatterTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Scatter Timer Reference is not valid!");
+            }
+            if (!_chaseTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Chase Timer Reference is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -160,6 +177,8 @@ namespace Game
             _frightenedTimerReference.Connect("timeout", this, nameof(OnFrightenedTimerTimeout));
             _frightenedFlashTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
             _frightenedFlashingTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashingTimerTimeout));
+            _scatterTimerReference.Connect("timeout", this, nameof(OnScatterTimerTimeout));
+            _chaseTimerReference.Connect("timeout", this, nameof(OnChaseTimerTimeout));
         }
 
         public async void OnPlayerHit()
@@ -170,6 +189,11 @@ namespace Game
                 _controller.IsControllerActive = false;
                 _player.Stop();
                 _ghostContainer.StopGhosts();
+                _scatterTimerReference.Stop();
+                _chaseTimerReference.Stop();
+                _frightenedFlashingTimerReference.Stop();
+                _frightenedFlashTimerReference.Stop();
+                _frightenedTimerReference.Stop();
                 await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
                 _player.PlayDeathAnimation();
                 _deathJingle.Play();
@@ -211,6 +235,7 @@ namespace Game
             _controller.IsControllerActive = true;
             _ghostContainer.StartGhosts();
             GhostEventBus.Instance.EmitSignal("PinkyReleased");
+            _scatterTimerReference.Start(_scatterTimerDuration);
         }
 
         public async void OnLevelCleared()
@@ -221,6 +246,8 @@ namespace Game
             _frightenedTimerReference.Stop();
             _frightenedFlashTimerReference.Stop();
             _frightenedFlashingTimerReference.Stop();
+            _scatterTimerReference.Stop();
+            _chaseTimerReference.Stop();
             _ghostPointValue = 200;
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
@@ -290,12 +317,6 @@ namespace Game
             ghostEaten.Visible = true;
             ghostEaten.SetGhostFleeing();
             _ghostPointValue *= 2;
-            _ghostsEaten++;
-            if (_ghostsEaten == _ghostContainer.GetChildCount())
-            {
-                _frightenedTimerReference.Stop();
-                _ghostPointValue = 200;
-            }
         }
 
         public void OnPowerPelledCollected()
@@ -304,6 +325,8 @@ namespace Game
             _frightenedFlashTimerReference.Stop();
             _frightenedFlashingTimerReference.Stop();
             _ghostContainer.SetGhostsVulnerability();
+            _scatterTimerReference.Paused = true;
+            _chaseTimerReference.Paused = true;
         }
 
         public void OnFrightenedTimerTimeout()
@@ -317,11 +340,25 @@ namespace Game
             _frightenedFlashingTimerReference.Stop();
             _ghostContainer.SetGhostsInvulnerable();
             _ghostPointValue = 200;
+            _scatterTimerReference.Paused = false;
+            _chaseTimerReference.Paused = false;
         }
 
         public void OnFrightenedFlashingTimerTimeout()
         {
             _ghostContainer.SetGhostsFlash();
+        }
+
+        public void OnScatterTimerTimeout()
+        {
+            GhostEventBus.Instance.EmitSignal("ChaseStateEntered");
+            _chaseTimerReference.Start(_chaseTimerDuration);
+        }
+
+        public void OnChaseTimerTimeout()
+        {
+            GhostEventBus.Instance.EmitSignal("ScatterStateEntered");
+            _scatterTimerReference.Start(_scatterTimerDuration);
         }
     }
 }

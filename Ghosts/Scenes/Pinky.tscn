@@ -177,19 +177,9 @@ script = ExtResource( 16 )
 
 [node name="ScatterState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 8 )
-_scatterTimerPath = NodePath("ScatterTimer")
-
-[node name="ScatterTimer" type="Timer" parent="GhostStateMachine/ScatterState"]
-wait_time = 7.0
-one_shot = true
 
 [node name="ChaseState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 15 )
-_chaseTimerPath = NodePath("ChaseTimer")
-
-[node name="ChaseTimer" type="Timer" parent="GhostStateMachine/ChaseState"]
-wait_time = 20.0
-one_shot = true
 
 [node name="FrightenedState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 11 )

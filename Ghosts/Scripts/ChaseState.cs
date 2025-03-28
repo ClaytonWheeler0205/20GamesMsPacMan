@@ -58,48 +58,6 @@ namespace Game.Ghosts
             }
         }
 
-        [Export]
-        private NodePath _chaseTimerPath;
-        private Timer _chaseTimer;
-        protected Timer ChaseTimer
-        {
-            get { return _chaseTimer; }
-        }
-        private float _chaseTime = 20.0f;
-
-        public override void _Ready()
-        {
-            SetNodeReferences();
-            CheckNodeReferences();
-            SetNodeConnections();
-        }
-
-        private void SetNodeReferences()
-        {
-            _chaseTimer = GetNode<Timer>(_chaseTimerPath);
-        }
-
-        private void CheckNodeReferences()
-        {
-            if (!_chaseTimer.IsValid())
-            {
-                GD.PrintErr("ERROR: Ghost Chase Timer is not valid!");
-            }
-        }
-
-        private void SetNodeConnections()
-        {
-            LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
-            _chaseTimer.Connect("timeout", this, nameof(OnChaseTimerTimeout));
-        }
-
-
-        public void OnLevelCleared()
-        {
-            _chaseTimer.Paused = false;
-            _chaseTimer.Stop();
-        }
-
         public void OnChaseTimerTimeout()
         {
             EmitSignal("Transitioned", this, "ScatterState");
@@ -107,29 +65,28 @@ namespace Game.Ghosts
 
         public override void EnterState()
         {
-            if (!_chaseTimer.Paused)
+            if (!GhostEventBus.Instance.IsConnected("ScatterStateEntered", this, nameof(OnScatterStateEntered)))
             {
-                _chaseTimer.Start(_chaseTime);
+                GhostEventBus.Instance.Connect("ScatterStateEntered", this, nameof(OnScatterStateEntered));
             }
-            else
-            {
-                _chaseTimer.Paused = false;
-                _chaseTimer.Start();
-            }
+        }
+
+        public void OnScatterStateEntered()
+        {
+            EmitSignal("Transitioned", this, "ScatterState");
         }
 
         public override void UpdateState(float delta)
         {
             if (GhostCollision.Vulnerable)
             {
-                _chaseTimer.Paused = true;
                 EmitSignal("Transitioned", this, "FrightenedState");
             }
         }
 
         public override void ExitState()
         {
-            _chaseTimer.Stop();
+            GhostEventBus.Instance.Disconnect("ScatterStateEntered", this, nameof(OnScatterStateEntered));
             DirectionReverser.ReverseDirection(_movement);
         }
     }

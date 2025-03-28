@@ -1,3 +1,4 @@
+using Game.Bus;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -12,6 +13,26 @@ namespace Game.Ghosts
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int DOWN_TILE_CELL_NUMBER = 4;
         private const int UP_TILE_CELL_NUMBER = 5;
+        private bool _inScatterState = true;
+        private Vector2 _exitingDirection = Vector2.Left;
+
+        public override void _Ready()
+        {
+            GhostEventBus.Instance.Connect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
+            GhostEventBus.Instance.Connect("ScatterStateEntered", this, nameof(OnScatterStateEntered));
+        }
+
+        public void OnChaseStateEntered()
+        {
+            _inScatterState = false;
+            _exitingDirection *= -1;
+        }
+
+        public void OnScatterStateEntered()
+        {
+            _inScatterState = true;
+            _exitingDirection *= -1;
+        }
 
         public override void EnterState()
         {
@@ -38,7 +59,14 @@ namespace Game.Ghosts
                     if (_inUpTile)
                     {
                         _transitioning = true;
-                        EmitSignal("Transitioned", this, "PreviousState");
+                        if (_inScatterState)
+                        {
+                            EmitSignal("Transitioned", this, "ScatterState");
+                        }
+                        else
+                        {
+                            EmitSignal("Transitioned", this, "ChaseState");
+                        }
                     }
                     else
                     {
@@ -142,7 +170,7 @@ namespace Game.Ghosts
         {
             if (_transitioning)
             {
-                Movement.ChangeDirection(Vector2.Left);
+                Movement.ChangeDirection(_exitingDirection);
             }
             else
             {

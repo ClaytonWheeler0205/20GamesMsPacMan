@@ -27,9 +27,11 @@ _200PointsVisualPath = NodePath("PointsContainer/200Points")
 _400PointsVisualPath = NodePath("PointsContainer/400Points")
 _800PointsVisualPath = NodePath("PointsContainer/800Points")
 _1600PointsVisualPath = NodePath("PointsContainer/1600Points")
-_frightenedTimerPath = NodePath("GhostFrightenedTimer")
-_frightenedFlashTimerPath = NodePath("GhostFlashTimer")
-_frightenedFlashingTimerPath = NodePath("GhostFlashingTimer")
+_frightenedTimerPath = NodePath("GhostTimers/GhostFrightenedTimer")
+_frightenedFlashTimerPath = NodePath("GhostTimers/GhostFlashTimer")
+_frightenedFlashingTimerPath = NodePath("GhostTimers/GhostFlashingTimer")
+_scatterTimerPath = NodePath("GhostTimers/ScatterTimer")
+_chaseTimerPath = NodePath("GhostTimers/ChaseTimer")
 
 [node name="LevelContainer" type="Node2D" parent="."]
 
@@ -84,13 +86,23 @@ stream = ExtResource( 6 )
 [node name="DeathJinglePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 
-[node name="GhostFrightenedTimer" type="Timer" parent="."]
+[node name="GhostTimers" type="Node" parent="."]
+
+[node name="ScatterTimer" type="Timer" parent="GhostTimers"]
+wait_time = 7.0
+one_shot = true
+
+[node name="ChaseTimer" type="Timer" parent="GhostTimers"]
+wait_time = 20.0
+one_shot = true
+
+[node name="GhostFrightenedTimer" type="Timer" parent="GhostTimers"]
 wait_time = 10.0
 one_shot = true
 
-[node name="GhostFlashingTimer" type="Timer" parent="."]
+[node name="GhostFlashingTimer" type="Timer" parent="GhostTimers"]
 wait_time = 0.25
 
-[node name="GhostFlashTimer" type="Timer" parent="."]
+[node name="GhostFlashTimer" type="Timer" parent="GhostTimers"]
 wait_time = 3.0
 one_shot = true

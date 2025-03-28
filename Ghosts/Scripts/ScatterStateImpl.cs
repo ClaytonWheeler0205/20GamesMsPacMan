@@ -9,66 +9,24 @@ public class ScatterStateImpl : ScatterState
     private bool _inIntersectionTile = false;
     private const int PATH_TILE_CELL_NUMBER = 2;
     private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
-    [Export]
-    private NodePath _scatterTimerPath;
-    private Timer _scatterTimer;
-    private float _scatterTime = 7.0f;
-
-    public override void _Ready()
-    {
-        SetNodeReferences();
-        CheckNodeReferences();
-        SetNodeConnections();
-    }
-
-    private void SetNodeReferences()
-    {
-        _scatterTimer = GetNode<Timer>(_scatterTimerPath);
-    }
-
-    private void CheckNodeReferences()
-    {
-        if (!_scatterTimer.IsValid())
-        {
-            GD.PrintErr("ERROR: Scatter State Scatter Timer is not valid!");
-        }
-    }
-
-    private void SetNodeConnections()
-    {
-        LevelEventBus.Instance.Connect("LevelCleared", this, nameof(OnLevelCleared));
-        _scatterTimer.Connect("timeout", this, nameof(OnTimerTimeout));
-    }
-
-    public void OnLevelCleared()
-    {
-        _scatterTimer.Paused = false;
-        _scatterTimer.Stop();
-    }
-
-    public void OnTimerTimeout()
-    {
-        EmitSignal("Transitioned", this, "ChaseState");
-    }
 
     public override void EnterState()
     {
-        if (!_scatterTimer.Paused)
+        if (!GhostEventBus.Instance.IsConnected("ChaseStateEntered", this, nameof(OnChaseStateEntered)))
         {
-            _scatterTimer.Start(_scatterTime);
+            GhostEventBus.Instance.Connect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
         }
-        else
-        {
-            _scatterTimer.Paused = false;
-            _scatterTimer.Start();
-        }
+    }
+
+    public void OnChaseStateEntered()
+    {
+        EmitSignal("Transitioned", this, "ChaseState");
     }
 
     public override void UpdateState(float delta)
     {
         if (GhostCollision.Vulnerable)
         {
-            _scatterTimer.Paused = true;
             EmitSignal("Transitioned", this, "FrightenedState");
         }
         else
@@ -159,7 +117,7 @@ public class ScatterStateImpl : ScatterState
 
     public override void ExitState()
     {
-        _scatterTimer.Stop();
+        GhostEventBus.Instance.Disconnect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
         DirectionReverser.ReverseDirection(Movement);
         //_inIntersectionTile = false; <- uncomment this is you notice any weird behavior in exiting states
     }

@@ -49,7 +49,7 @@ namespace Game.Ghosts
         private Node2D _visualComponentReference;
         public Node2D VisualComponentReference
         {
-            get { return _visualComponentReference;}
+            get { return _visualComponentReference; }
             set
             {
                 if (value.IsValid())
@@ -58,18 +58,46 @@ namespace Game.Ghosts
                 }
             }
         }
+        private bool _inScatterState = true; // If this is false, we're in the chase state
+        private Vector2 _exitingDirection = Vector2.Left;
+
 
         public override void EnterState()
         {
             _idleAnimationPlayer.Play(IDLE_ANIMATION_NAME);
         }
 
+        public void OnScatterStateEntered()
+        {
+            _inScatterState = true;
+            ReverseExitingDirection();
+        }
+
+        public void OnChaseStateEntered()
+        {
+            _inScatterState = false;
+            ReverseExitingDirection();
+        }
+
+        private void ReverseExitingDirection()
+        {
+            _exitingDirection *= -1;
+        }
+
         public override void UpdateState(float delta)
         {
             if (HasLeftGhostHouse())
             {
-                _movement.ChangeDirection(Vector2.Left);
-                EmitSignal("Transitioned", this, "ScatterState");
+                _movement.ChangeDirection(_exitingDirection);
+                if (_inScatterState)
+                {
+                    EmitSignal("Transitioned", this, "ScatterState");
+                }
+                else
+                {
+                    EmitSignal("Transitioned", this, "ChaseState");
+                }
+
             }
         }
 
