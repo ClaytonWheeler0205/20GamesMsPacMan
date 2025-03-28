@@ -53,6 +53,12 @@ namespace Game.Ghosts
             }
         }
 
+        public override void StartGhost()
+        {
+            StateMachineReference.SetIsMachineActive(true);
+        }
+
+
         public override void StopGhost()
         {
             base.StopGhost();
