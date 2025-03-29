@@ -210,6 +210,8 @@ namespace Game.Ghosts
             else if (_frightenedBodyVisual.Visible)
             {
                 _frightenedBodyVisual.Play("frightened_move");
+                _frightenedFlashVisual.Frame = _frightenedBodyVisual.Frame;
+                _frightenedFlashVisual.Play("frightened_flash_move");
             }
 
             if (newDirection == Vector2.Up)
@@ -235,6 +237,7 @@ namespace Game.Ghosts
         {
             _bodyVisual.Stop();
             _frightenedBodyVisual.Stop();
+            _frightenedFlashVisual.Stop();
         }
 
         public void OnGhostEaten()

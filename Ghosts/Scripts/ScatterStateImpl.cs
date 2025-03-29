@@ -119,6 +119,6 @@ public class ScatterStateImpl : ScatterState
     {
         GhostEventBus.Instance.Disconnect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
         DirectionReverser.ReverseDirection(Movement);
-        //_inIntersectionTile = false; <- uncomment this is you notice any weird behavior in exiting states
+        _inIntersectionTile = false;
     }
 }

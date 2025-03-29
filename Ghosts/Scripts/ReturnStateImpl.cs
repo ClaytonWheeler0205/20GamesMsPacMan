@@ -176,6 +176,7 @@ namespace Game.Ghosts
             {
                 EmitSignal("ReturnStateExited");
             }
+            _inIntersectionTile = false;
         }
 
     }

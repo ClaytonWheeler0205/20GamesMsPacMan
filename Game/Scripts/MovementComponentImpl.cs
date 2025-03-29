@@ -26,6 +26,7 @@ namespace Game
         private Vector2 _bodyRightPosition;
         [Export]
         private Vector2 _bodyLeftPosition;
+        private bool _stoppedMoving = false;
 
 
         public override void _Ready()
@@ -80,9 +81,14 @@ namespace Game
             {
                 Vector2 velocity = _currentDirection * Speed;
                 velocity = BodyToMove.MoveAndSlide(velocity);
-                if (velocity == Vector2.Zero)
+                if (velocity == Vector2.Zero && !_stoppedMoving)
                 {
+                    _stoppedMoving = true;
                     EmitSignal("MovementStopped");
+                }
+                else if (velocity != Vector2.Zero)
+                {
+                    _stoppedMoving = false;
                 }
             }
         }

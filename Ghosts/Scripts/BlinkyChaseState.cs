@@ -99,5 +99,12 @@ namespace Game.Ghosts
             return newDirection;
         }
 
+        public override void ExitState()
+        {
+            base.ExitState();
+            _inIntersectionTile = false;
+        }
+
+
     }
 }

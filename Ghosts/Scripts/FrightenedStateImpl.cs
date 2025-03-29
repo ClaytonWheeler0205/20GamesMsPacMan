@@ -99,6 +99,7 @@ namespace Game.Ghosts
         public override void ExitState()
         {
             GhostCollision.Vulnerable = false;
+            _inIntersectionTile = false;
         }
     }
 }

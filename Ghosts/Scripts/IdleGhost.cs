@@ -15,7 +15,7 @@ namespace Game.Ghosts
         private AnimationPlayer _idleAnimationPlayer;
         protected AnimationPlayer IdleAnimationPlayer
         {
-            get { return _idleAnimationPlayer;}
+            get { return _idleAnimationPlayer; }
         }
         protected const string IDLE_ANIMATION_NAME = "Idle";
 
@@ -56,6 +56,7 @@ namespace Game.Ghosts
         public override void StartGhost()
         {
             StateMachineReference.SetIsMachineActive(true);
+            BodyVisual.Play("move");
         }
 
 
