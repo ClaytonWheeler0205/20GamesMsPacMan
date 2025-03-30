@@ -1,6 +1,7 @@
 using Godot;
 using Util;
 using Util.ExtensionMethods;
+using Game.Bus;
 
 namespace Game.Ghosts
 {
@@ -23,7 +24,14 @@ namespace Game.Ghosts
             }
             else if (!GhostCollision.Vulnerable)
             {
-                EmitSignal("Transitioned", this, "PreviousState");
+                if(ScatterChaseTracker.Instance.InScatterState)
+                {
+                    EmitSignal("Transitioned", this, "ScatterState");
+                }
+                else
+                {
+                    EmitSignal("Transitioned", this, "ChaseState");
+                }
             }
             else
             {
@@ -101,5 +109,11 @@ namespace Game.Ghosts
             GhostCollision.Vulnerable = false;
             _inIntersectionTile = false;
         }
+
+        public override void ResetTileDetection()
+        {
+            _inIntersectionTile = false;
+        }
+
     }
 }

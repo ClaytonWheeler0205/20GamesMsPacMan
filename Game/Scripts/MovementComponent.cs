@@ -23,6 +23,11 @@ namespace Game
                 }
             }
         }
+        private float _baseSpeed;
+        public float BaseSpeed
+        {
+            get { return _baseSpeed; }
+        }
         private KinematicBody2D _bodyToMove;
         public KinematicBody2D BodyToMove
         {
@@ -36,6 +41,10 @@ namespace Game
             }
         }
 
+        public override void _Ready()
+        {
+            _baseSpeed = _speed;
+        }
         public abstract void ChangeDirection(Vector2 newDirection);
         public abstract void StopMoving();
         public abstract Vector2 GetCurrentDirection();

@@ -20,6 +20,8 @@ namespace Game.Bus
         [Signal]
         public delegate void PinkyReleased();
         [Signal]
+        public delegate void InkyReleased();
+        [Signal]
         public delegate void ClydeReleased();
 
         // Called when the node enters the scene tree for the first time.

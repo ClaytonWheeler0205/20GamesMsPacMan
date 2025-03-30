@@ -52,6 +52,7 @@ namespace Game.Ghosts
             {
                 MovementReference.OverrideDirection(previousDirection);
                 StateMachineReference.SetIsMachineActive(true);
+                FrightenedStateReference.ResetTileDetection();
             }
         }
 
@@ -111,7 +112,6 @@ namespace Game.Ghosts
             BodyVisual.Frame = FrightenedBodyVisual.Frame;
             BodyVisual.Visible = true;
             Eyes.Visible = true;
-            BodyVisual.Play(MOVE_ANIMATION);
         }
 
         public override void SetGhostFlash()

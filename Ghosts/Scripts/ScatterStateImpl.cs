@@ -1,3 +1,4 @@
+using Game;
 using Game.Bus;
 using Game.Ghosts;
 using Game.Levels;
@@ -12,22 +13,19 @@ public class ScatterStateImpl : ScatterState
 
     public override void EnterState()
     {
-        if (!GhostEventBus.Instance.IsConnected("ChaseStateEntered", this, nameof(OnChaseStateEntered)))
-        {
-            GhostEventBus.Instance.Connect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
-        }
+
     }
 
-    public void OnChaseStateEntered()
-    {
-        EmitSignal("Transitioned", this, "ChaseState");
-    }
 
     public override void UpdateState(float delta)
     {
         if (GhostCollision.Vulnerable)
         {
             EmitSignal("Transitioned", this, "FrightenedState");
+        }
+        else if (!ScatterChaseTracker.Instance.InScatterState)
+        {
+            EmitSignal("Transitioned", this, "ChaseState");
         }
         else
         {
@@ -117,7 +115,6 @@ public class ScatterStateImpl : ScatterState
 
     public override void ExitState()
     {
-        GhostEventBus.Instance.Disconnect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
         DirectionReverser.ReverseDirection(Movement);
         _inIntersectionTile = false;
     }

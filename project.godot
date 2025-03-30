@@ -21,6 +21,7 @@ LevelEventBus="*res://Buses/Scenes/LevelEventBus.tscn"
 PelletEventBus="*res://Buses/Scenes/PelletEventBus.tscn"
 PlayerEventBus="*res://Buses/Scenes/PlayerEventBus.tscn"
 GhostEventBus="*res://Buses/Scenes/GhostEventBus.tscn"
+ScatterChaseTracker="*res://Game/Scenes/ScatterChaseTracker.tscn"
 
 [display]
 

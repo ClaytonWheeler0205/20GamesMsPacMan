@@ -4,6 +4,7 @@ using Game.Levels;
 using Godot;
 using Util.ExtensionMethods;
 using Game.Ghosts;
+using Game.Pellets;
 
 namespace Game
 {
@@ -70,6 +71,9 @@ namespace Game
         private NodePath _chaseTimerPath;
         private Timer _chaseTimerReference;
         private float _chaseTimerDuration = 20.0f;
+        [Export]
+        private NodePath _pelletCounterPath;
+        private PelletCounter _pelletCounterReference;
 
 
         public override void _Ready()
@@ -100,6 +104,7 @@ namespace Game
             _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
             _scatterTimerReference = GetNode<Timer>(_scatterTimerPath);
             _chaseTimerReference = GetNode<Timer>(_chaseTimerPath);
+            _pelletCounterReference = GetNode<PelletCounter>(_pelletCounterPath);
         }
 
         private void CheckNodeReferences()
@@ -163,6 +168,10 @@ namespace Game
             if (!_chaseTimerReference.IsValid())
             {
                 GD.PrintErr("ERROR: Main Chase Timer Reference is not valid!");
+            }
+            if (!_pelletCounterReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Pellet Counter Reference is not valid!");
             }
         }
 
@@ -234,8 +243,9 @@ namespace Game
         {
             _controller.IsControllerActive = true;
             _ghostContainer.StartGhosts();
-            GhostEventBus.Instance.EmitSignal("PinkyReleased");
+            ScatterChaseTracker.Instance.InScatterState = true;
             _scatterTimerReference.Start(_scatterTimerDuration);
+            _pelletCounterReference.StartCounting();
         }
 
         public async void OnLevelCleared()
@@ -249,6 +259,7 @@ namespace Game
             _scatterTimerReference.Stop();
             _chaseTimerReference.Stop();
             _ghostPointValue = 200;
+            _pelletCounterReference.ResetCounter();
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
             {
@@ -351,13 +362,13 @@ namespace Game
 
         public void OnScatterTimerTimeout()
         {
-            GhostEventBus.Instance.EmitSignal("ChaseStateEntered");
+            ScatterChaseTracker.Instance.InScatterState = false;
             _chaseTimerReference.Start(_chaseTimerDuration);
         }
 
         public void OnChaseTimerTimeout()
         {
-            GhostEventBus.Instance.EmitSignal("ScatterStateEntered");
+            ScatterChaseTracker.Instance.InScatterState = true;
             _scatterTimerReference.Start(_scatterTimerDuration);
         }
     }

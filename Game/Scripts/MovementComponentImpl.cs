@@ -31,6 +31,7 @@ namespace Game
 
         public override void _Ready()
         {
+            base._Ready();
             SetNodeReferences();
             CheckNodeReferences();
             SetWallDetectorPosition(Vector2.Left);

@@ -17,6 +17,7 @@ namespace Game.Ghosts
 
         public void OnPinkyReleased()
         {
+            HasBeenReleased = true;
             IdleAnimationPlayer.Stop();
             Movement.BodyToMove.GlobalPosition = VisualComponentReference.GlobalPosition;
             VisualComponentReference.Position = Vector2.Zero;
@@ -25,6 +26,7 @@ namespace Game.Ghosts
 
         public override void ExitState()
         {
+            base.ExitState();
             GhostEventBus.Instance.Disconnect("PinkyReleased", this, nameof(OnPinkyReleased));
         }
     }

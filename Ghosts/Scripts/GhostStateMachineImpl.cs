@@ -76,9 +76,7 @@ namespace Game.Ghosts
 
         public override void ResetMachine()
         {
-            _currentState.ExitState();
             _currentState = _initialState;
-            //_currentState.EnterState(); Unecessary line since start ghost implicitly calls to enter the initial state
         }
 
         public void OnStateTransitioned(GhostState currentState, string newStateName)

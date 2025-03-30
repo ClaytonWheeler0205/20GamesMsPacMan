@@ -1,3 +1,4 @@
+using Game.Bus;
 using Godot;
 
 namespace Game.Pellets
@@ -17,6 +18,7 @@ namespace Game.Pellets
             if (area.IsInGroup(PlayerNodeGroup))
             {
                 CollectPellet();
+                PelletEventBus.Instance.EmitSignal("PelletCollected");
             }
         }
     }

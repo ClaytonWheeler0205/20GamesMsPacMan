@@ -32,6 +32,7 @@ namespace Game.Ghosts
             _idleStateReference.IdleAnimationPlayer = _idleAnimationPlayer;
             _idleStateReference.Movement = MovementReference;
             _idleStateReference.VisualComponentReference = _visualNodeReference;
+            _idleStateReference.GhostCollision = GhostCollision;
         }
 
         private void SetNodeReferences()

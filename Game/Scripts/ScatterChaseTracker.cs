@@ -1,19 +1,15 @@
 using Godot;
-using System;
 using Util.ExtensionMethods;
 
-namespace Game.Bus
+namespace Game
 {
 
-    public class PelletEventBus : Node
+    public class ScatterChaseTracker : Node
     {
-        public static PelletEventBus Instance { get; private set; }
+        public static ScatterChaseTracker Instance { get; private set; }
+        public bool InScatterState = true; // If this is false, we're in the chase state
 
-        [Signal]
-        public delegate void PelletCollected();
-        [Signal]
-        public delegate void PowerPelletCollected();
-
+        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             if (Instance != null && Instance != this)
@@ -25,6 +21,5 @@ namespace Game.Bus
                 Instance = this;
             }
         }
-
     }
 }

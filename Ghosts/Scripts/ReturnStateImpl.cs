@@ -13,26 +13,6 @@ namespace Game.Ghosts
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int DOWN_TILE_CELL_NUMBER = 4;
         private const int UP_TILE_CELL_NUMBER = 5;
-        private bool _inScatterState = true;
-        private Vector2 _exitingDirection = Vector2.Left;
-
-        public override void _Ready()
-        {
-            GhostEventBus.Instance.Connect("ChaseStateEntered", this, nameof(OnChaseStateEntered));
-            GhostEventBus.Instance.Connect("ScatterStateEntered", this, nameof(OnScatterStateEntered));
-        }
-
-        public void OnChaseStateEntered()
-        {
-            _inScatterState = false;
-            _exitingDirection *= -1;
-        }
-
-        public void OnScatterStateEntered()
-        {
-            _inScatterState = true;
-            _exitingDirection *= -1;
-        }
 
         public override void EnterState()
         {
@@ -59,14 +39,7 @@ namespace Game.Ghosts
                     if (_inUpTile)
                     {
                         _transitioning = true;
-                        if (_inScatterState)
-                        {
-                            EmitSignal("Transitioned", this, "ScatterState");
-                        }
-                        else
-                        {
-                            EmitSignal("Transitioned", this, "ChaseState");
-                        }
+                        EmitSignal("Transitioned", this, "ScatterState");
                     }
                     else
                     {
@@ -170,7 +143,7 @@ namespace Game.Ghosts
         {
             if (_transitioning)
             {
-                Movement.ChangeDirection(_exitingDirection);
+                Movement.OverrideDirection(Vector2.Left);
             }
             else
             {

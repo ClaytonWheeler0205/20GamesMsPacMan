@@ -17,15 +17,16 @@ namespace Game.Ghosts
 
         public void OnClydeReleased()
         {
+            HasBeenReleased = true;
             IdleAnimationPlayer.Stop();
             Movement.BodyToMove.GlobalPosition = VisualComponentReference.GlobalPosition;
             VisualComponentReference.Position = Vector2.Zero;
-            Movement.OverrideDirection(Vector2.Left);
-            Movement.ChangeDirection(Vector2.Up);
+            Movement.ChangeDirection(Vector2.Left);
         }
 
         public override void ExitState()
         {
+            base.ExitState();
             GhostEventBus.Instance.Disconnect("ClydeReleased", this, nameof(OnClydeReleased));
         }
     }

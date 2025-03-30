@@ -58,22 +58,9 @@ namespace Game.Ghosts
             }
         }
 
-        public void OnChaseTimerTimeout()
-        {
-            EmitSignal("Transitioned", this, "ScatterState");
-        }
-
         public override void EnterState()
         {
-            if (!GhostEventBus.Instance.IsConnected("ScatterStateEntered", this, nameof(OnScatterStateEntered)))
-            {
-                GhostEventBus.Instance.Connect("ScatterStateEntered", this, nameof(OnScatterStateEntered));
-            }
-        }
 
-        public void OnScatterStateEntered()
-        {
-            EmitSignal("Transitioned", this, "ScatterState");
         }
 
         public override void UpdateState(float delta)
@@ -82,11 +69,14 @@ namespace Game.Ghosts
             {
                 EmitSignal("Transitioned", this, "FrightenedState");
             }
+            else if (ScatterChaseTracker.Instance.InScatterState)
+            {
+                EmitSignal("Transitioned", this, "ScatterState");
+            }
         }
 
         public override void ExitState()
         {
-            GhostEventBus.Instance.Disconnect("ScatterStateEntered", this, nameof(OnScatterStateEntered));
             DirectionReverser.ReverseDirection(_movement);
         }
     }
