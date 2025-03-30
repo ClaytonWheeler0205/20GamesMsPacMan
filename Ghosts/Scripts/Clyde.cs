@@ -14,6 +14,10 @@ namespace Game.Ghosts
         {
             base.SetLevelReference(level);
             ScatterStateReference.HomeTilePosition = level.ClydeHomeTilePosition;
+            if (ChaseStateReference is ClydeChaseState clydeChaseState)
+            {
+                clydeChaseState.HomeTilePosition = level.ClydeHomeTilePosition;
+            }
         }
     }
 }
