@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Ghosts/Scenes/Blinky.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Scenes/MsPacMan.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Ghosts/Scenes/Clyde.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Ghosts/Scenes/Pinky.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Pellets/Scripts/PelletCounterImpl.cs" type="Script" id=15]
+[ext_resource path="res://Ghosts/Scenes/Inky.tscn" type="PackedScene" id=16]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -53,6 +54,10 @@ position = Vector2( 112, 115 )
 
 [node name="Clyde" parent="GhostContainer" instance=ExtResource( 13 )]
 position = Vector2( 128, 115 )
+
+[node name="Inky" parent="GhostContainer" instance=ExtResource( 16 )]
+position = Vector2( 96, 115 )
+_blinkyPath = NodePath("../Blinky")
 
 [node name="MsPacMan" parent="." instance=ExtResource( 2 )]
 position = Vector2( 112, 187 )

@@ -473,6 +473,7 @@ _levelFlashPlayerPath = NodePath("LevelFlashPlayer")
 _pelletsPath = NodePath("Pellets")
 _blinkyHomeTilePosition = Vector2( 27, -3 )
 _pinkyHomeTilePosition = Vector2( 0, -3 )
+_inkyHomeTilePosition = Vector2( 27, 32 )
 _clydeHomeTilePosition = Vector2( 0, 32 )
 _ghostHousePosition = Vector2( 13.5, 11 )
 

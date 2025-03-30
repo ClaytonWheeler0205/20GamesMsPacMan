@@ -244,6 +244,11 @@ namespace Game
             _controller.IsControllerActive = true;
             _ghostContainer.StartGhosts();
             ScatterChaseTracker.Instance.InScatterState = true;
+            _scatterTimerReference.Paused = false;
+            _chaseTimerReference.Paused = false;
+            _frightenedTimerReference.Paused = false;
+            _frightenedFlashTimerReference.Paused = false;
+            _frightenedFlashingTimerReference.Paused = false;
             _scatterTimerReference.Start(_scatterTimerDuration);
             _pelletCounterReference.StartCounting();
         }

@@ -49,6 +49,10 @@ namespace Game.Pellets
                 {
                     GhostEventBus.Instance.EmitSignal("PinkyReleased");
                 }
+                else if (_globalPelletsCollected == INKY_GLOBAL_PELLET_LIMIT)
+                {
+                    GhostEventBus.Instance.EmitSignal("InkyReleased");
+                }
                 else if (_globalPelletsCollected == CLYDE_GLOBAL_PELLET_LIMIT)
                 {
                     GhostEventBus.Instance.EmitSignal("ClydeReleased");
