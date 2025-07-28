@@ -64,7 +64,7 @@ namespace Game.Ghosts
         public override void StopGhost()
         {
             base.StopGhost();
-            _idleAnimationPlayer.Stop();
+            _idleAnimationPlayer.Stop(false);
         }
 
         public override void ResetGhost()

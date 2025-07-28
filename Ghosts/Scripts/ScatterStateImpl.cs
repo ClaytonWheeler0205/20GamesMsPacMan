@@ -118,4 +118,9 @@ public class ScatterStateImpl : ScatterState
         DirectionReverser.ReverseDirection(Movement);
         _inIntersectionTile = false;
     }
+
+    public override void ResetTileDetection()
+    {
+        _inIntersectionTile = false;
+    }
 }

@@ -79,5 +79,7 @@ namespace Game.Ghosts
         {
             DirectionReverser.ReverseDirection(_movement);
         }
+
+        public abstract void ResetTileDetection();
     }
 }

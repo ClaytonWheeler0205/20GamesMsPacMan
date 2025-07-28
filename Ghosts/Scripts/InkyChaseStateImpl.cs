@@ -110,5 +110,10 @@ namespace Game.Ghosts
             return blinkyMapPosition + (2 * playerBlinkyDifference);
         }
 
+        public override void ResetTileDetection()
+        {
+            _inIntersectionTile = false;
+        }
+
     }
 }

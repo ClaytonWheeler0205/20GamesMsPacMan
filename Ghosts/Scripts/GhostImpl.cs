@@ -52,6 +52,8 @@ namespace Game.Ghosts
             {
                 MovementReference.OverrideDirection(previousDirection);
                 StateMachineReference.SetIsMachineActive(true);
+                ScatterStateReference.ResetTileDetection();
+                ChaseStateReference.ResetTileDetection();
                 FrightenedStateReference.ResetTileDetection();
             }
         }

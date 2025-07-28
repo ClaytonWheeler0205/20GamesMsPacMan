@@ -49,5 +49,7 @@ namespace Game.Ghosts
                 }
             }
         }
+
+        public abstract void ResetTileDetection();
     }
 }

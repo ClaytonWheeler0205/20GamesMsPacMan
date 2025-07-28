@@ -75,6 +75,8 @@ namespace Game
         private NodePath _pelletCounterPath;
         private PelletCounter _pelletCounterReference;
 
+        private bool _isPaused = false;
+
 
         public override void _Ready()
         {
@@ -375,6 +377,27 @@ namespace Game
         {
             ScatterChaseTracker.Instance.InScatterState = true;
             _scatterTimerReference.Start(_scatterTimerDuration);
+        }
+
+        public override void _UnhandledInput(InputEvent @event)
+        {
+            if (@event.IsActionPressed("pause"))
+            {
+                if (_isPaused)
+                {
+                    _isPaused = false;
+                    _player.Resume();
+                    _ghostContainer.ResumeGhosts();
+                    _controller.IsControllerActive = true;
+                }
+                else
+                {
+                    _isPaused = true;
+                    _player.Pause();
+                    _ghostContainer.PauseGhosts();
+                    _controller.IsControllerActive = false;
+                }
+            }
         }
     }
 }

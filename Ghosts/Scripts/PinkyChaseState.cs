@@ -105,5 +105,10 @@ namespace Game.Ghosts
             Vector2 playerMapPosition = CurrentLevel.WorldToMap(localPlayerPosition);
             return playerMapPosition + (PLAYER_TILE_OFFSET * Player.GetPlayerDirection()); ;
         }
+
+        public override void ResetTileDetection()
+        {
+            _inIntersectionTile = false;
+        }
     }
 }
