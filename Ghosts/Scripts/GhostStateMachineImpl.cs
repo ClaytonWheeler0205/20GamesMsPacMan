@@ -77,6 +77,10 @@ namespace Game.Ghosts
         public override void ResetMachine()
         {
             _currentState = _initialState;
+            if (_currentState is IdleState idleState)
+            {
+                idleState.HasBeenReleased = false;
+            }
         }
 
         public void OnStateTransitioned(GhostState currentState, string newStateName)

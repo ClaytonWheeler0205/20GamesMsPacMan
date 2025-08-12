@@ -72,15 +72,17 @@ namespace Game.Ghosts
             }
         }
         private bool _hasBeenReleased = false;
-        protected bool HasBeenReleased
+        public bool HasBeenReleased
         {
-            set { _hasBeenReleased = value;}
-        }   
+            set { _hasBeenReleased = value; }
+        }
 
         public override void EnterState()
         {
-            _hasBeenReleased = false;
-            _idleAnimationPlayer.Play(IDLE_ANIMATION_NAME);
+            if (!_hasBeenReleased)
+            {
+                _idleAnimationPlayer.Play(IDLE_ANIMATION_NAME);
+            }
         }
 
         public override void UpdateState(float delta)
