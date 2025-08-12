@@ -12,7 +12,7 @@ namespace Game.Pellets
         private int _globalPelletsCollected = 0;
         private bool _useGlobalCounter = false;
         private const int PINKY_GLOBAL_PELLET_LIMIT = 7;
-        private const int INKY_GLOBAL_PELLET_LIMIT = 17 ;
+        private const int INKY_GLOBAL_PELLET_LIMIT = 17;
         private const int CLYDE_GLOBAL_PELLET_LIMIT = 32;
 
         public override void _Ready()
@@ -77,6 +77,18 @@ namespace Game.Pellets
             else
             {
                 _globalPelletsCollected++;
+                if (_globalPelletsCollected == PINKY_GLOBAL_PELLET_LIMIT)
+                {
+                    GhostEventBus.Instance.EmitSignal("PinkyReleased");
+                }
+                else if (_globalPelletsCollected == INKY_GLOBAL_PELLET_LIMIT)
+                {
+                    GhostEventBus.Instance.EmitSignal("InkyReleased");
+                }
+                else if (_globalPelletsCollected == CLYDE_GLOBAL_PELLET_LIMIT)
+                {
+                    GhostEventBus.Instance.EmitSignal("ClydeReleased");
+                }
             }
         }
 
