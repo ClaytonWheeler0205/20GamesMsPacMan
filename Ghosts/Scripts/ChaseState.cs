@@ -60,7 +60,7 @@ namespace Game.Ghosts
 
         public override void EnterState()
         {
-
+            Movement.Speed = Movement.BaseSpeed;
         }
 
         public override void UpdateState(float delta)

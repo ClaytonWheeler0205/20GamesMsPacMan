@@ -11,9 +11,11 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
 
+        private float _slowSpeed = 31.25f;
+
         public override void EnterState()
         {
-
+            Movement.Speed = _slowSpeed;
         }
 
         public override void UpdateState(float delta)

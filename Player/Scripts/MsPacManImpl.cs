@@ -1,3 +1,4 @@
+using Game.Bus;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -21,11 +22,14 @@ namespace Game.Player
 
         private Vector2 _previousDirection = Vector2.Zero;
 
+        private float _speedupFactor = 1.125f;
+
         public override void _Ready()
         {
             SetNodeReferences();
             CheckNodeReferences();
             _movement.BodyToMove = this;
+            PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
         }
 
         private void SetNodeReferences()
@@ -76,11 +80,11 @@ namespace Game.Player
 
         public override void ResetOrientation()
         {
-                _visual.Rotation = 0;
-                _visual.FlipH = false;
-                _visual.Offset = Vector2.Zero;
-                _visual.Frame = 0;
-                _deathAnimation.Play("reset_values");
+            _visual.Rotation = 0;
+            _visual.FlipH = false;
+            _visual.Offset = Vector2.Zero;
+            _visual.Frame = 0;
+            _deathAnimation.Play("reset_values");
         }
 
         public override void PlayDeathAnimation()
@@ -126,6 +130,17 @@ namespace Game.Player
         public override Vector2 GetPlayerDirection()
         {
             return _movement.GetCurrentDirection();
+        }
+
+        public override void ResetPlayerSpeed()
+        {
+            _movement.Speed = _movement.BaseSpeed;
+        }
+
+
+        public void OnPowerPelletCollected()
+        {
+            _movement.Speed = _movement.BaseSpeed * _speedupFactor;
         }
 
     }

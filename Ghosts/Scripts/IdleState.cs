@@ -79,6 +79,7 @@ namespace Game.Ghosts
 
         public override void EnterState()
         {
+            _movement.Speed = _movement.BaseSpeed;
             if (!_hasBeenReleased)
             {
                 _idleAnimationPlayer.Play(IDLE_ANIMATION_NAME);

@@ -1,7 +1,5 @@
 using Game;
-using Game.Bus;
 using Game.Ghosts;
-using Game.Levels;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -13,7 +11,7 @@ public class ScatterStateImpl : ScatterState
 
     public override void EnterState()
     {
-
+        Movement.Speed = Movement.BaseSpeed;
     }
 
 

@@ -14,11 +14,14 @@ namespace Game.Ghosts
         private const int DOWN_TILE_CELL_NUMBER = 4;
         private const int UP_TILE_CELL_NUMBER = 5;
 
+        private float _returnSpeed = 100.0f;
+
         public override void EnterState()
         {
             EmitSignal("ReturnStateEntered");
             _inUpTile = false;
             _transitioning = false;
+            Movement.Speed = _returnSpeed;
         }
 
         public override void UpdateState(float delta)
@@ -51,6 +54,7 @@ namespace Game.Ghosts
                     EmitSignal("GhostHouseEntered");
                     Movement.ChangeDirection(Vector2.Up);
                     _inUpTile = true;
+                    Movement.Speed = Movement.BaseSpeed;
                 }
             }
         }

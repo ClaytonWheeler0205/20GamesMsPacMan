@@ -13,5 +13,6 @@ namespace Game.Player
         public abstract void ResetOrientation();
         public abstract void PlayDeathAnimation();
         public abstract Vector2 GetPlayerDirection();
+        public abstract void ResetPlayerSpeed();
     }
 }

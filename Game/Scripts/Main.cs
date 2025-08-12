@@ -288,6 +288,7 @@ namespace Game
         {
             _player.GlobalPosition = _playerStartPosition;
             _player.ResetOrientation();
+            _player.ResetPlayerSpeed();
         }
 
         public async void OnGhostEaten(Ghost ghostEaten)
@@ -360,6 +361,7 @@ namespace Game
             _ghostPointValue = 200;
             _scatterTimerReference.Paused = false;
             _chaseTimerReference.Paused = false;
+            _player.ResetPlayerSpeed();
         }
 
         public void OnFrightenedFlashingTimerTimeout()
