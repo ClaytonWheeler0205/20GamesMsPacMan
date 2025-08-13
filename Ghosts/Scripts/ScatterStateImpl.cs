@@ -11,7 +11,7 @@ public class ScatterStateImpl : ScatterState
 
     public override void EnterState()
     {
-        Movement.Speed = Movement.BaseSpeed;
+        EmitSignal("SpeedChangeRequested", Movement.BaseSpeed);
     }
 
 
@@ -115,6 +115,11 @@ public class ScatterStateImpl : ScatterState
     {
         DirectionReverser.ReverseDirection(Movement);
         _inIntersectionTile = false;
+    }
+
+    public override float GetStateSpeed()
+    {
+        return Movement.BaseSpeed;
     }
 
     public override void ResetTileDetection()

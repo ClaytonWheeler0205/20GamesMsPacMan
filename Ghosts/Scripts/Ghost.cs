@@ -200,6 +200,9 @@ namespace Game.Ghosts
         public abstract void SetGhostFleeing();
         public abstract void SetGhostInvulnerable();
         public abstract void SetGhostFlash();
+        public abstract void SlowDownGhost();
+        public abstract void SpeedupGhost();
+        public abstract void OnSpeedChangeRequested(float newSpeed);
 
         public void OnDirectionChanged(Vector2 newDirection)
         {

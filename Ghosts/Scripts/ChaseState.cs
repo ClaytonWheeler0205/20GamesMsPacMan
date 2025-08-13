@@ -60,7 +60,7 @@ namespace Game.Ghosts
 
         public override void EnterState()
         {
-            Movement.Speed = Movement.BaseSpeed;
+            EmitSignal("SpeedChangeRequested", Movement.BaseSpeed);
         }
 
         public override void UpdateState(float delta)
@@ -78,6 +78,11 @@ namespace Game.Ghosts
         public override void ExitState()
         {
             DirectionReverser.ReverseDirection(_movement);
+        }
+
+        public override float GetStateSpeed()
+        {
+            return Movement.BaseSpeed;
         }
 
         public abstract void ResetTileDetection();

@@ -100,7 +100,7 @@ tracks/1/keys = {
 }
 
 [node name="Clyde" type="KinematicBody2D" groups=["Ghost"]]
-collision_layer = 0
+collision_layer = 8
 script = ExtResource( 15 )
 _movementPath = NodePath("MovementComponent")
 _stateMachinePath = NodePath("GhostStateMachine")
@@ -189,3 +189,7 @@ script = ExtResource( 12 )
 
 [node name="IdleAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 7 )
+
+[connection signal="SpeedChangeRequested" from="GhostStateMachine/ScatterState" to="." method="OnSpeedChangeRequested"]
+[connection signal="SpeedChangeRequested" from="GhostStateMachine/ChaseState" to="." method="OnSpeedChangeRequested"]
+[connection signal="SpeedChangeRequested" from="GhostStateMachine/FrightenedState" to="." method="OnSpeedChangeRequested"]

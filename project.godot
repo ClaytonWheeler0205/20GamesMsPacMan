@@ -77,6 +77,8 @@ pause={
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Pellet"
 2d_physics/layer_4="Ghost"
+2d_physics/layer_5="Portal"
+2d_physics/layer_6="Tunnel"
 
 [mono]
 

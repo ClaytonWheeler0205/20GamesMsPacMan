@@ -94,7 +94,7 @@ animations = [ {
 extents = Vector2( 4, 4 )
 
 [node name="Blinky" type="KinematicBody2D" groups=["Ghost"]]
-collision_layer = 0
+collision_layer = 8
 script = ExtResource( 9 )
 _movementPath = NodePath("MovementComponent")
 _stateMachinePath = NodePath("GhostStateMachine")
@@ -174,3 +174,7 @@ script = ExtResource( 12 )
 
 [node name="ReturnState" type="Node" parent="GhostStateMachine"]
 script = ExtResource( 15 )
+
+[connection signal="SpeedChangeRequested" from="GhostStateMachine/ScatterState" to="." method="OnSpeedChangeRequested"]
+[connection signal="SpeedChangeRequested" from="GhostStateMachine/ChaseState" to="." method="OnSpeedChangeRequested"]
+[connection signal="SpeedChangeRequested" from="GhostStateMachine/FrightenedState" to="." method="OnSpeedChangeRequested"]

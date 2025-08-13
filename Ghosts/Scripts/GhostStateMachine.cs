@@ -8,11 +8,12 @@ namespace Game.Ghosts
         private bool _isMachineActive = false;
         protected bool IsMachineActive
         {
-            get { return _isMachineActive;}
+            get { return _isMachineActive; }
             set { _isMachineActive = value; }
         }
-        
+
         public abstract void SetIsMachineActive(bool isActive);
         public abstract void ResetMachine();
+        public abstract GhostState GetCurrentState();
     }
 }

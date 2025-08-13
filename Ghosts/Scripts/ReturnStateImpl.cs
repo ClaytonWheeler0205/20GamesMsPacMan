@@ -156,5 +156,10 @@ namespace Game.Ghosts
             _inIntersectionTile = false;
         }
 
+        public override float GetStateSpeed()
+        {
+            return _returnSpeed;
+        }
+
     }
 }

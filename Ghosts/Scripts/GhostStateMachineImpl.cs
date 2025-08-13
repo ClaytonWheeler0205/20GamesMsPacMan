@@ -83,6 +83,11 @@ namespace Game.Ghosts
             }
         }
 
+        public override GhostState GetCurrentState()
+        {
+            return _currentState;
+        }
+
         public void OnStateTransitioned(GhostState currentState, string newStateName)
         {
             if (currentState != _currentState)

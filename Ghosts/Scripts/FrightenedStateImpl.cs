@@ -15,7 +15,7 @@ namespace Game.Ghosts
 
         public override void EnterState()
         {
-            Movement.Speed = _slowSpeed;
+            EmitSignal("SpeedChangeRequested", _slowSpeed);
         }
 
         public override void UpdateState(float delta)
@@ -110,6 +110,11 @@ namespace Game.Ghosts
         {
             GhostCollision.Vulnerable = false;
             _inIntersectionTile = false;
+        }
+
+        public override float GetStateSpeed()
+        {
+            return _slowSpeed;
         }
 
         public override void ResetTileDetection()

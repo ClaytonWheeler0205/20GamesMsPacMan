@@ -8,6 +8,10 @@ namespace Game.Ghosts
 
     public abstract class GhostImpl : Ghost
     {
+        private float _ghostTunnelSpeed = 25.0f;
+        private int _tunnelsEntered = 0;
+        private bool _isInTunnel = false;
+
         public override void StopGhost()
         {
             MovementReference.StopMoving();
@@ -21,6 +25,7 @@ namespace Game.Ghosts
             ReturnGhostVisuals();
             GlobalPosition = startPosition;
             StateMachineReference.ResetMachine();
+            _isInTunnel = false;
         }
 
         public override void SetPlayerReference(MsPacMan player)
@@ -123,5 +128,34 @@ namespace Game.Ghosts
                 FrightenedFlashVisual.Visible = !FrightenedFlashVisual.Visible;
             }
         }
+
+        public override void SlowDownGhost()
+        {
+            _tunnelsEntered++;
+            if (_tunnelsEntered > 0)
+            {
+                MovementReference.Speed = _ghostTunnelSpeed;
+                _isInTunnel = true;
+            }
+        }
+
+        public override void SpeedupGhost()
+        {
+            _tunnelsEntered--;
+            if (_tunnelsEntered == 0)
+            {
+                MovementReference.Speed = StateMachineReference.GetCurrentState().GetStateSpeed();
+                _isInTunnel = false;
+            }
+        }
+
+        public override void OnSpeedChangeRequested(float newSpeed)
+        {
+            if (!_isInTunnel)
+            {
+                MovementReference.Speed = newSpeed;
+            }
+        }
+
     }
 }
