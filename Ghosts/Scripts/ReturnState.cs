@@ -41,8 +41,10 @@ namespace Game.Ghosts
         public Vector2 _ghostHouseTilePosition;
         public Vector2 GhostHouseTilePosition
         {
-            get { return _ghostHouseTilePosition;}
+            get { return _ghostHouseTilePosition; }
             set { _ghostHouseTilePosition = value; }
         }
+
+        public abstract void ResetTileDetection();
     }
 }

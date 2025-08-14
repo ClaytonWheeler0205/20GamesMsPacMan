@@ -10,18 +10,21 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private bool _inUpTile = false;
         private bool _transitioning = false;
+        private bool _inReturnState = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int DOWN_TILE_CELL_NUMBER = 4;
-        private const int UP_TILE_CELL_NUMBER = 5;
+        private const int UP_TILE_CELL_NUMBER = 6;
 
         private float _returnSpeed = 100.0f;
 
         public override void EnterState()
         {
-            EmitSignal("ReturnStateEntered");
-            _inUpTile = false;
-            _transitioning = false;
-            Movement.Speed = _returnSpeed;
+            if (!_inReturnState)
+            {
+                EmitSignal("ReturnStateEntered");
+                _inReturnState = true;
+                Movement.Speed = _returnSpeed;
+            }
         }
 
         public override void UpdateState(float delta)
@@ -39,7 +42,7 @@ namespace Game.Ghosts
                 }
                 if (IsAtDownTile())
                 {
-                    if (_inUpTile)
+                    if (Movement.GetCurrentDirection() == Vector2.Up)
                     {
                         _transitioning = true;
                         EmitSignal("Transitioned", this, "ScatterState");
@@ -51,11 +54,11 @@ namespace Game.Ghosts
                 }
                 if (IsAtUpTile() && !_inUpTile)
                 {
-                    EmitSignal("GhostHouseEntered");
                     GhostEventBus.Instance.EmitSignal("AnyGhostEntersHouse");
                     Movement.ChangeDirection(Vector2.Up);
                     _inUpTile = true;
                     Movement.Speed = Movement.BaseSpeed;
+                    EmitSignal("GhostHouseEntered");
                 }
             }
         }
@@ -155,11 +158,20 @@ namespace Game.Ghosts
                 EmitSignal("ReturnStateExited");
             }
             _inIntersectionTile = false;
+            _inUpTile = false;
+            _transitioning = false;
+            _inReturnState = false;
         }
 
         public override float GetStateSpeed()
         {
             return _returnSpeed;
+        }
+
+        public override void ResetTileDetection()
+        {
+            _inUpTile = false;
+            _inIntersectionTile = false;
         }
 
     }

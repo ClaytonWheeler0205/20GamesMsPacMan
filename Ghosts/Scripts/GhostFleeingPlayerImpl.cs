@@ -32,8 +32,9 @@ public class GhostFleeingPlayerImpl : GhostFleeingPlayer
     public override void OnAnyGhostEntersHouse()
     {
         _ghostsFleeing--;
-        if (_ghostsFleeing == 0)
+        if (_ghostsFleeing <= 0)
         {
+            _ghostsFleeing = 0;
             Stop();
         }
     }

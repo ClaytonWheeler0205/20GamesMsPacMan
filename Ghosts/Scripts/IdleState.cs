@@ -35,6 +35,7 @@ namespace Game.Ghosts
         }
         private const int DOWN_TILE_CELL_NUMBER = 4;
         private const int UP_TILE_CELL_NUMBER = 5;
+        private const int UP_TILE_CELL_NUMBER_ALT = 6;
         private Level _currentLevel;
         public Level CurrentLevel
         {
@@ -117,7 +118,7 @@ namespace Game.Ghosts
             Vector2 localPosition = _currentLevel.ToLocal(_movement.BodyToMove.GlobalPosition);
             Vector2 mapPosition = _currentLevel.WorldToMap(localPosition);
             int cellNumber = _currentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
-            return cellNumber == UP_TILE_CELL_NUMBER;
+            return cellNumber == UP_TILE_CELL_NUMBER || cellNumber == UP_TILE_CELL_NUMBER_ALT;
         }
 
         public override void ExitState()

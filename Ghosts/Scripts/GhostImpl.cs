@@ -44,9 +44,9 @@ namespace Game.Ghosts
 
         public override void PauseGhost()
         {
+            previousDirection = MovementReference.GetCurrentDirection();
             if (!GhostCollision.Fleeing)
             {
-                previousDirection = MovementReference.GetCurrentDirection();
                 StopGhost();
             }
         }
@@ -60,6 +60,7 @@ namespace Game.Ghosts
                 ScatterStateReference.ResetTileDetection();
                 ChaseStateReference.ResetTileDetection();
                 FrightenedStateReference.ResetTileDetection();
+                ReturnStateReference.ResetTileDetection();
             }
         }
 
