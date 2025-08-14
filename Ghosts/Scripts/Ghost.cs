@@ -185,8 +185,8 @@ namespace Game.Ghosts
             _movementReference.Connect("MovementStopped", this, nameof(OnMovementStopped));
             _ghostCollision.Connect("GhostEaten", this, nameof(OnGhostEaten));
             _returnStateReference.Connect("ReturnStateEntered", this, nameof(OnReturnStateEntered));
-            _returnStateReference.Connect("GhostHouseEntered", this, nameof(OnGhostHouseEntered));
             _returnStateReference.Connect("ReturnStateExited", this, nameof(OnReturnStateExited));
+            _returnStateReference.Connect("GhostHouseEntered", this, nameof(OnGhostHouseEntered));
         }
 
         public abstract void StartGhost();

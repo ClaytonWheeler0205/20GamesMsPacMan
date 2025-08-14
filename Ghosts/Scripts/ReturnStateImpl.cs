@@ -1,3 +1,4 @@
+using Game.Bus;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -48,9 +49,10 @@ namespace Game.Ghosts
                         Movement.ChangeDirection(Vector2.Down);
                     }
                 }
-                if (IsAtUpTile())
+                if (IsAtUpTile() && !_inUpTile)
                 {
                     EmitSignal("GhostHouseEntered");
+                    GhostEventBus.Instance.EmitSignal("AnyGhostEntersHouse");
                     Movement.ChangeDirection(Vector2.Up);
                     _inUpTile = true;
                     Movement.Speed = Movement.BaseSpeed;

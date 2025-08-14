@@ -74,6 +74,12 @@ namespace Game
         [Export]
         private NodePath _pelletCounterPath;
         private PelletCounter _pelletCounterReference;
+        [Export]
+        private NodePath _ghostEatenSoundPath;
+        private AudioStreamPlayer _ghostEatenSoundReference;
+        [Export]
+        private NodePath _ghostFleeingSoundPath;
+        private GhostFleeingPlayer _ghostFleeingSoundReference;
 
         private bool _isPaused = false;
 
@@ -107,6 +113,8 @@ namespace Game
             _scatterTimerReference = GetNode<Timer>(_scatterTimerPath);
             _chaseTimerReference = GetNode<Timer>(_chaseTimerPath);
             _pelletCounterReference = GetNode<PelletCounter>(_pelletCounterPath);
+            _ghostEatenSoundReference = GetNode<AudioStreamPlayer>(_ghostEatenSoundPath);
+            _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
         }
 
         private void CheckNodeReferences()
@@ -175,6 +183,14 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Pellet Counter Reference is not valid!");
             }
+            if (!_ghostEatenSoundReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Ghost Eaten Sound Player Reference is not valid!");
+            }
+            if (!_ghostFleeingSoundReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Ghost Fleeing Sound Reference is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -205,6 +221,8 @@ namespace Game
                 _frightenedFlashingTimerReference.Stop();
                 _frightenedFlashTimerReference.Stop();
                 _frightenedTimerReference.Stop();
+                _ghostFleeingSoundReference.StopFleeingSound();
+                _ghostPointValue = 200;
                 await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
                 _player.PlayDeathAnimation();
                 _deathJingle.Play();
@@ -267,6 +285,7 @@ namespace Game
             _chaseTimerReference.Stop();
             _ghostPointValue = 200;
             _pelletCounterReference.ResetCounter();
+            _ghostFleeingSoundReference.StopFleeingSound();
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
             {
@@ -293,6 +312,7 @@ namespace Game
 
         public async void OnGhostEaten(Ghost ghostEaten)
         {
+            _ghostEatenSoundReference.Play();
             _player.Visible = false;
             _player.Pause();
             _controller.IsControllerActive = false;
@@ -335,6 +355,7 @@ namespace Game
             _frightenedFlashingTimerReference.Paused = false;
             ghostEaten.Visible = true;
             ghostEaten.SetGhostFleeing();
+            _ghostFleeingSoundReference.PlayFleeingSound();
             _ghostPointValue *= 2;
         }
 

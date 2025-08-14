@@ -23,6 +23,8 @@ namespace Game.Bus
         public delegate void InkyReleased();
         [Signal]
         public delegate void ClydeReleased();
+        [Signal]
+        public delegate void AnyGhostEntersHouse();
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
