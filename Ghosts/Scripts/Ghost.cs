@@ -203,71 +203,11 @@ namespace Game.Ghosts
         public abstract void SlowDownGhost();
         public abstract void SpeedupGhost();
         public abstract void OnSpeedChangeRequested(float newSpeed);
-
-        public void OnDirectionChanged(Vector2 newDirection)
-        {
-            if (_bodyVisual.Visible)
-            {
-                _bodyVisual.Play("move");
-            }
-            else if (_frightenedBodyVisual.Visible)
-            {
-                _frightenedBodyVisual.Play("frightened_move");
-                _frightenedFlashVisual.Frame = _frightenedBodyVisual.Frame;
-                _frightenedFlashVisual.Play("frightened_flash_move");
-            }
-
-            if (newDirection == Vector2.Up)
-            {
-                _eyes.Play("look_up");
-            }
-            else if (newDirection == Vector2.Down)
-            {
-                _eyes.Play("look_down");
-            }
-            else if (newDirection == Vector2.Left)
-            {
-                _eyes.Play("look_left");
-            }
-            else if (newDirection == Vector2.Right)
-            {
-                _eyes.Play("look_right");
-            }
-
-        }
-
-        public void OnMovementStopped()
-        {
-            _bodyVisual.Stop();
-            _frightenedBodyVisual.Stop();
-            _frightenedFlashVisual.Stop();
-        }
-
-        public void OnGhostEaten()
-        {
-            Visible = false;
-            GhostEventBus.Instance.EmitSignal("GhostEaten", this);
-        }
-
-        public void OnReturnStateEntered()
-        {
-            _bodyVisual.Stop();
-            _bodyVisual.Visible = false;
-            _ghostCollision.Fleeing = true;
-        }
-
-        public void OnGhostHouseEntered()
-        {
-            _bodyVisual.Visible = true;
-            _bodyVisual.Play("move");
-            _ghostCollision.Fleeing = false;
-        }
-
-        public void OnReturnStateExited()
-        {
-            _bodyVisual.Visible = true;
-            _ghostCollision.Fleeing = false;
-        }
-
+        public abstract void OnDirectionChanged(Vector2 newDirection);
+        public abstract void OnMovementStopped();
+        public abstract void OnGhostEaten();
+        public abstract void OnReturnStateEntered();
+        public abstract void OnGhostHouseEntered();
+        public abstract void OnReturnStateExited();
     }
 }

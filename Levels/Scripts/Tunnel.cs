@@ -1,6 +1,5 @@
 using Game.Ghosts;
 using Godot;
-using System;
 
 public class Tunnel : Area2D
 {

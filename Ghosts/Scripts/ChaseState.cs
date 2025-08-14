@@ -1,8 +1,6 @@
-using Godot;
 using Game.Levels;
 using Util.ExtensionMethods;
 using Game.Player;
-using Game.Bus;
 
 namespace Game.Ghosts
 {

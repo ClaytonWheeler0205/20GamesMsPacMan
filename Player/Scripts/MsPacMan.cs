@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Godot;
 
 namespace Game.Player

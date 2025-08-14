@@ -1,7 +1,7 @@
 using Game.Levels;
 using Game.Player;
 using Godot;
-using Util.ExtensionMethods;
+using Game.Bus;
 
 namespace Game.Ghosts
 {
@@ -157,5 +157,67 @@ namespace Game.Ghosts
             }
         }
 
+        public override void OnDirectionChanged(Vector2 newDirection)
+        {
+            if (BodyVisual.Visible)
+            {
+                BodyVisual.Play("move");
+            }
+            else if (FrightenedBodyVisual.Visible)
+            {
+                FrightenedBodyVisual.Play("frightened_move");
+                FrightenedFlashVisual.Frame = FrightenedBodyVisual.Frame;
+                FrightenedFlashVisual.Play("frightened_flash_move");
+            }
+            if (newDirection == Vector2.Up)
+            {
+                Eyes.Play("look_up");
+            }
+            else if (newDirection == Vector2.Down)
+            {
+                Eyes.Play("look_down");
+            }
+            else if (newDirection == Vector2.Left)
+            {
+                Eyes.Play("look_left");
+            }
+            else if (newDirection == Vector2.Right)
+            {
+                Eyes.Play("look_right");
+            }
+        }
+
+        public override void OnMovementStopped()
+        {
+            BodyVisual.Stop();
+            FrightenedBodyVisual.Stop();
+            FrightenedFlashVisual.Stop();
+        }
+
+        public override void OnGhostEaten()
+        {
+            Visible = false;
+            GhostEventBus.Instance.EmitSignal("GhostEaten", this);
+        }
+
+        public override void OnReturnStateEntered()
+        {
+            BodyVisual.Stop();
+            BodyVisual.Visible = false;
+            GhostCollision.Fleeing = true;
+        }
+
+        public override void OnGhostHouseEntered()
+        {
+            BodyVisual.Visible = true;
+            BodyVisual.Play("move");
+            GhostCollision.Fleeing = false;
+        }
+
+        public override void OnReturnStateExited()
+        {
+            BodyVisual.Visible = true;
+            GhostCollision.Fleeing = false;
+        }
     }
 }

@@ -1,6 +1,5 @@
 using Game.Levels;
 using Util.ExtensionMethods;
-using Godot;
 
 namespace Game.Ghosts
 {

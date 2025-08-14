@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Game.Levels;
 using Game.Player;
-using Godot;
 
 namespace Game.Ghosts
 {
