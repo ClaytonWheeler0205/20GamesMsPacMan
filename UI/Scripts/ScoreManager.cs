@@ -11,6 +11,8 @@ namespace Game.UI
         private NodePath _scoreDisplayPath;
         private Label _scoreDisplay;
         private int _score = 0;
+        private bool _lifeGained = false;
+        private const int LIFE_POINT_LIMIT = 10000;
 
         public override void _Ready()
         {
@@ -41,6 +43,11 @@ namespace Game.UI
         {
             _score += pointsToGive;
             UpdateScore();
+            if (_score >= LIFE_POINT_LIMIT && !_lifeGained)
+            {
+                _lifeGained = true;
+                LifeEventBus.Instance.EmitSignal("LifeGained");
+            }
         }
 
         private void UpdateScore()

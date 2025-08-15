@@ -1,8 +1,12 @@
 using Godot;
 
-public abstract class GhostFleeingPlayer : AudioStreamPlayer
+namespace Game.Ghosts
 {
-    public abstract void PlayFleeingSound();
-    public abstract void StopFleeingSound();
-    public abstract void OnAnyGhostEntersHouse();
+
+    public abstract class GhostFleeingPlayer : AudioStreamPlayer
+    {
+        public abstract void PlayFleeingSound();
+        public abstract void StopFleeingSound();
+        public abstract void OnAnyGhostEntersHouse();
+    }
 }

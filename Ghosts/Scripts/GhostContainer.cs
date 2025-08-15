@@ -16,5 +16,6 @@ namespace Game.Ghosts
         public abstract void SetGhostsVulnerability();
         public abstract void SetGhostsInvulnerable();
         public abstract void SetGhostsFlash();
+        public abstract void SetGhostsInvisible();
     }
 }

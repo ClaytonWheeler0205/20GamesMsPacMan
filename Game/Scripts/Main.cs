@@ -5,6 +5,7 @@ using Godot;
 using Util.ExtensionMethods;
 using Game.Ghosts;
 using Game.Pellets;
+using Game.UI;
 
 namespace Game
 {
@@ -80,6 +81,12 @@ namespace Game
         [Export]
         private NodePath _ghostFleeingSoundPath;
         private GhostFleeingPlayer _ghostFleeingSoundReference;
+        [Export]
+        private NodePath _livesManagerPath;
+        private LivesManager _livesManagerReference;
+        [Export]
+        private NodePath _gameOverLabelPath;
+        private Control _gameOverLabelReference;
 
         private bool _isPaused = false;
 
@@ -115,6 +122,8 @@ namespace Game
             _pelletCounterReference = GetNode<PelletCounter>(_pelletCounterPath);
             _ghostEatenSoundReference = GetNode<AudioStreamPlayer>(_ghostEatenSoundPath);
             _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
+            _livesManagerReference = GetNode<LivesManager>(_livesManagerPath);
+            _gameOverLabelReference = GetNode<Control>(_gameOverLabelPath);
         }
 
         private void CheckNodeReferences()
@@ -191,6 +200,14 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Ghost Fleeing Sound Reference is not valid!");
             }
+            if (!_livesManagerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Lives Manager Reference is not valid!");
+            }
+            if (!_gameOverLabelReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Game Over Label Reference is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -231,10 +248,20 @@ namespace Game
 
         public void OnDeathJingleFinished()
         {
-            ResetPlayer();
-            _ghostContainer.ResetGhosts();
-            _startJingle.Play();
-            _playerDying = false;
+            _livesManagerReference.LoseLife();
+            if (_livesManagerReference.GetLivesRemaining() >= 0)
+            {
+                ResetPlayer();
+                _ghostContainer.ResetGhosts();
+                _startJingle.Play();
+                _playerDying = false;
+            }
+            else
+            {
+                _player.Visible = false;
+                _ghostContainer.SetGhostsInvisible();
+                _gameOverLabelReference.Visible = true;
+            }
         }
 
         private void SetupPlayer()

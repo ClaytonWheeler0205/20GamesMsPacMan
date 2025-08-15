@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Ghosts/Scenes/Blinky.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Scenes/MsPacMan.tscn" type="PackedScene" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://Ghosts/Audio/ghostEaten.wav" type="AudioStream" id=17]
 [ext_resource path="res://Ghosts/Audio/ghostFleeing.wav" type="AudioStream" id=18]
 [ext_resource path="res://Ghosts/Scripts/GhostFleeingPlayerImpl.cs" type="Script" id=19]
+[ext_resource path="res://UI/Scenes/LivesUI.tscn" type="PackedScene" id=20]
+[ext_resource path="res://UI/Scenes/GameOverUI.tscn" type="PackedScene" id=21]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -40,6 +42,8 @@ _chaseTimerPath = NodePath("GhostTimers/ChaseTimer")
 _pelletCounterPath = NodePath("PelletCounter")
 _ghostEatenSoundPath = NodePath("GhostEatenPlayer")
 _ghostFleeingSoundPath = NodePath("GhostFleeingPlayer")
+_livesManagerPath = NodePath("GUI/LivesUI")
+_gameOverLabelPath = NodePath("GUI/GameOverUI")
 
 [node name="LevelContainer" type="Node2D" parent="."]
 
@@ -91,6 +95,17 @@ texture = ExtResource( 10 )
 layer = 2
 
 [node name="ScoreUI" parent="GUI" instance=ExtResource( 5 )]
+
+[node name="LivesUI" parent="GUI" instance=ExtResource( 20 )]
+margin_left = 215.0
+margin_top = -385.0
+margin_right = 855.0
+margin_bottom = -25.0
+
+[node name="GameOverUI" parent="GUI" instance=ExtResource( 21 )]
+visible = false
+margin_top = -164.0
+margin_bottom = 196.0
 
 [node name="StartJinglePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )

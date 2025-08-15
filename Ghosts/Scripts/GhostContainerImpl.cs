@@ -95,5 +95,14 @@ namespace Game.Ghosts
             }
         }
 
+        public override void SetGhostsInvisible()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.Visible = false;
+            }
+        }
+
+
     }
 }

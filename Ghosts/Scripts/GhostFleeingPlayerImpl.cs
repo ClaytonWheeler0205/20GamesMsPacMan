@@ -1,42 +1,46 @@
 using Game.Bus;
 
-public class GhostFleeingPlayerImpl : GhostFleeingPlayer
+namespace Game.Ghosts
 {
-    private int _ghostsFleeing = 0;
 
-    public override void _Ready()
+    public class GhostFleeingPlayerImpl : GhostFleeingPlayer
     {
-        SetNodeConnections();
-    }
+        private int _ghostsFleeing = 0;
 
-    private void SetNodeConnections()
-    {
-        GhostEventBus.Instance.Connect("AnyGhostEntersHouse", this, nameof(OnAnyGhostEntersHouse));
-    }
-
-    public override void PlayFleeingSound()
-    {
-        _ghostsFleeing++;
-        if (_ghostsFleeing == 1)
+        public override void _Ready()
         {
-            Play();
+            SetNodeConnections();
         }
-    }
 
-    public override void StopFleeingSound()
-    {
-        Stop();
-        _ghostsFleeing = 0;
-    }
-
-    public override void OnAnyGhostEntersHouse()
-    {
-        _ghostsFleeing--;
-        if (_ghostsFleeing <= 0)
+        private void SetNodeConnections()
         {
-            _ghostsFleeing = 0;
+            GhostEventBus.Instance.Connect("AnyGhostEntersHouse", this, nameof(OnAnyGhostEntersHouse));
+        }
+
+        public override void PlayFleeingSound()
+        {
+            _ghostsFleeing++;
+            if (_ghostsFleeing == 1)
+            {
+                Play();
+            }
+        }
+
+        public override void StopFleeingSound()
+        {
             Stop();
+            _ghostsFleeing = 0;
         }
-    }
 
+        public override void OnAnyGhostEntersHouse()
+        {
+            _ghostsFleeing--;
+            if (_ghostsFleeing <= 0)
+            {
+                _ghostsFleeing = 0;
+                Stop();
+            }
+        }
+
+    }
 }

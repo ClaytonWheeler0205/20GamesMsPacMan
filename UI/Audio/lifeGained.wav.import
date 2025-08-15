@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/lifeGained.wav-18bc4c44516039d0a5e06fc27f2e8451.sample"
+
+[deps]
+
+source_file="res://UI/Audio/lifeGained.wav"
+dest_files=[ "res://.import/lifeGained.wav-18bc4c44516039d0a5e06fc27f2e8451.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
