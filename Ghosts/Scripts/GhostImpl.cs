@@ -11,6 +11,7 @@ namespace Game.Ghosts
         private float _ghostTunnelSpeed = 25.0f;
         private int _tunnelsEntered = 0;
         private bool _isInTunnel = false;
+        private bool _shouldBePaused = false;
 
         public override void StopGhost()
         {
@@ -26,6 +27,7 @@ namespace Game.Ghosts
             GlobalPosition = startPosition;
             StateMachineReference.ResetMachine();
             _isInTunnel = false;
+            _shouldBePaused = false;
         }
 
         public override void SetPlayerReference(MsPacMan player)
@@ -49,6 +51,7 @@ namespace Game.Ghosts
             {
                 StopGhost();
             }
+            _shouldBePaused = true;
         }
 
         public override void ResumeGhost()
@@ -62,6 +65,7 @@ namespace Game.Ghosts
                 FrightenedStateReference.ResetTileDetection();
                 ReturnStateReference.ResetTileDetection();
             }
+            _shouldBePaused = false;
         }
 
         public override void SetGhostVulnerability()
@@ -213,6 +217,10 @@ namespace Game.Ghosts
             BodyVisual.Visible = true;
             BodyVisual.Play("move");
             GhostCollision.Fleeing = false;
+            if (_shouldBePaused)
+            {
+                PauseGhost();
+            }
         }
 
         public override void OnReturnStateExited()

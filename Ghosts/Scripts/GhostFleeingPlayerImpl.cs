@@ -20,7 +20,7 @@ namespace Game.Ghosts
         public override void PlayFleeingSound()
         {
             _ghostsFleeing++;
-            if (_ghostsFleeing == 1)
+            if (_ghostsFleeing >= 1 && !Playing)
             {
                 Play();
             }
