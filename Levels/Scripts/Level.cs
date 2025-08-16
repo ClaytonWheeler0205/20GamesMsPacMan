@@ -21,7 +21,7 @@ namespace Game.Levels
         private AnimationPlayer _levelFlashPlayer;
         protected AnimationPlayer LevelFlashPlayer
         {
-            get { return _levelFlashPlayer;}
+            get { return _levelFlashPlayer; }
         }
         [Export]
         private NodePath _pelletsPath;
@@ -34,19 +34,19 @@ namespace Game.Levels
         private Vector2 _blinkyHomeTilePosition;
         public Vector2 BlinkyHomeTilePosition
         {
-            get { return _blinkyHomeTilePosition;}
+            get { return _blinkyHomeTilePosition; }
         }
         [Export]
         private Vector2 _pinkyHomeTilePosition;
         public Vector2 PinkyHomeTilePosition
         {
-            get { return _pinkyHomeTilePosition;}
+            get { return _pinkyHomeTilePosition; }
         }
         [Export]
         private Vector2 _inkyHomeTilePosition;
         public Vector2 InkyHomeTilePosition
         {
-            get { return _inkyHomeTilePosition;}
+            get { return _inkyHomeTilePosition; }
         }
         [Export]
         private Vector2 _clydeHomeTilePosition;
@@ -59,7 +59,7 @@ namespace Game.Levels
         private Vector2 _ghostHousePosition;
         public Vector2 GhostHousePosition
         {
-            get { return _ghostHousePosition;}
+            get { return _ghostHousePosition; }
         }
 
         public override void _Ready()
@@ -89,5 +89,6 @@ namespace Game.Levels
 
         public abstract void PlayLevelFlash();
         public abstract void ResetLevel();
+        public abstract void DestroyTunnels();
     }
 }
