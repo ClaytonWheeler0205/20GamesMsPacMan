@@ -278,7 +278,12 @@ namespace Game
             }
             switch (levelNumber)
             {
+                case 1:
+                    _player.Movement.Speed = _player.Movement.BaseSpeed * 0.8f;
+                    break;
                 case 2:
+                    _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
+                    _player.IncreaseSpeedupFactor();
                     _frightenedTimerDuration = 3.75f;
                     break;
                 case 3:
@@ -288,6 +293,8 @@ namespace Game
                     _frightenedTimerDuration = 1.75f;
                     break;
                 case 5:
+                    _player.Movement.Speed = _player.Movement.BaseSpeed;
+                    _player.IncreaseSpeedupFactor();
                     _frightenedTimerDuration = 0.75f;
                     _scatterTimerDuration = 5.0f;
                     break;
@@ -322,12 +329,18 @@ namespace Game
                     break;
                 case 17:
                     _useFrightenedTimers = false;
+                    _player.UseSpeedBoost = false;
                     break;
                 case 18:
                     _useFrightenedTimers = true;
+                    _player.UseSpeedBoost = true;
                     break;
                 case 19:
                     _useFrightenedTimers = false;
+                    _player.UseSpeedBoost = false;
+                    break;
+                case 21:
+                    _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
                     break;
             }
         }

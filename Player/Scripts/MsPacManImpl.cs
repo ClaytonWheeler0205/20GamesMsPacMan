@@ -9,7 +9,6 @@ namespace Game.Player
     {
         [Export]
         private NodePath _movementComponentPath;
-        private MovementComponent _movement;
         [Export]
         private NodePath _spritePath;
         private AnimatedSprite _visual;
@@ -22,26 +21,26 @@ namespace Game.Player
 
         private Vector2 _previousDirection = Vector2.Zero;
 
-        private float _speedupFactor = 1.125f;
+        private float _speedupFactor = 0.9f;
 
         public override void _Ready()
         {
             SetNodeReferences();
             CheckNodeReferences();
-            _movement.BodyToMove = this;
+            Movement.BodyToMove = this;
             PelletEventBus.Instance.Connect("PowerPelletCollected", this, nameof(OnPowerPelletCollected));
         }
 
         private void SetNodeReferences()
         {
-            _movement = GetNode<MovementComponent>(_movementComponentPath);
+            Movement = GetNode<MovementComponent>(_movementComponentPath);
             _visual = GetNode<AnimatedSprite>(_spritePath);
             _deathAnimation = GetNode<AnimationPlayer>(_deathAnimationPath);
         }
 
         private void CheckNodeReferences()
         {
-            if (!_movement.IsValid())
+            if (!Movement.IsValid())
             {
                 GD.PrintErr("ERROR: MsPacMan movement component is not valid!");
             }
@@ -57,24 +56,24 @@ namespace Game.Player
 
         public override void Move(Vector2 direction)
         {
-            _movement.ChangeDirection(direction);
+            Movement.ChangeDirection(direction);
             _visual.Play(MOVE_ANIMATION_NAME);
         }
 
         public override void Stop()
         {
-            _movement.StopMoving();
+            Movement.StopMoving();
         }
 
         public override void Pause()
         {
-            _previousDirection = _movement.GetCurrentDirection();
-            _movement.StopMoving();
+            _previousDirection = Movement.GetCurrentDirection();
+            Movement.StopMoving();
         }
 
         public override void Resume()
         {
-            _movement.OverrideDirection(_previousDirection);
+            Movement.OverrideDirection(_previousDirection);
             _visual.Play(MOVE_ANIMATION_NAME);
         }
 
@@ -129,19 +128,33 @@ namespace Game.Player
 
         public override Vector2 GetPlayerDirection()
         {
-            return _movement.GetCurrentDirection();
+            return Movement.GetCurrentDirection();
         }
 
         public override void ResetPlayerSpeed()
         {
-            _movement.Speed = _movement.BaseSpeed;
+            Movement.Speed = Movement.BaseSpeed;
         }
 
 
         public void OnPowerPelletCollected()
         {
-            _movement.Speed = _movement.BaseSpeed * _speedupFactor;
+            if (UseSpeedBoost)
+            {
+                Movement.Speed = Movement.BaseSpeed * _speedupFactor;
+            }
         }
 
+        public override void IncreaseSpeedupFactor()
+        {
+            if (_speedupFactor < 0.95f)
+            {
+                _speedupFactor = 0.95f;
+            }
+            else if (_speedupFactor < 1.0f)
+            {
+                _speedupFactor = 1.0f;
+            }
+        }
     }
 }
