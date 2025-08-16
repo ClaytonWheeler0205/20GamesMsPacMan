@@ -69,10 +69,6 @@ namespace Game
         private Timer _scatterTimerReference;
         private float _scatterTimerDuration = 7.0f;
         [Export]
-        private NodePath _chaseTimerPath;
-        private Timer _chaseTimerReference;
-        private float _chaseTimerDuration = 20.0f;
-        [Export]
         private NodePath _pelletCounterPath;
         private PelletCounter _pelletCounterReference;
         [Export]
@@ -118,7 +114,6 @@ namespace Game
             _frightenedFlashTimerReference = GetNode<Timer>(_frightenedFlashTimerPath);
             _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
             _scatterTimerReference = GetNode<Timer>(_scatterTimerPath);
-            _chaseTimerReference = GetNode<Timer>(_chaseTimerPath);
             _pelletCounterReference = GetNode<PelletCounter>(_pelletCounterPath);
             _ghostEatenSoundReference = GetNode<AudioStreamPlayer>(_ghostEatenSoundPath);
             _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
@@ -184,10 +179,6 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Scatter Timer Reference is not valid!");
             }
-            if (!_chaseTimerReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Chase Timer Reference is not valid!");
-            }
             if (!_pelletCounterReference.IsValid())
             {
                 GD.PrintErr("ERROR: Main Pellet Counter Reference is not valid!");
@@ -222,7 +213,6 @@ namespace Game
             _frightenedFlashTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
             _frightenedFlashingTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashingTimerTimeout));
             _scatterTimerReference.Connect("timeout", this, nameof(OnScatterTimerTimeout));
-            _chaseTimerReference.Connect("timeout", this, nameof(OnChaseTimerTimeout));
         }
 
         public async void OnPlayerHit()
@@ -234,7 +224,6 @@ namespace Game
                 _player.Stop();
                 _ghostContainer.StopGhosts();
                 _scatterTimerReference.Stop();
-                _chaseTimerReference.Stop();
                 _frightenedFlashingTimerReference.Stop();
                 _frightenedFlashTimerReference.Stop();
                 _frightenedTimerReference.Stop();
@@ -253,6 +242,7 @@ namespace Game
             {
                 ResetPlayer();
                 _ghostContainer.ResetGhosts();
+                ScatterChaseTracker.Instance.InScatterState = true;
                 _startJingle.Play();
                 _playerDying = false;
             }
@@ -292,7 +282,6 @@ namespace Game
             _ghostContainer.StartGhosts();
             ScatterChaseTracker.Instance.InScatterState = true;
             _scatterTimerReference.Paused = false;
-            _chaseTimerReference.Paused = false;
             _frightenedTimerReference.Paused = false;
             _frightenedFlashTimerReference.Paused = false;
             _frightenedFlashingTimerReference.Paused = false;
@@ -309,7 +298,6 @@ namespace Game
             _frightenedFlashTimerReference.Stop();
             _frightenedFlashingTimerReference.Stop();
             _scatterTimerReference.Stop();
-            _chaseTimerReference.Stop();
             _ghostPointValue = 200;
             _pelletCounterReference.ResetCounter();
             _ghostFleeingSoundReference.StopFleeingSound();
@@ -393,7 +381,6 @@ namespace Game
             _frightenedFlashingTimerReference.Stop();
             _ghostContainer.SetGhostsVulnerability();
             _scatterTimerReference.Paused = true;
-            _chaseTimerReference.Paused = true;
         }
 
         public void OnFrightenedTimerTimeout()
@@ -408,7 +395,6 @@ namespace Game
             _ghostContainer.SetGhostsInvulnerable();
             _ghostPointValue = 200;
             _scatterTimerReference.Paused = false;
-            _chaseTimerReference.Paused = false;
             _player.ResetPlayerSpeed();
         }
 
@@ -420,13 +406,6 @@ namespace Game
         public void OnScatterTimerTimeout()
         {
             ScatterChaseTracker.Instance.InScatterState = false;
-            _chaseTimerReference.Start(_chaseTimerDuration);
-        }
-
-        public void OnChaseTimerTimeout()
-        {
-            ScatterChaseTracker.Instance.InScatterState = true;
-            _scatterTimerReference.Start(_scatterTimerDuration);
         }
 
         public override void _UnhandledInput(InputEvent @event)
