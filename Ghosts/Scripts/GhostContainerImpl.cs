@@ -103,6 +103,21 @@ namespace Game.Ghosts
             }
         }
 
+        public override void ResetGhostHomeTiles(Level level)
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.SetLevelReference(level);
+            }
+        }
+
+        public override void RevreseDirections()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                DirectionReverser.ReverseDirection(ghost.MovementReference);
+            }
+        }
 
     }
 }

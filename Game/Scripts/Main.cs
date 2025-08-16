@@ -55,15 +55,16 @@ namespace Game
         [Export]
         private NodePath _frightenedTimerPath;
         private Timer _frightenedTimerReference;
-        private float _frightenedTimerDuration = 7.0f;
+        private float _frightenedTimerDuration = 4.75f;
         [Export]
         private NodePath _frightenedFlashTimerPath;
         private Timer _frightenedFlashTimerReference;
-        private float _frightenedFlashTimerDuration = 3.0f;
+        private float _frightenedFlashTimerDuration = 1.25f;
         [Export]
         private NodePath _frightenedFlashingTimerPath;
         private Timer _frightenedFlashingTimerReference;
-        private float _frightenedFlashingTimerDuration = 0.25f;
+        private float _frightenedFlashingTimerDuration = 0.125f;
+        private bool _useFrightenedTimers = true;
         [Export]
         private NodePath _scatterTimerPath;
         private Timer _scatterTimerReference;
@@ -242,6 +243,7 @@ namespace Game
             {
                 ResetPlayer();
                 _ghostContainer.ResetGhosts();
+                _ghostContainer.ResetGhostHomeTiles(_currentLevel);
                 ScatterChaseTracker.Instance.InScatterState = true;
                 _startJingle.Play();
                 _playerDying = false;
@@ -273,6 +275,60 @@ namespace Game
             else
             {
                 _currentLevel.ResetLevel();
+            }
+            switch (levelNumber)
+            {
+                case 2:
+                    _frightenedTimerDuration = 3.75f;
+                    break;
+                case 3:
+                    _frightenedTimerDuration = 2.75f;
+                    break;
+                case 4:
+                    _frightenedTimerDuration = 1.75f;
+                    break;
+                case 5:
+                    _frightenedTimerDuration = 0.75f;
+                    _scatterTimerDuration = 5.0f;
+                    break;
+                case 6:
+                    _frightenedTimerDuration = 3.75f;
+                    break;
+                case 7:
+                    _frightenedTimerDuration = 0.75f;
+                    break;
+                case 9:
+                    _frightenedFlashTimerDuration = 0.75f;
+                    _frightenedTimerDuration = 0.25f;
+                    break;
+                case 10:
+                    _frightenedFlashTimerDuration = 1.25f;
+                    _frightenedTimerDuration = 3.75f;
+                    break;
+                case 11:
+                    _frightenedTimerDuration = 0.25f;
+                    break;
+                case 12:
+                    _frightenedFlashTimerDuration = 0.75f;
+                    _frightenedTimerDuration = 0.25f;
+                    break;
+                case 14:
+                    _frightenedFlashTimerDuration = 1.25f;
+                    _frightenedTimerDuration = 1.75f;
+                    break;
+                case 15:
+                    _frightenedFlashTimerDuration = 0.75f;
+                    _frightenedTimerDuration = 0.25f;
+                    break;
+                case 17:
+                    _useFrightenedTimers = false;
+                    break;
+                case 18:
+                    _useFrightenedTimers = true;
+                    break;
+                case 19:
+                    _useFrightenedTimers = false;
+                    break;
             }
         }
 
@@ -376,11 +432,18 @@ namespace Game
 
         public void OnPowerPelledCollected()
         {
-            _frightenedTimerReference.Start(_frightenedTimerDuration);
-            _frightenedFlashTimerReference.Stop();
-            _frightenedFlashingTimerReference.Stop();
-            _ghostContainer.SetGhostsVulnerability();
-            _scatterTimerReference.Paused = true;
+            if (_useFrightenedTimers)
+            {
+                _frightenedTimerReference.Start(_frightenedTimerDuration);
+                _frightenedFlashTimerReference.Stop();
+                _frightenedFlashingTimerReference.Stop();
+                _ghostContainer.SetGhostsVulnerability();
+                _scatterTimerReference.Paused = true;
+            }
+            else
+            {
+                _ghostContainer.RevreseDirections();
+            }
         }
 
         public void OnFrightenedTimerTimeout()

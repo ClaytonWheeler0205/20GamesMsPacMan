@@ -38,7 +38,6 @@ _frightenedTimerPath = NodePath("GhostTimers/GhostFrightenedTimer")
 _frightenedFlashTimerPath = NodePath("GhostTimers/GhostFlashTimer")
 _frightenedFlashingTimerPath = NodePath("GhostTimers/GhostFlashingTimer")
 _scatterTimerPath = NodePath("GhostTimers/ScatterTimer")
-_chaseTimerPath = NodePath("GhostTimers/ChaseTimer")
 _pelletCounterPath = NodePath("PelletCounter")
 _ghostEatenSoundPath = NodePath("GhostEatenPlayer")
 _ghostFleeingSoundPath = NodePath("GhostFleeingPlayer")
@@ -117,10 +116,6 @@ stream = ExtResource( 7 )
 
 [node name="ScatterTimer" type="Timer" parent="GhostTimers"]
 wait_time = 7.0
-one_shot = true
-
-[node name="ChaseTimer" type="Timer" parent="GhostTimers"]
-wait_time = 20.0
 one_shot = true
 
 [node name="GhostFrightenedTimer" type="Timer" parent="GhostTimers"]

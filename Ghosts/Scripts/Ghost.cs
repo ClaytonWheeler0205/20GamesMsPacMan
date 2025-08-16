@@ -13,7 +13,7 @@ namespace Game.Ghosts
         [Export]
         private NodePath _movementPath;
         private MovementComponent _movementReference;
-        protected MovementComponent MovementReference
+        public MovementComponent MovementReference
         {
             get { return _movementReference; }
         }

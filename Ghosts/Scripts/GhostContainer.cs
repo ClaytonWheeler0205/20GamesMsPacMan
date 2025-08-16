@@ -17,5 +17,7 @@ namespace Game.Ghosts
         public abstract void SetGhostsInvulnerable();
         public abstract void SetGhostsFlash();
         public abstract void SetGhostsInvisible();
+        public abstract void ResetGhostHomeTiles(Level level);
+        public abstract void RevreseDirections();
     }
 }
