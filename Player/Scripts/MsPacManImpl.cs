@@ -22,6 +22,7 @@ namespace Game.Player
         private Vector2 _previousDirection = Vector2.Zero;
 
         private float _speedupFactor = 0.9f;
+        private float _previousSpeed;
 
         public override void _Ready()
         {
@@ -133,7 +134,7 @@ namespace Game.Player
 
         public override void ResetPlayerSpeed()
         {
-            Movement.Speed = Movement.BaseSpeed;
+            Movement.Speed = _previousSpeed;
         }
 
 
@@ -141,6 +142,7 @@ namespace Game.Player
         {
             if (UseSpeedBoost)
             {
+                _previousSpeed = Movement.Speed;
                 Movement.Speed = Movement.BaseSpeed * _speedupFactor;
             }
         }

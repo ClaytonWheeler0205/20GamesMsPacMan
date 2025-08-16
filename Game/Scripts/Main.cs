@@ -24,6 +24,7 @@ namespace Game
         private NodePath _levelContainerPath;
         private Node2D _levelContainer;
         private PackedScene _worldOne = GD.Load<PackedScene>("res://Levels/Scenes/Level1.tscn");
+        private PackedScene _worldTwo = GD.Load<PackedScene>("res://Levels/Scenes/Level2.tscn");
         private Level _currentLevel;
         private int _currentLevelNumber = 1;
 
@@ -271,6 +272,15 @@ namespace Game
                 _levelContainer.AddChild(_currentLevel);
                 _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
                 IntersectionDetector.CurrentLevel = _currentLevel;
+            }
+            else if (levelNumber == 3)
+            {
+                _currentLevel.SafeQueueFree();
+                _currentLevel = _worldTwo.Instance<Level>();
+                _levelContainer.AddChild(_currentLevel);
+                _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
+                IntersectionDetector.CurrentLevel = _currentLevel;
+                _ghostContainer.SetupGhosts(_currentLevel, _player);
             }
             else
             {
