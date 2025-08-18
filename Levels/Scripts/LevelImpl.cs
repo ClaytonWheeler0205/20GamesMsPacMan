@@ -87,7 +87,7 @@ namespace Game.Levels
                 _fruitEntranceIndex = GDRandom.RandiRange(0, _fruitEntrancesReference.GetChildCount() - 1);
                 _fruitExitIndex = GDRandom.RandiRange(0, _fruitExitsReference.GetChildCount() - 1);
                 _fruit = GetFruit(fruitIndex);
-                _fruitEntrancesReference.GetChild(_fruitEntranceIndex).AddChild(_fruit);
+                _fruitEntrancesReference.GetChild(_fruitEntranceIndex).CallDeferred("add_child", _fruit);
                 _fruit.Connect("PathCompleted", this, nameof(OnFruitPathCompleted));
                 _fruitExists = true;
             }

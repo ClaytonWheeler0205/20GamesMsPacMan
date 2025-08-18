@@ -280,6 +280,7 @@ namespace Game
             _frightenedFlashingTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashingTimerTimeout));
             _scatterTimerReference.Connect("timeout", this, nameof(OnScatterTimerTimeout));
             FruitEventBus.Instance.Connect("FruitCollected", this, nameof(OnFruitCollected));
+            _pelletCounterReference.Connect("PelletCountForFruitMet", this, nameof(OnPelletCountForFruitMet));
         }
 
         public async void OnPlayerHit()
@@ -629,6 +630,11 @@ namespace Game
                     _5000PointsVisualReference.Visible = false;
                     break;
             }
+        }
+
+        public void OnPelletCountForFruitMet()
+        {
+            _currentLevel.SpawnFruit(_currentLevelNumber);
         }
 
         public override void _UnhandledInput(InputEvent @event)

@@ -13,6 +13,9 @@ namespace Game.Pellets
         private const int PINKY_GLOBAL_PELLET_LIMIT = 7;
         private const int INKY_GLOBAL_PELLET_LIMIT = 17;
         private const int CLYDE_GLOBAL_PELLET_LIMIT = 32;
+        private int _pelletsCollectedForFruit = 0;
+        private const int PELLETS_NEEDED_FOR_FIRST_FRUIT = 64;
+        private const int PELLETS_NEDDED_FOR_SECOND_FRUIT = 176;
 
         public override void _Ready()
         {
@@ -29,6 +32,8 @@ namespace Game.Pellets
 
         public void OnPelletCollected()
         {
+            _pelletsCollectedForFruit++;
+            CheckIfFruitShouldSpawn();
             if (!_useGlobalCounter)
             {
                 _pelletsCollected++;
@@ -61,6 +66,8 @@ namespace Game.Pellets
 
         public void OnPowerPelledCollected()
         {
+            _pelletsCollectedForFruit++;
+            CheckIfFruitShouldSpawn();
             if (!_useGlobalCounter)
             {
                 _pelletsCollected++;
@@ -121,6 +128,15 @@ namespace Game.Pellets
             _useGlobalCounter = false;
             _globalPelletsCollected = 0;
             _pelletsCollected = 0;
+            _pelletsCollectedForFruit = 0;
+        }
+
+        private void CheckIfFruitShouldSpawn()
+        {
+            if (_pelletsCollectedForFruit == PELLETS_NEEDED_FOR_FIRST_FRUIT || _pelletsCollectedForFruit == PELLETS_NEDDED_FOR_SECOND_FRUIT)
+            {
+                EmitSignal("PelletCountForFruitMet");
+            }
         }
     }
 }
