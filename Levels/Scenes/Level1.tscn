@@ -1315,7 +1315,7 @@ curve = SubResource( 45 )
 
 [node name="FruitLoopToExits" type="Node" parent="."]
 
-[node name="LoopToTopLeft" type="Node2D" parent="FruitLoopToExits"]
+[node name="LoopToTopLeft" type="Node" parent="FruitLoopToExits"]
 
 [node name="TopLeft" type="Path2D" parent="FruitLoopToExits/LoopToTopLeft"]
 curve = null
@@ -1329,7 +1329,7 @@ curve = SubResource( 47 )
 [node name="BottomRight" type="Path2D" parent="FruitLoopToExits/LoopToTopLeft"]
 curve = SubResource( 47 )
 
-[node name="LoopToBottomLeft" type="Node2D" parent="FruitLoopToExits"]
+[node name="LoopToBottomLeft" type="Node" parent="FruitLoopToExits"]
 
 [node name="TopLeft" type="Path2D" parent="FruitLoopToExits/LoopToBottomLeft"]
 curve = SubResource( 48 )
@@ -1343,7 +1343,7 @@ curve = SubResource( 50 )
 [node name="BottomRight" type="Path2D" parent="FruitLoopToExits/LoopToBottomLeft"]
 curve = SubResource( 50 )
 
-[node name="LoopToTopRight" type="Node2D" parent="FruitLoopToExits"]
+[node name="LoopToTopRight" type="Node" parent="FruitLoopToExits"]
 
 [node name="TopLeft" type="Path2D" parent="FruitLoopToExits/LoopToTopRight"]
 curve = SubResource( 51 )
@@ -1357,7 +1357,7 @@ curve = SubResource( 52 )
 [node name="BottomRight" type="Path2D" parent="FruitLoopToExits/LoopToTopRight"]
 curve = SubResource( 52 )
 
-[node name="LoopToBottomRight" type="Node2D" parent="FruitLoopToExits"]
+[node name="LoopToBottomRight" type="Node" parent="FruitLoopToExits"]
 
 [node name="TopLeft" type="Path2D" parent="FruitLoopToExits/LoopToBottomRight"]
 curve = SubResource( 51 )

@@ -38,6 +38,7 @@ namespace Game.Levels
             base._Ready();
             SetNodeReferences();
             CheckNodeReferences();
+            SpawnFruit(8);
         }
 
         private void SetNodeReferences()
@@ -144,6 +145,10 @@ namespace Game.Levels
                     _fruit.SafeQueueFree();
                     _fruitExists = false;
                     break;
+            }
+            if (_fruitExists)
+            {
+                _fruit.CheckParentPath();
             }
         }
 

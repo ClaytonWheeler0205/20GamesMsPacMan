@@ -9,5 +9,7 @@ namespace Game.Fruits
         public delegate void PathCompleted();
         [Signal]
         public delegate void FruitDestroyed();
+
+        public abstract void CheckParentPath();
     }
 }

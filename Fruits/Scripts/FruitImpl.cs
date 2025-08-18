@@ -19,5 +19,15 @@ namespace Game.Fruits
             }
         }
 
+        public override void CheckParentPath()
+        {
+            Path2D parentPath = GetParent() as Path2D;
+            if (parentPath.Curve == null)
+            {
+                EmitSignal("PathCompleted");
+            }
+        }
+
+
     }
 }
