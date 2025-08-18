@@ -6,6 +6,7 @@ using Util.ExtensionMethods;
 using Game.Ghosts;
 using Game.Pellets;
 using Game.UI;
+using Game.Fruits;
 
 namespace Game
 {
@@ -45,16 +46,16 @@ namespace Game
         private int _ghostPointValue = 200;
         [Export]
         private NodePath _200PointsVisualPath;
-        private Sprite _200PointsVisual;
+        private Node2D _200PointsVisual;
         [Export]
         private NodePath _400PointsVisualPath;
-        private Sprite _400PointsVisual;
+        private Node2D _400PointsVisual;
         [Export]
         private NodePath _800PointsVisualPath;
-        private Sprite _800PointsVisual;
+        private Node2D _800PointsVisual;
         [Export]
         private NodePath _1600PointsVisualPath;
-        private Sprite _1600PointsVisual;
+        private Node2D _1600PointsVisual;
         [Export]
         private NodePath _frightenedTimerPath;
         private Timer _frightenedTimerReference;
@@ -88,6 +89,31 @@ namespace Game
         private NodePath _gameOverLabelPath;
         private Control _gameOverLabelReference;
 
+        [Export]
+        private NodePath _fruitEatenSoundPath;
+        private AudioStreamPlayer _fruitEatenSoundReference;
+        [Export]
+        private NodePath _100PointsVisualPath;
+        private Node2D _100PointsVisualReference;
+        [Export]
+        private NodePath _200FruitPointsVisualPath;
+        private Node2D _200FruitPointsVisualReference;
+        [Export]
+        private NodePath _500PointsVisualPath;
+        private Node2D _500PointsVisualReference;
+        [Export]
+        private NodePath _700PointsVisualPath;
+        private Node2D _700PointsVisualReference;
+        [Export]
+        private NodePath _1000PointsVisualPath;
+        private Node2D _1000PointsVisualReference;
+        [Export]
+        private NodePath _2000PointsVisualPath;
+        private Node2D _2000PointsVisualReference;
+        [Export]
+        private NodePath _5000PointsVisualPath;
+        private Node2D _5000PointsVisualReference;
+
         private bool _isPaused = false;
 
 
@@ -110,10 +136,10 @@ namespace Game
             _ghostContainer = GetNode<GhostContainer>(_ghostContainerPath);
             _startJingle = GetNode<AudioStreamPlayer>(_startJinglePath);
             _deathJingle = GetNode<AudioStreamPlayer>(_deathJinglePath);
-            _200PointsVisual = GetNode<Sprite>(_200PointsVisualPath);
-            _400PointsVisual = GetNode<Sprite>(_400PointsVisualPath);
-            _800PointsVisual = GetNode<Sprite>(_800PointsVisualPath);
-            _1600PointsVisual = GetNode<Sprite>(_1600PointsVisualPath);
+            _200PointsVisual = GetNode<Node2D>(_200PointsVisualPath);
+            _400PointsVisual = GetNode<Node2D>(_400PointsVisualPath);
+            _800PointsVisual = GetNode<Node2D>(_800PointsVisualPath);
+            _1600PointsVisual = GetNode<Node2D>(_1600PointsVisualPath);
             _frightenedTimerReference = GetNode<Timer>(_frightenedTimerPath);
             _frightenedFlashTimerReference = GetNode<Timer>(_frightenedFlashTimerPath);
             _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
@@ -123,6 +149,14 @@ namespace Game
             _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
             _livesManagerReference = GetNode<LivesManager>(_livesManagerPath);
             _gameOverLabelReference = GetNode<Control>(_gameOverLabelPath);
+            _fruitEatenSoundReference = GetNode<AudioStreamPlayer>(_fruitEatenSoundPath);
+            _100PointsVisualReference = GetNode<Node2D>(_100PointsVisualPath);
+            _200FruitPointsVisualReference = GetNode<Node2D>(_200FruitPointsVisualPath);
+            _500PointsVisualReference = GetNode<Node2D>(_500PointsVisualPath);
+            _700PointsVisualReference = GetNode<Node2D>(_700PointsVisualPath);
+            _1000PointsVisualReference = GetNode<Node2D>(_1000PointsVisualPath);
+            _2000PointsVisualReference = GetNode<Node2D>(_2000PointsVisualPath);
+            _5000PointsVisualReference = GetNode<Node2D>(_5000PointsVisualPath);
         }
 
         private void CheckNodeReferences()
@@ -203,6 +237,34 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Game Over Label Reference is not valid!");
             }
+            if (!_100PointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 100 Points Visual Reference is not valid!");
+            }
+            if (!_200FruitPointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 200 Fruit Points Visual Reference is not valid!");
+            }
+            if (!_500PointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 500 Points Visual Reference is not valid!");
+            }
+            if (!_700PointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 700 Points Visual Reference is not valid!");
+            }
+            if (!_1000PointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 1000 Points Visual Reference is not valid!");
+            }
+            if (!_2000PointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 2000 Points Visual Reference is not valid!");
+            }
+            if (!_5000PointsVisualReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main 5000 Points Visual Reference is not valid!");
+            }
         }
 
         private void SetNodeConnections()
@@ -217,6 +279,7 @@ namespace Game
             _frightenedFlashTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashTimerTimeout));
             _frightenedFlashingTimerReference.Connect("timeout", this, nameof(OnFrightenedFlashingTimerTimeout));
             _scatterTimerReference.Connect("timeout", this, nameof(OnScatterTimerTimeout));
+            FruitEventBus.Instance.Connect("FruitCollected", this, nameof(OnFruitCollected));
         }
 
         public async void OnPlayerHit()
@@ -516,6 +579,56 @@ namespace Game
         public void OnScatterTimerTimeout()
         {
             ScatterChaseTracker.Instance.InScatterState = false;
+        }
+
+        public async void OnFruitCollected(Fruit fruit)
+        {
+            _fruitEatenSoundReference.Play();
+            switch (fruit.PointValue)
+            {
+                case 100:
+                    _100PointsVisualReference.Visible = true;
+                    _100PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _100PointsVisualReference.Visible = false;
+                    break;
+                case 200:
+                    _200FruitPointsVisualReference.Visible = true;
+                    _200FruitPointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _200FruitPointsVisualReference.Visible = false;
+                    break;
+                case 500:
+                    _500PointsVisualReference.Visible = true;
+                    _500PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _500PointsVisualReference.Visible = false;
+                    break;
+                case 700:
+                    _700PointsVisualReference.Visible = true;
+                    _700PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _700PointsVisualReference.Visible = false;
+                    break;
+                case 1000:
+                    _1000PointsVisualReference.Visible = true;
+                    _1000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _1000PointsVisualReference.Visible = false;
+                    break;
+                case 2000:
+                    _2000PointsVisualReference.Visible = true;
+                    _2000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _2000PointsVisualReference.Visible = false;
+                    break;
+                case 5000:
+                    _5000PointsVisualReference.Visible = true;
+                    _5000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+                    _5000PointsVisualReference.Visible = false;
+                    break;
+            }
         }
 
         public override void _UnhandledInput(InputEvent @event)

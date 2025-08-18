@@ -122,7 +122,5 @@ namespace Game.Pellets
             _globalPelletsCollected = 0;
             _pelletsCollected = 0;
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Game.Bus;
 using Game.Fruits;
 using Godot;
 using Util;
@@ -38,7 +39,7 @@ namespace Game.Levels
             base._Ready();
             SetNodeReferences();
             CheckNodeReferences();
-            SpawnFruit(8);
+            SetNodeConnections();
         }
 
         private void SetNodeReferences()
@@ -56,6 +57,11 @@ namespace Game.Levels
             {
                 GD.PrintErr("ERROR: Level Tunnel Container Reference is not valid!");
             }
+        }
+
+        private void SetNodeConnections()
+        {
+            FruitEventBus.Instance.Connect("FruitCollected", this, nameof(OnFruitCollected));
         }
 
         public override void PlayLevelFlash()
@@ -83,7 +89,6 @@ namespace Game.Levels
                 _fruit = GetFruit(fruitIndex);
                 _fruitEntrancesReference.GetChild(_fruitEntranceIndex).AddChild(_fruit);
                 _fruit.Connect("PathCompleted", this, nameof(OnFruitPathCompleted));
-                _fruit.Connect("FruitDestroyed", this, nameof(OnFruitCollected));
                 _fruitExists = true;
             }
         }
@@ -152,7 +157,7 @@ namespace Game.Levels
             }
         }
 
-        public override void OnFruitCollected()
+        public override void OnFruitCollected(Fruit fruit)
         {
             _fruitExists = false;
         }

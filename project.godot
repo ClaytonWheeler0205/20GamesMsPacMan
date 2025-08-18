@@ -23,6 +23,7 @@ PlayerEventBus="*res://Buses/Scenes/PlayerEventBus.tscn"
 GhostEventBus="*res://Buses/Scenes/GhostEventBus.tscn"
 ScatterChaseTracker="*res://Game/Scenes/ScatterChaseTracker.tscn"
 LifeEventBus="*res://Buses/Scenes/LifeEventBus.tscn"
+FruitEventBus="*res://Buses/Scenes/FruitEventBus.tscn"
 
 [display]
 
@@ -81,6 +82,7 @@ pause={
 2d_physics/layer_4="Ghost"
 2d_physics/layer_5="Portal"
 2d_physics/layer_6="Tunnel"
+2d_physics/layer_7="Fruit"
 
 [mono]
 

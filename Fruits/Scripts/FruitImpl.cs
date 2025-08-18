@@ -1,4 +1,6 @@
+using Game.Bus;
 using Godot;
+using Util.ExtensionMethods;
 
 namespace Game.Fruits
 {
@@ -7,8 +9,7 @@ namespace Game.Fruits
     {
         [Export]
         private float _speed = 50.0f;
-        [Export]
-        private float _pointValue = 100;
+        private const string PLAYER_NODE_GROUP = "Player";
 
         public override void _Process(float delta)
         {
@@ -28,6 +29,14 @@ namespace Game.Fruits
             }
         }
 
-
+        public override void OnAreaEntered(Area2D area)
+        {
+            if (area.IsInGroup(PLAYER_NODE_GROUP))
+            {
+                FruitEventBus.Instance.EmitSignal("FruitCollected", this);
+                ScoreEventBus.Instance.EmitSignal("AwardPoints", PointValue);
+                this.SafeQueueFree();
+            }
+        }
     }
 }

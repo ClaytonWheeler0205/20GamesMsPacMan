@@ -1,6 +1,7 @@
 using Game.Pellets;
 using Godot;
 using Util.ExtensionMethods;
+using Game.Fruits;
 
 namespace Game.Levels
 {
@@ -92,6 +93,6 @@ namespace Game.Levels
         public abstract void DestroyTunnels();
         public abstract void SpawnFruit(int fruitIndex);
         public abstract void OnFruitPathCompleted();
-        public abstract void OnFruitCollected();
+        public abstract void OnFruitCollected(Fruit fruit);
     }
 }
