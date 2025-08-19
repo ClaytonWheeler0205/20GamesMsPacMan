@@ -114,6 +114,10 @@ namespace Game
         private NodePath _5000PointsVisualPath;
         private Node2D _5000PointsVisualReference;
 
+        [Export]
+        private NodePath _fruitCounterPath;
+        private FruitCounter _fruitCounterReference;
+
         private bool _isPaused = false;
 
 
@@ -157,6 +161,7 @@ namespace Game
             _1000PointsVisualReference = GetNode<Node2D>(_1000PointsVisualPath);
             _2000PointsVisualReference = GetNode<Node2D>(_2000PointsVisualPath);
             _5000PointsVisualReference = GetNode<Node2D>(_5000PointsVisualPath);
+            _fruitCounterReference = GetNode<FruitCounter>(_fruitCounterPath);
         }
 
         private void CheckNodeReferences()
@@ -264,6 +269,10 @@ namespace Game
             if (!_5000PointsVisualReference.IsValid())
             {
                 GD.PrintErr("ERROR: Main 5000 Points Visual Reference is not valid!");
+            }
+            if (!_fruitCounterReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Fruit Counter Reference is not valid!");
             }
         }
 
@@ -482,6 +491,7 @@ namespace Game
             ResetPlayer();
             _ghostContainer.ResetGhosts();
             SetLevel(_currentLevelNumber);
+            _fruitCounterReference.IncreaseFruitCounter();
             _startJingle.Play();
         }
 
