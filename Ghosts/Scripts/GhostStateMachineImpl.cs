@@ -76,6 +76,10 @@ namespace Game.Ghosts
 
         public override void ResetMachine()
         {
+            if (_currentState is ReturnState returnState)
+            {
+                returnState.InReturnState = false;
+            }
             _currentState = _initialState;
             if (_currentState is IdleState idleState)
             {

@@ -476,8 +476,7 @@ namespace Game
             _controller.IsControllerActive = false;
             _player.Stop();
             _ghostContainer.StopGhosts();
-            _ghostContainer.SetGhostsInvisible();
-            _currentLevel.DestroyFruit();
+            _currentLevel.PauseFruit();
             _frightenedTimerReference.Stop();
             _frightenedFlashTimerReference.Stop();
             _frightenedFlashingTimerReference.Stop();
@@ -490,6 +489,8 @@ namespace Game
             {
                 _currentLevel.PlayLevelFlash();
             }
+            _ghostContainer.SetGhostsInvisible();
+            _currentLevel.DestroyFruit();
         }
 
         public async void OnLevelFlashFinished()
@@ -538,6 +539,7 @@ namespace Game
                     _800PointsVisual.Visible = true;
                     break;
                 default:
+                    _ghostPointValue = 1600;
                     _1600PointsVisual.GlobalPosition = ghostEaten.GlobalPosition;
                     _1600PointsVisual.Visible = true;
                     break;

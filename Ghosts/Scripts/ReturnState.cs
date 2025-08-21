@@ -44,6 +44,12 @@ namespace Game.Ghosts
             get { return _ghostHouseTilePosition; }
             set { _ghostHouseTilePosition = value; }
         }
+        private bool _inReturnState = false;
+        public bool InReturnState
+        {
+            get { return _inReturnState; }
+            set { _inReturnState = value; }
+        }
 
         public abstract void ResetTileDetection();
         public abstract void IncreaseReturnExitSpeed();

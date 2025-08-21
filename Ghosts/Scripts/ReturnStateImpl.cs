@@ -10,7 +10,6 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private bool _inUpTile = false;
         private bool _transitioning = false;
-        private bool _inReturnState = false;
         private bool _inGhostHouse = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int DOWN_TILE_CELL_NUMBER = 4;
@@ -21,10 +20,10 @@ namespace Game.Ghosts
 
         public override void EnterState()
         {
-            if (!_inReturnState)
+            if (!InReturnState)
             {
                 EmitSignal("ReturnStateEntered");
-                _inReturnState = true;
+                InReturnState = true;
                 Movement.Speed = _returnSpeed;
             }
         }
@@ -63,7 +62,7 @@ namespace Game.Ghosts
                     }
                     Movement.ChangeDirection(Vector2.Up);
                     _inUpTile = true;
-                    Movement.Speed = Movement.BaseSpeed * 0.75f;
+                    Movement.Speed = Movement.BaseSpeed * _speedupFactor;
                     EmitSignal("GhostHouseEntered");
                 }
             }
@@ -166,7 +165,7 @@ namespace Game.Ghosts
             _inIntersectionTile = false;
             _inUpTile = false;
             _transitioning = false;
-            _inReturnState = false;
+            InReturnState = false;
             _inGhostHouse = false;
         }
 
