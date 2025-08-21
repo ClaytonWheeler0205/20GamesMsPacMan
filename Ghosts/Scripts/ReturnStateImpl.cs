@@ -11,6 +11,7 @@ namespace Game.Ghosts
         private bool _inUpTile = false;
         private bool _transitioning = false;
         private bool _inReturnState = false;
+        private bool _inGhostHouse = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int DOWN_TILE_CELL_NUMBER = 4;
         private const int UP_TILE_CELL_NUMBER = 6;
@@ -55,7 +56,11 @@ namespace Game.Ghosts
                 }
                 if (IsAtUpTile() && !_inUpTile)
                 {
-                    GhostEventBus.Instance.EmitSignal("AnyGhostEntersHouse");
+                    if (!_inGhostHouse)
+                    {
+                        GhostEventBus.Instance.EmitSignal("AnyGhostEntersHouse");
+                        _inGhostHouse = true;
+                    }
                     Movement.ChangeDirection(Vector2.Up);
                     _inUpTile = true;
                     Movement.Speed = Movement.BaseSpeed * 0.75f;
@@ -162,6 +167,7 @@ namespace Game.Ghosts
             _inUpTile = false;
             _transitioning = false;
             _inReturnState = false;
+            _inGhostHouse = false;
         }
 
         public override float GetStateSpeed()

@@ -363,6 +363,7 @@ namespace Game
             else if (levelNumber == 4)
             {
                 _currentLevel.DestroyTunnels();
+                _currentLevel.ResetLevel();
             }
             else if (levelNumber == 6)
             {
@@ -475,6 +476,8 @@ namespace Game
             _controller.IsControllerActive = false;
             _player.Stop();
             _ghostContainer.StopGhosts();
+            _ghostContainer.SetGhostsInvisible();
+            _currentLevel.DestroyFruit();
             _frightenedTimerReference.Stop();
             _frightenedFlashTimerReference.Stop();
             _frightenedFlashingTimerReference.Stop();
@@ -495,6 +498,7 @@ namespace Game
             _currentLevelNumber++;
             ResetPlayer();
             _ghostContainer.ResetGhosts();
+            _ghostContainer.SetGhostsVisible();
             SetLevel(_currentLevelNumber);
             _fruitCounterReference.IncreaseFruitCounter();
             _startJingle.Play();
