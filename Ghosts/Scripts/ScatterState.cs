@@ -51,5 +51,6 @@ namespace Game.Ghosts
         }
 
         public abstract void ResetTileDetection();
+        public abstract void IncreaseScatterSpeed();
     }
 }

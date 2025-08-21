@@ -119,5 +119,12 @@ namespace Game.Ghosts
             }
         }
 
+        public override void IncreaseGhostSpeed()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.IncreaseGhostSpeed();
+            }
+        }
     }
 }

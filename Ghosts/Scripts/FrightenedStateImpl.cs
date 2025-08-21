@@ -10,11 +10,11 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
 
-        private float _slowSpeed = 31.25f;
+        private float _slowSpeedFactor = 0.5f;
 
         public override void EnterState()
         {
-            EmitSignal("SpeedChangeRequested", _slowSpeed);
+            EmitSignal("SpeedChangeRequested", Movement.BaseSpeed * _slowSpeedFactor);
         }
 
         public override void UpdateState(float delta)
@@ -25,7 +25,7 @@ namespace Game.Ghosts
             }
             else if (!GhostCollision.Vulnerable)
             {
-                if(ScatterChaseTracker.Instance.InScatterState)
+                if (ScatterChaseTracker.Instance.InScatterState)
                 {
                     EmitSignal("Transitioned", this, "ScatterState");
                 }
@@ -113,7 +113,7 @@ namespace Game.Ghosts
 
         public override float GetStateSpeed()
         {
-            return _slowSpeed;
+            return Movement.BaseSpeed * _slowSpeedFactor;
         }
 
         public override void ResetTileDetection()
@@ -121,5 +121,16 @@ namespace Game.Ghosts
             _inIntersectionTile = false;
         }
 
+        public override void IncreaseFrightenSpeed()
+        {
+            if (_slowSpeedFactor >= 0.55f)
+            {
+                _slowSpeedFactor = 0.6f;
+            }
+            else if (_slowSpeedFactor >= 0.5f)
+            {
+                _slowSpeedFactor = 0.55f;
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace Game.Ghosts
 
     public abstract class GhostImpl : Ghost
     {
-        private float _ghostTunnelSpeed = 25.0f;
+        private float _ghostTunnelSpeedFactor = 0.4f;
         private int _tunnelsEntered = 0;
         private bool _isInTunnel = false;
         private bool _shouldBePaused = false;
@@ -139,7 +139,7 @@ namespace Game.Ghosts
             _tunnelsEntered++;
             if (_tunnelsEntered > 0)
             {
-                MovementReference.Speed = _ghostTunnelSpeed;
+                MovementReference.Speed = MovementReference.BaseSpeed * _ghostTunnelSpeedFactor;
                 _isInTunnel = true;
             }
         }
@@ -151,6 +151,27 @@ namespace Game.Ghosts
             {
                 MovementReference.Speed = StateMachineReference.GetCurrentState().GetStateSpeed();
                 _isInTunnel = false;
+            }
+        }
+
+        public override void IncreaseGhostSpeed()
+        {
+            ChaseStateReference.IncreaseChaseSpeed();
+            ScatterStateReference.IncreaseScatterSpeed();
+            FrightenedStateReference.IncreaseFrightenSpeed();
+            ReturnStateReference.IncreaseReturnExitSpeed();
+            IncreaseTunnelSpeed();
+        }
+
+        private void IncreaseTunnelSpeed()
+        {
+            if (_ghostTunnelSpeedFactor >= 0.45f)
+            {
+                _ghostTunnelSpeedFactor = 0.5f;
+            }
+            else if (_ghostTunnelSpeedFactor >= 0.4f)
+            {
+                _ghostTunnelSpeedFactor = 0.45f;
             }
         }
 

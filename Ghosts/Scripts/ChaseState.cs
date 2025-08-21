@@ -55,10 +55,16 @@ namespace Game.Ghosts
                 }
             }
         }
+        private float _speedupFactor = 0.75f;
+        protected float SpeedupFactor
+        {
+            get { return _speedupFactor; }
+            set { _speedupFactor = value; }
+        }
 
         public override void EnterState()
         {
-            EmitSignal("SpeedChangeRequested", Movement.BaseSpeed);
+            EmitSignal("SpeedChangeRequested", Movement.BaseSpeed * _speedupFactor);
         }
 
         public override void UpdateState(float delta)
@@ -80,9 +86,10 @@ namespace Game.Ghosts
 
         public override float GetStateSpeed()
         {
-            return Movement.BaseSpeed;
+            return Movement.BaseSpeed * _speedupFactor;
         }
 
         public abstract void ResetTileDetection();
+        public abstract void IncreaseChaseSpeed();
     }
 }

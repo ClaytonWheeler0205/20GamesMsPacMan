@@ -391,6 +391,7 @@ namespace Game
                 case 2:
                     _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
                     _player.IncreaseSpeedupFactor();
+                    _ghostContainer.IncreaseGhostSpeed();
                     _frightenedTimerDuration = 3.75f;
                     break;
                 case 3:
@@ -402,6 +403,7 @@ namespace Game
                 case 5:
                     _player.Movement.Speed = _player.Movement.BaseSpeed;
                     _player.IncreaseSpeedupFactor();
+                    _ghostContainer.IncreaseGhostSpeed();
                     _frightenedTimerDuration = 0.75f;
                     _scatterTimerDuration = 5.0f;
                     break;

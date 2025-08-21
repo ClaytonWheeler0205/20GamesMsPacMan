@@ -151,7 +151,7 @@ shape = SubResource( 6 )
 
 [node name="MovementComponent" type="Node2D" parent="."]
 script = ExtResource( 13 )
-_speed = 46.875
+_speed = 75.0
 _wallDetectorNodePath = NodePath("WallDetector")
 _secondaryWallDetectorNodePath = NodePath("WallDetector2")
 _bodyUpPosition = Vector2( 0, -7 )

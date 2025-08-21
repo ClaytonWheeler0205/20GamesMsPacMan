@@ -8,10 +8,11 @@ public class ScatterStateImpl : ScatterState
     private bool _inIntersectionTile = false;
     private const int PATH_TILE_CELL_NUMBER = 2;
     private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
+    private float _speedupFactor = 0.75f;
 
     public override void EnterState()
     {
-        EmitSignal("SpeedChangeRequested", Movement.BaseSpeed);
+        EmitSignal("SpeedChangeRequested", Movement.BaseSpeed * _speedupFactor);
     }
 
 
@@ -119,11 +120,23 @@ public class ScatterStateImpl : ScatterState
 
     public override float GetStateSpeed()
     {
-        return Movement.BaseSpeed;
+        return Movement.BaseSpeed * _speedupFactor;
     }
 
     public override void ResetTileDetection()
     {
         _inIntersectionTile = false;
+    }
+
+    public override void IncreaseScatterSpeed()
+    {
+        if (_speedupFactor >= 0.85f)
+        {
+            _speedupFactor = 0.95f;
+        }
+        else if (_speedupFactor >= 0.75f)
+        {
+            _speedupFactor = 0.85f;
+        }
     }
 }

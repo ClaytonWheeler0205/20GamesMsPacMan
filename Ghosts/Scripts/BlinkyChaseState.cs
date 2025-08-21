@@ -109,5 +109,18 @@ namespace Game.Ghosts
         {
             _inIntersectionTile = false;
         }
+
+        public override void IncreaseChaseSpeed()
+        {
+            if (SpeedupFactor >= 0.85f)
+            {
+                SpeedupFactor = 0.95f;
+            }
+            else if (SpeedupFactor >= 0.75f)
+            {
+                SpeedupFactor = 0.85f;
+            }
+            // TODO: Increase Elroy speed once that is implemented
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace Game.Ghosts
         private const int UP_TILE_CELL_NUMBER = 6;
 
         private float _returnSpeed = 100.0f;
+        private float _speedupFactor = 0.75f;
 
         public override void EnterState()
         {
@@ -57,7 +58,7 @@ namespace Game.Ghosts
                     GhostEventBus.Instance.EmitSignal("AnyGhostEntersHouse");
                     Movement.ChangeDirection(Vector2.Up);
                     _inUpTile = true;
-                    Movement.Speed = Movement.BaseSpeed;
+                    Movement.Speed = Movement.BaseSpeed * 0.75f;
                     EmitSignal("GhostHouseEntered");
                 }
             }
@@ -174,5 +175,16 @@ namespace Game.Ghosts
             _inIntersectionTile = false;
         }
 
+        public override void IncreaseReturnExitSpeed()
+        {
+            if (_speedupFactor >= 0.85f)
+            {
+                _speedupFactor = 0.95f;
+            }
+            else if (_speedupFactor >= 0.75f)
+            {
+                _speedupFactor = 0.85f;
+            }
+        }
     }
 }
