@@ -300,6 +300,7 @@ namespace Game
                 _controller.IsControllerActive = false;
                 _player.Stop();
                 _ghostContainer.StopGhosts();
+                _currentLevel.PauseFruit();
                 _scatterTimerReference.Stop();
                 _frightenedFlashingTimerReference.Stop();
                 _frightenedFlashTimerReference.Stop();
@@ -307,6 +308,8 @@ namespace Game
                 _ghostFleeingSoundReference.StopFleeingSound();
                 _ghostPointValue = 200;
                 await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+                _currentLevel.DestroyFruit();
+                _ghostContainer.SetGhostsInvisible();
                 _player.PlayDeathAnimation();
                 _deathJingle.Play();
             }
@@ -319,6 +322,7 @@ namespace Game
             {
                 ResetPlayer();
                 _ghostContainer.ResetGhosts();
+                _ghostContainer.SetGhostsVisible();
                 _ghostContainer.ResetGhostHomeTiles(_currentLevel);
                 ScatterChaseTracker.Instance.InScatterState = true;
                 _startJingle.Play();
@@ -327,7 +331,6 @@ namespace Game
             else
             {
                 _player.Visible = false;
-                _ghostContainer.SetGhostsInvisible();
                 _gameOverLabelReference.Visible = true;
             }
         }
@@ -511,6 +514,7 @@ namespace Game
             _player.Pause();
             _controller.IsControllerActive = false;
             _ghostContainer.PauseGhosts();
+            _currentLevel.PauseFruit();
             _frightenedTimerReference.Paused = true;
             _frightenedFlashTimerReference.Paused = true;
             _frightenedFlashingTimerReference.Paused = true;
@@ -544,6 +548,7 @@ namespace Game
             _player.Resume();
             _controller.IsControllerActive = true;
             _ghostContainer.ResumeGhosts();
+            _currentLevel.ResumeFruit();
             _frightenedTimerReference.Paused = false;
             _frightenedFlashTimerReference.Paused = false;
             _frightenedFlashingTimerReference.Paused = false;

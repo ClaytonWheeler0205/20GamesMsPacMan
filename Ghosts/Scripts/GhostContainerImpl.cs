@@ -103,6 +103,15 @@ namespace Game.Ghosts
             }
         }
 
+        public override void SetGhostsVisible()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.Visible = true;
+            }
+        }
+
+
         public override void ResetGhostHomeTiles(Level level)
         {
             foreach (Ghost ghost in _ghosts)

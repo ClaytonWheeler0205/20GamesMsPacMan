@@ -13,10 +13,13 @@ namespace Game.Fruits
 
         public override void _Process(float delta)
         {
-            Offset += _speed * delta;
-            if (UnitOffset >= 1.0f)
+            if (IsMoving)
             {
-                EmitSignal("PathCompleted");
+                Offset += _speed * delta;
+                if (UnitOffset >= 1.0f)
+                {
+                    EmitSignal("PathCompleted");
+                }
             }
         }
 

@@ -92,6 +92,9 @@ namespace Game.Levels
         public abstract void ResetLevel();
         public abstract void DestroyTunnels();
         public abstract void SpawnFruit(int fruitIndex);
+        public abstract void PauseFruit();
+        public abstract void ResumeFruit();
+        public abstract void DestroyFruit();
         public abstract void OnFruitPathCompleted();
         public abstract void OnFruitCollected(Fruit fruit);
     }

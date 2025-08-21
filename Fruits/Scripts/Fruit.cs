@@ -11,6 +11,12 @@ namespace Game.Fruits
         {
             get { return _pointValue; }
         }
+        private bool _isMoving = true;
+        public bool IsMoving
+        {
+            get { return _isMoving; }
+            set { _isMoving = value; }
+        }
 
         [Signal]
         public delegate void PathCompleted();

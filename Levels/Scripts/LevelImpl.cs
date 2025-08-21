@@ -162,6 +162,31 @@ namespace Game.Levels
             _fruitExists = false;
         }
 
+        public override void PauseFruit()
+        {
+            if (_fruitExists)
+            {
+                _fruit.IsMoving = false;
+            }
+        }
+
+        public override void ResumeFruit()
+        {
+            if (_fruitExists)
+            {
+                _fruit.IsMoving = true;
+            }
+        }
+
+        public override void DestroyFruit()
+        {
+            if (_fruitExists)
+            {
+                _fruit.SafeQueueFree();
+                _fruitExists = false;
+            }
+        }
+
         public void OnAnimationFinished(string anim_name)
         {
             if (anim_name == LEVEL_FLASH_ANIMATION_NAME)
