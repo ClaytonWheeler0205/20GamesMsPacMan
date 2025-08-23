@@ -27,7 +27,6 @@ namespace Game.Pellets
 			}
 		}
 
-
 		public void OnTimerTimeout()
 		{
 			if (_isActive)

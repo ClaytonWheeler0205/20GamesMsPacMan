@@ -5,9 +5,8 @@ using Util;
 namespace Game.Ghosts
 {
 
-    public class Blinky : GhostImpl
+    public abstract class Blinky : GhostImpl
     {
-
         public override void StartGhost()
         {
             MovementReference.ChangeDirection(Vector2.Left);
@@ -40,5 +39,7 @@ namespace Game.Ghosts
                     break;
             }
         }
+        public abstract void ResetElroyLevel();
+        public abstract void OnPelletsForElroyMet();
     }
 }

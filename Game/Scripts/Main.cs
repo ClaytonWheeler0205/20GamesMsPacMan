@@ -397,9 +397,15 @@ namespace Game
                     _player.IncreaseSpeedupFactor();
                     _ghostContainer.IncreaseGhostSpeed();
                     _frightenedTimerDuration = 3.75f;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 30;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 15;
+                    _pelletCounterReference.SetDotLimits(0, 50);
                     break;
                 case 3:
                     _frightenedTimerDuration = 2.75f;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 40;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 20;
+                    _pelletCounterReference.SetDotLimits(0, 0);
                     break;
                 case 4:
                     _frightenedTimerDuration = 1.75f;
@@ -413,6 +419,8 @@ namespace Game
                     break;
                 case 6:
                     _frightenedTimerDuration = 3.75f;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 50;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 25;
                     break;
                 case 7:
                     _frightenedTimerDuration = 0.75f;
@@ -420,6 +428,8 @@ namespace Game
                 case 9:
                     _frightenedFlashTimerDuration = 0.75f;
                     _frightenedTimerDuration = 0.25f;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 60;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 30;
                     break;
                 case 10:
                     _frightenedFlashTimerDuration = 1.25f;
@@ -431,6 +441,8 @@ namespace Game
                 case 12:
                     _frightenedFlashTimerDuration = 0.75f;
                     _frightenedTimerDuration = 0.25f;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 80;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 40;
                     break;
                 case 14:
                     _frightenedFlashTimerDuration = 1.25f;
@@ -439,6 +451,8 @@ namespace Game
                 case 15:
                     _frightenedFlashTimerDuration = 0.75f;
                     _frightenedTimerDuration = 0.25f;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 100;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 50;
                     break;
                 case 17:
                     _useFrightenedTimers = false;
@@ -451,6 +465,8 @@ namespace Game
                 case 19:
                     _useFrightenedTimers = false;
                     _player.UseSpeedBoost = false;
+                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 120;
+                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 60;
                     break;
                 case 21:
                     _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
@@ -498,7 +514,7 @@ namespace Game
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             _currentLevelNumber++;
             ResetPlayer();
-            _ghostContainer.ResetGhosts();
+            _ghostContainer.HardResetGhosts();
             _ghostContainer.SetGhostsVisible();
             SetLevel(_currentLevelNumber);
             _fruitCounterReference.IncreaseFruitCounter();

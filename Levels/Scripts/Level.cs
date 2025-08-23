@@ -27,7 +27,7 @@ namespace Game.Levels
         [Export]
         private NodePath _pelletsPath;
         private PelletContainer _pellets;
-        protected PelletContainer Pellets
+        public PelletContainer Pellets
         {
             get { return _pellets; }
         }

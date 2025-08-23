@@ -53,6 +53,10 @@ namespace Game.Pellets
             {
                 LevelEventBus.Instance.EmitSignal("LevelCleared");
             }
+            else if (_pelletCount == PelletsNeededForFirstElroy || _pelletCount == PelletsNeededForSecondElroy)
+            {
+                GhostEventBus.Instance.EmitSignal("PelletsForElroyMet");
+            }
         }
     }
 }

@@ -55,6 +55,19 @@ namespace Game.Ghosts
             }
         }
 
+        public override void HardResetGhosts()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.ResetGhost();
+                if (ghost is Blinky blinky)
+                {
+                    blinky.ResetElroyLevel();
+                }
+            }
+        }
+
+
         public override void PauseGhosts()
         {
             foreach (Ghost ghost in _ghosts)

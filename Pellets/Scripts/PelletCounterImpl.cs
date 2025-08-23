@@ -113,6 +113,10 @@ namespace Game.Pellets
                 {
                     GhostEventBus.Instance.EmitSignal("InkyReleased");
                 }
+                if (_clydeDotLimit == 0)
+                {
+                    GhostEventBus.Instance.EmitSignal("ClydeReleased");
+                }
             }
         }
 
