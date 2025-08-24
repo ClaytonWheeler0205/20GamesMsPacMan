@@ -10,6 +10,7 @@ namespace Game.Ghosts
         private bool _inIntersectionTile = false;
         private const int PATH_TILE_CELL_NUMBER = 2;
         private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
+        private const int DOWN_TILE_CELL_NUMBER = 4;
         private bool _inFirstRoundOfLevel = true;
         private bool _inElroyPhaseOne = false;
         private bool _inElroyPhaseTwo = false;
@@ -87,7 +88,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
                 int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
-                if (cellNumberUp == PATH_TILE_CELL_NUMBER)
+                if (cellNumberUp == PATH_TILE_CELL_NUMBER || cellNumberUp == DOWN_TILE_CELL_NUMBER)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionUp);
                     if (distance < minDistance)
@@ -101,7 +102,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
                 int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
-                if (cellNumberLeft == PATH_TILE_CELL_NUMBER)
+                if (cellNumberLeft == PATH_TILE_CELL_NUMBER || cellNumberLeft == DOWN_TILE_CELL_NUMBER)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionLeft);
                     if (distance < minDistance)
@@ -115,7 +116,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionDown = new Vector2(mapPosition.x, mapPosition.y + 1);
                 int cellNumberDown = CurrentLevel.GetCell((int)mapPositionDown.x, (int)mapPositionDown.y);
-                if (cellNumberDown == PATH_TILE_CELL_NUMBER)
+                if (cellNumberDown == PATH_TILE_CELL_NUMBER || cellNumberDown == DOWN_TILE_CELL_NUMBER)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionDown);
                     if (distance < minDistance)
@@ -129,7 +130,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionRight = new Vector2(mapPosition.x + 1, mapPosition.y);
                 int cellNumberRight = CurrentLevel.GetCell((int)mapPositionRight.x, (int)mapPositionRight.y);
-                if (cellNumberRight == PATH_TILE_CELL_NUMBER)
+                if (cellNumberRight == PATH_TILE_CELL_NUMBER || cellNumberRight == DOWN_TILE_CELL_NUMBER)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionRight);
                     if (distance < minDistance)

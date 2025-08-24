@@ -90,7 +90,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
                 int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
-                if (cellNumberUp == PathTileCellNumber)
+                if (cellNumberUp == PathTileCellNumber || cellNumberUp == DownTileCellNumber)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionUp);
                     if (distance < minDistance)
@@ -104,7 +104,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
                 int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
-                if (cellNumberLeft == PathTileCellNumber)
+                if (cellNumberLeft == PathTileCellNumber || cellNumberLeft == DownTileCellNumber)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionLeft);
                     if (distance < minDistance)
@@ -118,7 +118,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionDown = new Vector2(mapPosition.x, mapPosition.y + 1);
                 int cellNumberDown = CurrentLevel.GetCell((int)mapPositionDown.x, (int)mapPositionDown.y);
-                if (cellNumberDown == PathTileCellNumber)
+                if (cellNumberDown == PathTileCellNumber || cellNumberDown == DownTileCellNumber)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionDown);
                     if (distance < minDistance)
@@ -132,7 +132,7 @@ namespace Game.Ghosts
             {
                 Vector2 mapPositionRight = new Vector2(mapPosition.x + 1, mapPosition.y);
                 int cellNumberRight = CurrentLevel.GetCell((int)mapPositionRight.x, (int)mapPositionRight.y);
-                if (cellNumberRight == PathTileCellNumber)
+                if (cellNumberRight == PathTileCellNumber || cellNumberRight == DownTileCellNumber)
                 {
                     float distance = playerMapPosition.DistanceTo(mapPositionRight);
                     if (distance < minDistance)
@@ -175,7 +175,8 @@ namespace Game.Ghosts
             else
             {
                 _inElroyPhaseOne = true;
-            };
+            }
+            ;
         }
 
         public override void ResetElroyLevel()
