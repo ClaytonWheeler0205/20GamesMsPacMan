@@ -33,6 +33,10 @@ namespace Game.Ghosts
         public override void SetPlayerReference(MsPacMan player)
         {
             ChaseStateReference.Player = player;
+            if (ScatterStateReference is BlinkyScatterState blinkyScatterState)
+            {
+                blinkyScatterState.Player = player;
+            }
         }
 
         public override void SetLevelReference(Level level)

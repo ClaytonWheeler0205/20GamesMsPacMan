@@ -26,6 +26,14 @@ public class BlinkyImpl : Blinky
                 blinkyChaseState.ApplyElroySpeed();
             }
         }
+        if (ScatterStateReference is BlinkyScatterState blinkyScatterState)
+        {
+            blinkyScatterState.IncreaseElroyLevel();
+            if (StateMachineReference.GetCurrentState() == ScatterStateReference)
+            {
+                blinkyScatterState.ApplyElroySpeed();
+            }
+        }
     }
 
     public override void ResetElroyLevel()
@@ -33,6 +41,10 @@ public class BlinkyImpl : Blinky
         if (ChaseStateReference is BlinkyChaseState blinkyChaseState)
         {
             blinkyChaseState.ResetElroyLevel();
+        }
+        if (ScatterStateReference is BlinkyScatterState blinkyScatterState)
+        {
+            blinkyScatterState.ResetElroyLevel();
         }
     }
 

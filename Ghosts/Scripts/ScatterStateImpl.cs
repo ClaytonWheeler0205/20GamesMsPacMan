@@ -5,16 +5,11 @@ using Util.ExtensionMethods;
 
 public class ScatterStateImpl : ScatterState
 {
-    private bool _inIntersectionTile = false;
-    private const int PATH_TILE_CELL_NUMBER = 2;
-    private const int SPECIAL_TURN_TILE_CELL_NUMBER = 3;
-    private float _speedupFactor = 0.75f;
 
     public override void EnterState()
     {
-        EmitSignal("SpeedChangeRequested", Movement.BaseSpeed * _speedupFactor);
+        EmitSignal("SpeedChangeRequested", Movement.BaseSpeed * SpeedupFactor);
     }
-
 
     public override void UpdateState(float delta)
     {
@@ -30,113 +25,33 @@ public class ScatterStateImpl : ScatterState
         {
             if (CurrentLevel.IsValid())
             {
-                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !InIntersectionTile)
                 {
-                    _inIntersectionTile = true;
+                    InIntersectionTile = true;
                     Movement.ChangeDirection(FindShortestPathToHome());
                 }
                 if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
                 {
-                    _inIntersectionTile = false;
+                    InIntersectionTile = false;
                 }
             }
         }
-    }
-
-    private Vector2 FindShortestPathToHome()
-    {
-        Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-        Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
-        int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
-        float minDistance = float.PositiveInfinity;
-        Vector2 newDirection = Vector2.Zero;
-        Vector2 currentDirection = Movement.GetCurrentDirection();
-
-        // Priority is Up, Left, Down, Right
-        if (currentDirection != Vector2.Down && cellNumber != SPECIAL_TURN_TILE_CELL_NUMBER)
-        {
-            Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
-            int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
-            if (cellNumberUp == PATH_TILE_CELL_NUMBER)
-            {
-                float distance = HomeTilePosition.DistanceTo(mapPositionUp);
-                if (distance < minDistance)
-                {
-                    newDirection = Vector2.Up;
-                    minDistance = distance;
-                }
-            }
-        }
-        if (currentDirection != Vector2.Right)
-        {
-            Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
-            int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
-            if (cellNumberLeft == PATH_TILE_CELL_NUMBER)
-            {
-                float distance = HomeTilePosition.DistanceTo(mapPositionLeft);
-                if (distance < minDistance)
-                {
-                    newDirection = Vector2.Left;
-                    minDistance = distance;
-                }
-            }
-        }
-        if (currentDirection != Vector2.Up)
-        {
-            Vector2 mapPositionDown = new Vector2(mapPosition.x, mapPosition.y + 1);
-            int cellNumberDown = CurrentLevel.GetCell((int)mapPositionDown.x, (int)mapPositionDown.y);
-            if (cellNumberDown == PATH_TILE_CELL_NUMBER)
-            {
-                float distance = HomeTilePosition.DistanceTo(mapPositionDown);
-                if (distance < minDistance)
-                {
-                    newDirection = Vector2.Down;
-                    minDistance = distance;
-                }
-            }
-        }
-        if (currentDirection != Vector2.Left)
-        {
-            Vector2 mapPositionRight = new Vector2(mapPosition.x + 1, mapPosition.y);
-            int cellNumberRight = CurrentLevel.GetCell((int)mapPositionRight.x, (int)mapPositionRight.y);
-            if (cellNumberRight == PATH_TILE_CELL_NUMBER)
-            {
-                float distance = HomeTilePosition.DistanceTo(mapPositionRight);
-                if (distance < minDistance)
-                {
-                    newDirection = Vector2.Right;
-                }
-            }
-        }
-
-        return newDirection;
-    }
-
-    public override void ExitState()
-    {
-        DirectionReverser.ReverseDirection(Movement);
-        _inIntersectionTile = false;
-    }
-
-    public override float GetStateSpeed()
-    {
-        return Movement.BaseSpeed * _speedupFactor;
     }
 
     public override void ResetTileDetection()
     {
-        _inIntersectionTile = false;
+        InIntersectionTile = false;
     }
 
     public override void IncreaseScatterSpeed()
     {
-        if (_speedupFactor >= 0.85f)
+        if (SpeedupFactor >= 0.85f)
         {
-            _speedupFactor = 0.95f;
+            SpeedupFactor = 0.95f;
         }
-        else if (_speedupFactor >= 0.75f)
+        else if (SpeedupFactor >= 0.75f)
         {
-            _speedupFactor = 0.85f;
+            SpeedupFactor = 0.85f;
         }
     }
 }
