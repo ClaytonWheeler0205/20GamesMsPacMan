@@ -134,26 +134,47 @@ namespace Game
 
         private void SetNodeReferences()
         {
+            SetPlayerReferences();
+            SetLevelReferences();
+            SetGhostReferences();
+            SetSoundReferences();
+            SetPointVisualReferences();
+            SetTimerReferences();
+            SetPelletReferences();
+            SetUIReferences();
+        }
+
+        private void SetPlayerReferences()
+        {
             _player = GetNode<MsPacMan>(_msPacManPath);
             _controller = GetNode<PlayerController>(_playerControllerPath);
+        }
+
+        private void SetLevelReferences()
+        {
             _levelContainer = GetNode<Node2D>(_levelContainerPath);
+        }
+
+        private void SetGhostReferences()
+        {
             _ghostContainer = GetNode<GhostContainer>(_ghostContainerPath);
+        }
+
+        private void SetSoundReferences()
+        {
             _startJingle = GetNode<AudioStreamPlayer>(_startJinglePath);
             _deathJingle = GetNode<AudioStreamPlayer>(_deathJinglePath);
+            _ghostEatenSoundReference = GetNode<AudioStreamPlayer>(_ghostEatenSoundPath);
+            _fruitEatenSoundReference = GetNode<AudioStreamPlayer>(_fruitEatenSoundPath);
+            _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
+        }
+
+        private void SetPointVisualReferences()
+        {
             _200PointsVisual = GetNode<Node2D>(_200PointsVisualPath);
             _400PointsVisual = GetNode<Node2D>(_400PointsVisualPath);
             _800PointsVisual = GetNode<Node2D>(_800PointsVisualPath);
             _1600PointsVisual = GetNode<Node2D>(_1600PointsVisualPath);
-            _frightenedTimerReference = GetNode<Timer>(_frightenedTimerPath);
-            _frightenedFlashTimerReference = GetNode<Timer>(_frightenedFlashTimerPath);
-            _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
-            _scatterTimerReference = GetNode<Timer>(_scatterTimerPath);
-            _pelletCounterReference = GetNode<PelletCounter>(_pelletCounterPath);
-            _ghostEatenSoundReference = GetNode<AudioStreamPlayer>(_ghostEatenSoundPath);
-            _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
-            _livesManagerReference = GetNode<LivesManager>(_livesManagerPath);
-            _gameOverLabelReference = GetNode<Control>(_gameOverLabelPath);
-            _fruitEatenSoundReference = GetNode<AudioStreamPlayer>(_fruitEatenSoundPath);
             _100PointsVisualReference = GetNode<Node2D>(_100PointsVisualPath);
             _200FruitPointsVisualReference = GetNode<Node2D>(_200FruitPointsVisualPath);
             _500PointsVisualReference = GetNode<Node2D>(_500PointsVisualPath);
@@ -161,10 +182,41 @@ namespace Game
             _1000PointsVisualReference = GetNode<Node2D>(_1000PointsVisualPath);
             _2000PointsVisualReference = GetNode<Node2D>(_2000PointsVisualPath);
             _5000PointsVisualReference = GetNode<Node2D>(_5000PointsVisualPath);
+        }
+
+        private void SetTimerReferences()
+        {
+            _frightenedTimerReference = GetNode<Timer>(_frightenedTimerPath);
+            _frightenedFlashTimerReference = GetNode<Timer>(_frightenedFlashTimerPath);
+            _frightenedFlashingTimerReference = GetNode<Timer>(_frightenedFlashingTimerPath);
+            _scatterTimerReference = GetNode<Timer>(_scatterTimerPath);
+        }
+
+        private void SetPelletReferences()
+        {
+            _pelletCounterReference = GetNode<PelletCounter>(_pelletCounterPath);
+        }
+
+        private void SetUIReferences()
+        {
+            _livesManagerReference = GetNode<LivesManager>(_livesManagerPath);
+            _gameOverLabelReference = GetNode<Control>(_gameOverLabelPath);
             _fruitCounterReference = GetNode<FruitCounter>(_fruitCounterPath);
         }
 
         private void CheckNodeReferences()
+        {
+            CheckPlayerReferences();
+            CheckLevelReferences();
+            CheckGhostReferences();
+            CheckSoundReferences();
+            CheckPointVisualReferences();
+            CheckTimerReferences();
+            CheckPelletReferences();
+            CheckUIReferences();
+        }
+
+        private void CheckPlayerReferences()
         {
             if (!_player.IsValid())
             {
@@ -174,14 +226,26 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main controller is not valid!");
             }
+        }
+
+        private void CheckLevelReferences()
+        {
             if (!_levelContainer.IsValid())
             {
                 GD.PrintErr("ERROR: Main Level Container is not valid!");
             }
+        }
+
+        private void CheckGhostReferences()
+        {
             if (!_ghostContainer.IsValid())
             {
                 GD.PrintErr("ERROR: Main Ghost Container is not valid!");
             }
+        }
+
+        private void CheckSoundReferences()
+        {
             if (!_startJingle.IsValid())
             {
                 GD.PrintErr("ERROR: Main Start Jingle Player is not valid!");
@@ -190,6 +254,22 @@ namespace Game
             {
                 GD.PrintErr("ERROR: Main Death Jingle is not valid!");
             }
+            if (!_ghostEatenSoundReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Ghost Eaten Sound Player Reference is not valid!");
+            }
+            if (!_ghostFleeingSoundReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Ghost Fleeing Sound Reference is not valid!");
+            }
+            if (!_fruitEatenSoundReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Fruit Eaten Sound Reference is not valid!");
+            }
+        }
+
+        private void CheckPointVisualReferences()
+        {
             if (!_200PointsVisual.IsValid())
             {
                 GD.PrintErr("ERROR: Main 200 Points Visual is not valid!");
@@ -205,42 +285,6 @@ namespace Game
             if (!_1600PointsVisual.IsValid())
             {
                 GD.PrintErr("ERROR: Main 1600 Points Visual is not valid!");
-            }
-            if (!_frightenedTimerReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Frightened Timer Reference is not valid!");
-            }
-            if (!_frightenedFlashTimerReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Frightened Flash Timer Reference is not valid!");
-            }
-            if (!_frightenedFlashingTimerReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Frightened Flashing Timer is not valid!");
-            }
-            if (!_scatterTimerReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Scatter Timer Reference is not valid!");
-            }
-            if (!_pelletCounterReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Pellet Counter Reference is not valid!");
-            }
-            if (!_ghostEatenSoundReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Ghost Eaten Sound Player Reference is not valid!");
-            }
-            if (!_ghostFleeingSoundReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Ghost Fleeing Sound Reference is not valid!");
-            }
-            if (!_livesManagerReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Lives Manager Reference is not valid!");
-            }
-            if (!_gameOverLabelReference.IsValid())
-            {
-                GD.PrintErr("ERROR: Main Game Over Label Reference is not valid!");
             }
             if (!_100PointsVisualReference.IsValid())
             {
@@ -269,6 +313,46 @@ namespace Game
             if (!_5000PointsVisualReference.IsValid())
             {
                 GD.PrintErr("ERROR: Main 5000 Points Visual Reference is not valid!");
+            }
+        }
+
+        private void CheckTimerReferences()
+        {
+            if (!_frightenedTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Frightened Timer Reference is not valid!");
+            }
+            if (!_frightenedFlashTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Frightened Flash Timer Reference is not valid!");
+            }
+            if (!_frightenedFlashingTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Frightened Flashing Timer is not valid!");
+            }
+            if (!_scatterTimerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Scatter Timer Reference is not valid!");
+            }
+        }
+
+        private void CheckPelletReferences()
+        {
+            if (!_pelletCounterReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Pellet Counter Reference is not valid!");
+            }
+        }
+
+        private void CheckUIReferences()
+        {
+            if (!_livesManagerReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Lives Manager Reference is not valid!");
+            }
+            if (!_gameOverLabelReference.IsValid())
+            {
+                GD.PrintErr("ERROR: Main Game Over Label Reference is not valid!");
             }
             if (!_fruitCounterReference.IsValid())
             {
@@ -344,21 +428,19 @@ namespace Game
 
         private void SetLevel(int levelNumber)
         {
+            SetupMaze(levelNumber);
+            SetupLevelStats(levelNumber);
+        }
+
+        private void SetupMaze(int levelNumber)
+        {
             if (levelNumber == 1)
             {
-                _currentLevel = _worldOne.Instance<Level>();
-                _levelContainer.AddChild(_currentLevel);
-                _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-                IntersectionDetector.CurrentLevel = _currentLevel;
+                SetupWorldOne();
             }
             else if (levelNumber == 3)
             {
-                _currentLevel.SafeQueueFree();
-                _currentLevel = _worldTwo.Instance<Level>();
-                _levelContainer.AddChild(_currentLevel);
-                _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-                IntersectionDetector.CurrentLevel = _currentLevel;
-                _ghostContainer.SetupGhosts(_currentLevel, _player);
+                SetupWorldTwo();
             }
             else if (levelNumber == 4)
             {
@@ -367,111 +449,236 @@ namespace Game
             }
             else if (levelNumber == 6)
             {
-                _currentLevel.SafeQueueFree();
-                _currentLevel = _worldThree.Instance<Level>();
-                _levelContainer.AddChild(_currentLevel);
-                _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-                IntersectionDetector.CurrentLevel = _currentLevel;
-                _ghostContainer.SetupGhosts(_currentLevel, _player);
+                SetupWorldThree();
             }
             else if (levelNumber == 10)
             {
-                _currentLevel.SafeQueueFree();
-                _currentLevel = _worldFour.Instance<Level>();
-                _levelContainer.AddChild(_currentLevel);
-                _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-                IntersectionDetector.CurrentLevel = _currentLevel;
-                _ghostContainer.SetupGhosts(_currentLevel, _player);
+                SetupWorldFour();
+            }
+            else if (levelNumber > 13 && (levelNumber - 10) % 8 == 0)
+            {
+                SetupWorldFour();
+            }
+            else if (levelNumber > 13 && (levelNumber - 10) % 4 == 0)
+            {
+                SetupWorldThree();
             }
             else
             {
                 _currentLevel.ResetLevel();
             }
+        }
+
+        private void SetupWorldOne()
+        {
+            _currentLevel = _worldOne.Instance<Level>();
+            _levelContainer.AddChild(_currentLevel);
+            _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
+            IntersectionDetector.CurrentLevel = _currentLevel;
+        }
+
+        private void SetupWorldTwo()
+        {
+            _currentLevel.SafeQueueFree();
+            _currentLevel = _worldTwo.Instance<Level>();
+            _levelContainer.AddChild(_currentLevel);
+            _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
+            IntersectionDetector.CurrentLevel = _currentLevel;
+            _ghostContainer.SetupGhosts(_currentLevel, _player);
+        }
+
+        private void SetupWorldThree()
+        {
+            _currentLevel.SafeQueueFree();
+            _currentLevel = _worldThree.Instance<Level>();
+            _levelContainer.AddChild(_currentLevel);
+            _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
+            IntersectionDetector.CurrentLevel = _currentLevel;
+            _ghostContainer.SetupGhosts(_currentLevel, _player);
+        }
+
+        private void SetupWorldFour()
+        {
+            _currentLevel.SafeQueueFree();
+            _currentLevel = _worldFour.Instance<Level>();
+            _levelContainer.AddChild(_currentLevel);
+            _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
+            IntersectionDetector.CurrentLevel = _currentLevel;
+            _ghostContainer.SetupGhosts(_currentLevel, _player);
+        }
+
+        private void SetupLevelStats(int levelNumber)
+        {
             switch (levelNumber)
             {
                 case 1:
-                    _player.Movement.Speed = _player.Movement.BaseSpeed * 0.8f;
+                    SetupLevelOneStats();
                     break;
                 case 2:
-                    _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
-                    _player.IncreaseSpeedupFactor();
-                    _ghostContainer.IncreaseGhostSpeed();
-                    _frightenedTimerDuration = 3.75f;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 30;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 15;
-                    _pelletCounterReference.SetDotLimits(0, 50);
+                    SetupLevelTwoStats();
                     break;
                 case 3:
-                    _frightenedTimerDuration = 2.75f;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 40;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 20;
-                    _pelletCounterReference.SetDotLimits(0, 0);
+                    SetupLevelThreeStats();
                     break;
                 case 4:
-                    _frightenedTimerDuration = 1.75f;
+                    SetupLevelFourStats();
                     break;
                 case 5:
-                    _player.Movement.Speed = _player.Movement.BaseSpeed;
-                    _player.IncreaseSpeedupFactor();
-                    _ghostContainer.IncreaseGhostSpeed();
-                    _frightenedTimerDuration = 0.75f;
-                    _scatterTimerDuration = 5.0f;
+                    SetupLevelFiveStats();
                     break;
                 case 6:
-                    _frightenedTimerDuration = 3.75f;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 50;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 25;
+                    SetupLevelSixStats();
                     break;
                 case 7:
-                    _frightenedTimerDuration = 0.75f;
+                    SetupLevelSevenStats();
                     break;
                 case 9:
-                    _frightenedFlashTimerDuration = 0.75f;
-                    _frightenedTimerDuration = 0.25f;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 60;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 30;
+                    SetupLevelNineStats();
                     break;
                 case 10:
-                    _frightenedFlashTimerDuration = 1.25f;
-                    _frightenedTimerDuration = 3.75f;
+                    SetupLevelTenStats();
                     break;
                 case 11:
-                    _frightenedTimerDuration = 0.25f;
+                    SetupLevelElevenStats();
                     break;
                 case 12:
-                    _frightenedFlashTimerDuration = 0.75f;
-                    _frightenedTimerDuration = 0.25f;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 80;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 40;
+                    SetupLevelTwelveStats();
                     break;
                 case 14:
-                    _frightenedFlashTimerDuration = 1.25f;
-                    _frightenedTimerDuration = 1.75f;
+                    SetupLevelFourteenStats();
                     break;
                 case 15:
-                    _frightenedFlashTimerDuration = 0.75f;
-                    _frightenedTimerDuration = 0.25f;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 100;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 50;
+                    SetupLevelFifteenStats();
                     break;
                 case 17:
-                    _useFrightenedTimers = false;
-                    _player.UseSpeedBoost = false;
+                    SetupLevelSeventeenStats();
                     break;
                 case 18:
-                    _useFrightenedTimers = true;
-                    _player.UseSpeedBoost = true;
+                    SetupLevelEighteenStats();
                     break;
                 case 19:
-                    _useFrightenedTimers = false;
-                    _player.UseSpeedBoost = false;
-                    _currentLevel.Pellets.PelletsNeededForFirstElroy = 120;
-                    _currentLevel.Pellets.PelletsNeededForSecondElroy = 60;
+                    SetupLevelNineteenStats();
                     break;
                 case 21:
-                    _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
+                    SetupLevelTwentyOneStats();
                     break;
             }
+        }
+
+        private void SetupLevelOneStats()
+        {
+            _player.Movement.Speed = _player.Movement.BaseSpeed * 0.8f;
+        }
+
+        private void SetupLevelTwoStats()
+        {
+            _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
+            _player.IncreaseSpeedupFactor();
+            _ghostContainer.IncreaseGhostSpeed();
+            _frightenedTimerDuration = 3.75f;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 30;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 15;
+            _pelletCounterReference.SetDotLimits(0, 50);
+        }
+
+        private void SetupLevelThreeStats()
+        {
+            _frightenedTimerDuration = 2.75f;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 40;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 20;
+            _pelletCounterReference.SetDotLimits(0, 0);
+        }
+
+        private void SetupLevelFourStats()
+        {
+            _frightenedTimerDuration = 1.75f;
+        }
+
+        private void SetupLevelFiveStats()
+        {
+            _player.Movement.Speed = _player.Movement.BaseSpeed;
+            _player.IncreaseSpeedupFactor();
+            _ghostContainer.IncreaseGhostSpeed();
+            _frightenedTimerDuration = 0.75f;
+            _scatterTimerDuration = 5.0f;
+        }
+
+        private void SetupLevelSixStats()
+        {
+            _frightenedTimerDuration = 3.75f;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 50;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 25;
+        }
+
+        private void SetupLevelSevenStats()
+        {
+            _frightenedTimerDuration = 0.75f;
+        }
+
+        private void SetupLevelNineStats()
+        {
+            _frightenedFlashTimerDuration = 0.75f;
+            _frightenedTimerDuration = 0.25f;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 60;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 30;
+        }
+
+        private void SetupLevelTenStats()
+        {
+            _frightenedFlashTimerDuration = 1.25f;
+            _frightenedTimerDuration = 3.75f;
+        }
+
+        private void SetupLevelElevenStats()
+        {
+            _frightenedTimerDuration = 0.25f;
+        }
+
+        private void SetupLevelTwelveStats()
+        {
+            _frightenedFlashTimerDuration = 0.75f;
+            _frightenedTimerDuration = 0.25f;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 80;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 40;
+        }
+
+        private void SetupLevelFourteenStats()
+        {
+            _frightenedFlashTimerDuration = 1.25f;
+            _frightenedTimerDuration = 1.75f;
+        }
+
+        private void SetupLevelFifteenStats()
+        {
+            _frightenedFlashTimerDuration = 0.75f;
+            _frightenedTimerDuration = 0.25f;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 100;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 50;
+        }
+
+        private void SetupLevelSeventeenStats()
+        {
+            _useFrightenedTimers = false;
+            _player.UseSpeedBoost = false;
+        }
+
+        private void SetupLevelEighteenStats()
+        {
+            _useFrightenedTimers = true;
+            _player.UseSpeedBoost = true;
+        }
+
+        private void SetupLevelNineteenStats()
+        {
+            _useFrightenedTimers = false;
+            _player.UseSpeedBoost = false;
+            _currentLevel.Pellets.PelletsNeededForFirstElroy = 120;
+            _currentLevel.Pellets.PelletsNeededForSecondElroy = 60;
+        }
+
+        private void SetupLevelTwentyOneStats()
+        {
+            _player.Movement.Speed = _player.Movement.BaseSpeed * 0.9f;
         }
 
         public void OnStartJingleFinished()
@@ -532,6 +739,24 @@ namespace Game
         {
             _ghostEatenSoundReference.Play();
             _player.Visible = false;
+            PauseGameOnGhostEaten();
+            DisplayGhostPointValue(ghostEaten);
+            ScoreEventBus.Instance.EmitSignal("AwardPoints", _ghostPointValue);
+            await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+            _200PointsVisual.Visible = false;
+            _400PointsVisual.Visible = false;
+            _800PointsVisual.Visible = false;
+            _1600PointsVisual.Visible = false;
+            _player.Visible = true;
+            ResumeGameOnGhostEaten();
+            ghostEaten.Visible = true;
+            ghostEaten.SetGhostFleeing();
+            _ghostFleeingSoundReference.PlayFleeingSound();
+            _ghostPointValue *= 2;
+        }
+
+        private void PauseGameOnGhostEaten()
+        {
             _player.Pause();
             _controller.IsControllerActive = false;
             _ghostContainer.PauseGhosts();
@@ -539,7 +764,10 @@ namespace Game
             _frightenedTimerReference.Paused = true;
             _frightenedFlashTimerReference.Paused = true;
             _frightenedFlashingTimerReference.Paused = true;
+        }
 
+        private void DisplayGhostPointValue(Node2D ghostEaten)
+        {
             switch (_ghostPointValue)
             {
                 case 200:
@@ -560,13 +788,10 @@ namespace Game
                     _1600PointsVisual.Visible = true;
                     break;
             }
-            ScoreEventBus.Instance.EmitSignal("AwardPoints", _ghostPointValue);
-            await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
-            _200PointsVisual.Visible = false;
-            _400PointsVisual.Visible = false;
-            _800PointsVisual.Visible = false;
-            _1600PointsVisual.Visible = false;
-            _player.Visible = true;
+        }
+
+        private void ResumeGameOnGhostEaten()
+        {
             _player.Resume();
             _controller.IsControllerActive = true;
             _ghostContainer.ResumeGhosts();
@@ -574,10 +799,6 @@ namespace Game
             _frightenedTimerReference.Paused = false;
             _frightenedFlashTimerReference.Paused = false;
             _frightenedFlashingTimerReference.Paused = false;
-            ghostEaten.Visible = true;
-            ghostEaten.SetGhostFleeing();
-            _ghostFleeingSoundReference.PlayFleeingSound();
-            _ghostPointValue *= 2;
         }
 
         public void OnPowerPelledCollected()
@@ -621,54 +842,94 @@ namespace Game
             ScatterChaseTracker.Instance.InScatterState = false;
         }
 
-        public async void OnFruitCollected(Fruit fruit)
+        public void OnFruitCollected(Fruit fruit)
         {
             _fruitEatenSoundReference.Play();
+            DisplayFruitScore(fruit);
+        }
+
+        private void DisplayFruitScore(Fruit fruit)
+        {
             switch (fruit.PointValue)
             {
                 case 100:
-                    _100PointsVisualReference.Visible = true;
-                    _100PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _100PointsVisualReference.Visible = false;
+                    Display100Points(fruit);
                     break;
                 case 200:
-                    _200FruitPointsVisualReference.Visible = true;
-                    _200FruitPointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _200FruitPointsVisualReference.Visible = false;
+                    Display200Points(fruit);
                     break;
                 case 500:
-                    _500PointsVisualReference.Visible = true;
-                    _500PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _500PointsVisualReference.Visible = false;
+                    Display500Points(fruit);
                     break;
                 case 700:
-                    _700PointsVisualReference.Visible = true;
-                    _700PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _700PointsVisualReference.Visible = false;
+                    Display700Points(fruit);
                     break;
                 case 1000:
-                    _1000PointsVisualReference.Visible = true;
-                    _1000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _1000PointsVisualReference.Visible = false;
+                    Display1000Points(fruit);
                     break;
                 case 2000:
-                    _2000PointsVisualReference.Visible = true;
-                    _2000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _2000PointsVisualReference.Visible = false;
+                    Display2000Points(fruit);
                     break;
                 case 5000:
-                    _5000PointsVisualReference.Visible = true;
-                    _5000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
-                    await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-                    _5000PointsVisualReference.Visible = false;
+                    Display5000Points(fruit);
                     break;
             }
+        }
+
+        private async void Display100Points(Node2D fruit)
+        {
+            _100PointsVisualReference.Visible = true;
+            _100PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _100PointsVisualReference.Visible = false;
+        }
+
+        private async void Display200Points(Node2D fruit)
+        {
+            _200FruitPointsVisualReference.Visible = true;
+            _200FruitPointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _200FruitPointsVisualReference.Visible = false;
+        }
+
+        private async void Display500Points(Node2D fruit)
+        {
+            _500PointsVisualReference.Visible = true;
+            _500PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _500PointsVisualReference.Visible = false;
+        }
+
+        private async void Display700Points(Node2D fruit)
+        {
+            _700PointsVisualReference.Visible = true;
+            _700PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _700PointsVisualReference.Visible = false;
+        }
+
+        private async void Display1000Points(Node2D fruit)
+        {
+            _1000PointsVisualReference.Visible = true;
+            _1000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _1000PointsVisualReference.Visible = false;
+        }
+
+        private async void Display2000Points(Node2D fruit)
+        {
+            _2000PointsVisualReference.Visible = true;
+            _2000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _2000PointsVisualReference.Visible = false;
+        }
+
+        private async void Display5000Points(Node2D fruit)
+        {
+            _5000PointsVisualReference.Visible = true;
+            _5000PointsVisualReference.GlobalPosition = fruit.GlobalPosition;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            _5000PointsVisualReference.Visible = false;
         }
 
         public void OnPelletCountForFruitMet()
