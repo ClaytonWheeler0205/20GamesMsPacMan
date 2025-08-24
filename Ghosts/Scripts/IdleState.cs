@@ -76,9 +76,16 @@ namespace Game.Ghosts
             set { _hasBeenReleased = value; }
         }
 
+        private float _speedupFactor = 0.75f;
+        protected float SpeedupFactor
+        {
+            get { return _speedupFactor; }
+            set { _speedupFactor = value; }
+        }
+
         public override void EnterState()
         {
-            Movement.Speed = Movement.BaseSpeed;
+            Movement.Speed = Movement.BaseSpeed * _speedupFactor;
             if (!_hasBeenReleased)
             {
                 _idleAnimationPlayer.Play(IDLE_ANIMATION_NAME);
@@ -129,9 +136,9 @@ namespace Game.Ghosts
 
         public override float GetStateSpeed()
         {
-            return Movement.BaseSpeed;
+            return Movement.BaseSpeed * _speedupFactor;
         }
 
-
+        public abstract void IncreaseIdleSpeed();
     }
 }

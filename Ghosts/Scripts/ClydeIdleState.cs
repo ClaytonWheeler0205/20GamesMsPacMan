@@ -4,7 +4,7 @@ using Godot;
 namespace Game.Ghosts
 {
 
-    public class ClydeIdleState : IdleState
+    public class ClydeIdleState : IdleStateImpl
     {
         public override void EnterState()
         {

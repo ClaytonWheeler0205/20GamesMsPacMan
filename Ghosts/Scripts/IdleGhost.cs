@@ -78,5 +78,11 @@ namespace Game.Ghosts
             base.SetLevelReference(level);
             _idleStateReference.CurrentLevel = level;
         }
+
+        public override void IncreaseGhostSpeed()
+        {
+            base.IncreaseGhostSpeed();
+            _idleStateReference.IncreaseIdleSpeed();
+        }
     }
 }

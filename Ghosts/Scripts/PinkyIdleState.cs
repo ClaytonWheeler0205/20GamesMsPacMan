@@ -4,7 +4,7 @@ using Godot;
 namespace Game.Ghosts
 {
 
-    public class PinkyIdleState : IdleState
+    public class PinkyIdleState : IdleStateImpl
     {
         public override void EnterState()
         {
