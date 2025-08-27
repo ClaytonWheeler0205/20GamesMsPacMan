@@ -115,28 +115,57 @@ namespace Game.Ghosts
 
         private void SetNodeReferences()
         {
-            _movementReference = GetNode<MovementComponent>(_movementPath);
+            SetMovementReferences();
+            SetStateReferences();
+            SetVisualReferences();
+            SetCollisionReferences();
+        }
 
+        private void SetMovementReferences()
+        {
+            _movementReference = GetNode<MovementComponent>(_movementPath);
+        }
+
+        private void SetStateReferences()
+        {
             _stateMachineReference = GetNode<GhostStateMachine>(_stateMachinePath);
             _scatterStateReference = GetNode<ScatterState>(_scatterStatePath);
             _chaseStateReference = GetNode<ChaseState>(_chaseStatePath);
             _frightenedStateReference = GetNode<FrightenedState>(_frightenedStatePath);
             _returnStateReference = GetNode<ReturnState>(_returnStatePath);
+        }
 
+        private void SetVisualReferences()
+        {
             _eyes = GetNode<AnimatedSprite>(_eyesPath);
             _bodyVisual = GetNode<AnimatedSprite>(_bodyVisualPath);
             _frightenedBodyVisual = GetNode<AnimatedSprite>(_frightenedBodyVisualPath);
             _frightenedFlashVisual = GetNode<AnimatedSprite>(_frightenedFlashVisualPath);
+        }
 
+        private void SetCollisionReferences()
+        {
             _ghostCollision = GetNode<GhostCollisionHandler>(_ghostCollisionPath);
         }
 
         private void CheckNodeReferences()
         {
+            CheckMovementReferences();
+            CheckStateReferences();
+            CheckVisualReferences();
+            CheckCollisionReferences();
+        }
+
+        private void CheckMovementReferences()
+        {
             if (!_movementReference.IsValid())
             {
                 GD.PrintErr("ERROR: Ghost Movement Reference is not valid!");
             }
+        }
+
+        private void CheckStateReferences()
+        {
             if (!_stateMachineReference.IsValid())
             {
                 GD.PrintErr("ERROR: Ghost State Machine Reference is not valid!");
@@ -157,6 +186,10 @@ namespace Game.Ghosts
             {
                 GD.PrintErr("ERROR: Ghost Return State Reference is not valid!");
             }
+        }
+
+        private void CheckVisualReferences()
+        {
             if (!_eyes.IsValid())
             {
                 GD.PrintErr("ERROR: Ghost Eyes is not valid!");
@@ -173,6 +206,10 @@ namespace Game.Ghosts
             {
                 GD.PrintErr("ERROR: Ghost Frightened Flash Visual is not valid!");
             }
+        }
+
+        private void CheckCollisionReferences()
+        {
             if (!_ghostCollision.IsValid())
             {
                 GD.PrintErr("ERROR: Ghost Collision is not valid!");

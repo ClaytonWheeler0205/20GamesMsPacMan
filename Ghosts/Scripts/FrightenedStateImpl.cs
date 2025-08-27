@@ -8,8 +8,6 @@ namespace Game.Ghosts
     public class FrightenedStateImpl : FrightenedState
     {
         private bool _inIntersectionTile = false;
-        private const int PATH_TILE_CELL_NUMBER = 2;
-
         private float _slowSpeedFactor = 0.5f;
 
         public override void EnterState()
@@ -38,12 +36,13 @@ namespace Game.Ghosts
             {
                 if (CurrentLevel.IsValid())
                 {
-                    if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                    Vector2 positionInLevel = CurrentLevel.GetPositionInLevel(Movement.BodyToMove);
+                    if (CurrentLevel.IsAtIntersectionTile(positionInLevel) && !_inIntersectionTile)
                     {
                         _inIntersectionTile = true;
-                        Movement.ChangeDirection(GetRandomDirection());
+                        Movement.ChangeDirection(GetRandomDirection(positionInLevel));
                     }
-                    if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
+                    if (!CurrentLevel.IsAtIntersectionTile(positionInLevel))
                     {
                         _inIntersectionTile = false;
                     }
@@ -51,57 +50,38 @@ namespace Game.Ghosts
             }
         }
 
-        private Vector2 GetRandomDirection()
+        private Vector2 GetRandomDirection(Vector2 ghostPosition)
         {
-            Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-            Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
             Vector2 newDirection = Vector2.Zero;
             bool directionFound = false;
 
             while (!directionFound)
             {
-                int randomIndex = GDRandom.RandiRange(1, 4);
-                switch (randomIndex)
-                {
-                    case 1:
-                        Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
-                        int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
-                        if (cellNumberUp == PATH_TILE_CELL_NUMBER)
-                        {
-                            newDirection = Vector2.Up;
-                            directionFound = true;
-                        }
-                        break;
-                    case 2:
-                        Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
-                        int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
-                        if (cellNumberLeft == PATH_TILE_CELL_NUMBER)
-                        {
-                            newDirection = Vector2.Left;
-                            directionFound = true;
-                        }
-                        break;
-                    case 3:
-                        Vector2 mapPositionDown = new Vector2(mapPosition.x, mapPosition.y + 1);
-                        int cellNumberDown = CurrentLevel.GetCell((int)mapPositionDown.x, (int)mapPositionDown.y);
-                        if (cellNumberDown == PATH_TILE_CELL_NUMBER)
-                        {
-                            newDirection = Vector2.Down;
-                            directionFound = true;
-                        }
-                        break;
-                    case 4:
-                        Vector2 mapPositionRight = new Vector2(mapPosition.x + 1, mapPosition.y);
-                        int cellNumberRight = CurrentLevel.GetCell((int)mapPositionRight.x, (int)mapPositionRight.y);
-                        if (cellNumberRight == PATH_TILE_CELL_NUMBER)
-                        {
-                            newDirection = Vector2.Right;
-                            directionFound = true;
-                        }
-                        break;
-                }
+                newDirection = PickRandomDirection();
+                directionFound = CurrentLevel.IsAtPathTile(ghostPosition + newDirection);
             }
+            return newDirection;
+        }
 
+        private Vector2 PickRandomDirection()
+        {
+            Vector2 newDirection = Vector2.Zero;
+            int randomIndex = GDRandom.RandiRange(1, 4);
+            switch (randomIndex)
+            {
+                case 1:
+                    newDirection = Vector2.Up;
+                    break;
+                case 2:
+                    newDirection = Vector2.Left;
+                    break;
+                case 3:
+                    newDirection = Vector2.Down;
+                    break;
+                case 4:
+                    newDirection = Vector2.Right;
+                    break;
+            }
             return newDirection;
         }
 

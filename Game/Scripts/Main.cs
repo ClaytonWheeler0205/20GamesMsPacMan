@@ -118,8 +118,6 @@ namespace Game
         private NodePath _fruitCounterPath;
         private FruitCounter _fruitCounterReference;
 
-        private bool _isPaused = false;
-
 
         public override void _Ready()
         {
@@ -474,7 +472,6 @@ namespace Game
             _currentLevel = _worldOne.Instance<Level>();
             _levelContainer.AddChild(_currentLevel);
             _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-            IntersectionDetector.CurrentLevel = _currentLevel;
         }
 
         private void SetupWorldTwo()
@@ -483,7 +480,6 @@ namespace Game
             _currentLevel = _worldTwo.Instance<Level>();
             _levelContainer.AddChild(_currentLevel);
             _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-            IntersectionDetector.CurrentLevel = _currentLevel;
             _ghostContainer.SetupGhosts(_currentLevel, _player);
         }
 
@@ -493,7 +489,6 @@ namespace Game
             _currentLevel = _worldThree.Instance<Level>();
             _levelContainer.AddChild(_currentLevel);
             _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-            IntersectionDetector.CurrentLevel = _currentLevel;
             _ghostContainer.SetupGhosts(_currentLevel, _player);
         }
 
@@ -503,7 +498,6 @@ namespace Game
             _currentLevel = _worldFour.Instance<Level>();
             _levelContainer.AddChild(_currentLevel);
             _currentLevel.Connect("LevelFlashFinished", this, nameof(OnLevelFlashFinished));
-            IntersectionDetector.CurrentLevel = _currentLevel;
             _ghostContainer.SetupGhosts(_currentLevel, _player);
         }
 
@@ -935,27 +929,6 @@ namespace Game
         public void OnPelletCountForFruitMet()
         {
             _currentLevel.SpawnFruit(_currentLevelNumber);
-        }
-
-        public override void _UnhandledInput(InputEvent @event)
-        {
-            if (@event.IsActionPressed("pause"))
-            {
-                if (_isPaused)
-                {
-                    _isPaused = false;
-                    _player.Resume();
-                    _ghostContainer.ResumeGhosts();
-                    _controller.IsControllerActive = true;
-                }
-                else
-                {
-                    _isPaused = true;
-                    _player.Pause();
-                    _ghostContainer.PauseGhosts();
-                    _controller.IsControllerActive = false;
-                }
-            }
         }
     }
 }

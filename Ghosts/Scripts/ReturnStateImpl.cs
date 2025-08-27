@@ -11,7 +11,6 @@ namespace Game.Ghosts
         private bool _inUpTile = false;
         private bool _transitioning = false;
         private bool _inGhostHouse = false;
-        private const int PATH_TILE_CELL_NUMBER = 2;
         private const int DOWN_TILE_CELL_NUMBER = 4;
         private const int UP_TILE_CELL_NUMBER = 6;
 
@@ -32,16 +31,17 @@ namespace Game.Ghosts
         {
             if (CurrentLevel.IsValid())
             {
-                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !_inIntersectionTile)
+                Vector2 positionInLevel = CurrentLevel.GetPositionInLevel(Movement.BodyToMove);
+                if (CurrentLevel.IsAtIntersectionTile(positionInLevel) && !_inIntersectionTile)
                 {
                     _inIntersectionTile = true;
-                    Movement.ChangeDirection(FindShortestPathToHome());
+                    Movement.ChangeDirection(FindShortestPathToHome(positionInLevel));
                 }
-                if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
+                if (!CurrentLevel.IsAtIntersectionTile(positionInLevel))
                 {
                     _inIntersectionTile = false;
                 }
-                if (IsAtDownTile())
+                if (IsAtDownTile(positionInLevel))
                 {
                     if (Movement.GetCurrentDirection() == Vector2.Up)
                     {
@@ -53,7 +53,7 @@ namespace Game.Ghosts
                         Movement.ChangeDirection(Vector2.Down);
                     }
                 }
-                if (IsAtUpTile() && !_inUpTile)
+                if (IsAtUpTile(positionInLevel) && !_inUpTile)
                 {
                     if (!_inGhostHouse)
                     {
@@ -68,10 +68,8 @@ namespace Game.Ghosts
             }
         }
 
-        private Vector2 FindShortestPathToHome()
+        private Vector2 FindShortestPathToHome(Vector2 ghostPosition)
         {
-            Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-            Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
             float minDistance = float.PositiveInfinity;
             Vector2 newDirection = Vector2.Zero;
             Vector2 currentDirection = Movement.GetCurrentDirection();
@@ -79,11 +77,9 @@ namespace Game.Ghosts
             // Priority is Up, Left, Down, Right
             if (currentDirection != Vector2.Down)
             {
-                Vector2 mapPositionUp = new Vector2(mapPosition.x, mapPosition.y - 1);
-                int cellNumberUp = CurrentLevel.GetCell((int)mapPositionUp.x, (int)mapPositionUp.y);
-                if (cellNumberUp == PATH_TILE_CELL_NUMBER || cellNumberUp == DOWN_TILE_CELL_NUMBER)
+                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Up))
                 {
-                    float distance = GhostHouseTilePosition.DistanceTo(mapPositionUp);
+                    float distance = GhostHouseTilePosition.DistanceTo(ghostPosition + Vector2.Up);
                     if (distance < minDistance)
                     {
                         newDirection = Vector2.Up;
@@ -93,11 +89,9 @@ namespace Game.Ghosts
             }
             if (currentDirection != Vector2.Right)
             {
-                Vector2 mapPositionLeft = new Vector2(mapPosition.x - 1, mapPosition.y);
-                int cellNumberLeft = CurrentLevel.GetCell((int)mapPositionLeft.x, (int)mapPositionLeft.y);
-                if (cellNumberLeft == PATH_TILE_CELL_NUMBER || cellNumberLeft == DOWN_TILE_CELL_NUMBER)
+                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Left))
                 {
-                    float distance = GhostHouseTilePosition.DistanceTo(mapPositionLeft);
+                    float distance = GhostHouseTilePosition.DistanceTo(ghostPosition + Vector2.Left);
                     if (distance < minDistance)
                     {
                         newDirection = Vector2.Left;
@@ -107,11 +101,9 @@ namespace Game.Ghosts
             }
             if (currentDirection != Vector2.Up)
             {
-                Vector2 mapPositionDown = new Vector2(mapPosition.x, mapPosition.y + 1);
-                int cellNumberDown = CurrentLevel.GetCell((int)mapPositionDown.x, (int)mapPositionDown.y);
-                if (cellNumberDown == PATH_TILE_CELL_NUMBER || cellNumberDown == DOWN_TILE_CELL_NUMBER)
+                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Down))
                 {
-                    float distance = GhostHouseTilePosition.DistanceTo(mapPositionDown);
+                    float distance = GhostHouseTilePosition.DistanceTo(ghostPosition + Vector2.Down);
                     if (distance < minDistance)
                     {
                         newDirection = Vector2.Down;
@@ -121,11 +113,9 @@ namespace Game.Ghosts
             }
             if (currentDirection != Vector2.Left)
             {
-                Vector2 mapPositionRight = new Vector2(mapPosition.x + 1, mapPosition.y);
-                int cellNumberRight = CurrentLevel.GetCell((int)mapPositionRight.x, (int)mapPositionRight.y);
-                if (cellNumberRight == PATH_TILE_CELL_NUMBER || cellNumberRight == DOWN_TILE_CELL_NUMBER)
+                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Right))
                 {
-                    float distance = GhostHouseTilePosition.DistanceTo(mapPositionRight);
+                    float distance = GhostHouseTilePosition.DistanceTo(ghostPosition + Vector2.Right);
                     if (distance < minDistance)
                     {
                         newDirection = Vector2.Right;
@@ -136,19 +126,15 @@ namespace Game.Ghosts
             return newDirection;
         }
 
-        private bool IsAtDownTile()
+        private bool IsAtDownTile(Vector2 ghostPosition)
         {
-            Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-            Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
-            int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
+            int cellNumber = CurrentLevel.GetCell((int)ghostPosition.x, (int)ghostPosition.y);
             return cellNumber == DOWN_TILE_CELL_NUMBER;
         }
 
-        private bool IsAtUpTile()
+        private bool IsAtUpTile(Vector2 ghostPosition)
         {
-            Vector2 localPosition = CurrentLevel.ToLocal(Movement.BodyToMove.GlobalPosition);
-            Vector2 mapPosition = CurrentLevel.WorldToMap(localPosition);
-            int cellNumber = CurrentLevel.GetCell((int)mapPosition.x, (int)mapPosition.y);
+            int cellNumber = CurrentLevel.GetCell((int)ghostPosition.x, (int)ghostPosition.y);
             return cellNumber == UP_TILE_CELL_NUMBER;
         }
 

@@ -1,6 +1,5 @@
 using Game.Ghosts;
 using Godot;
-using System;
 using Util.ExtensionMethods;
 
 namespace Game.Bus

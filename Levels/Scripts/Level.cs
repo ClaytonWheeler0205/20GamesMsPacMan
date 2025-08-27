@@ -95,6 +95,9 @@ namespace Game.Levels
         public abstract void PauseFruit();
         public abstract void ResumeFruit();
         public abstract void DestroyFruit();
+        public abstract Vector2 GetPositionInLevel(Node2D node);
+        public abstract bool IsAtPathTile(Vector2 tilePosition);
+        public abstract bool IsAtIntersectionTile(Vector2 tilePosition);
         public abstract void OnFruitPathCompleted();
         public abstract void OnFruitCollected(Fruit fruit);
     }

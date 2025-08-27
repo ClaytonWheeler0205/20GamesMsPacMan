@@ -33,6 +33,9 @@ namespace Game.Levels
         private int _pathNumber = 0;
         private Fruit _fruit;
         private bool _fruitExists = false;
+        private const int TURN_TILE_CELL_NUMBER = 1;
+        private const int PATH_TILE_CELL_NUMBER = 2;
+        private const int DOWN_TILE_CELL_NUMBER = 4;
 
         public override void _Ready()
         {
@@ -186,6 +189,25 @@ namespace Game.Levels
                 _fruitExists = false;
             }
         }
+
+        public override Vector2 GetPositionInLevel(Node2D node)
+        {
+            Vector2 localPosition = ToLocal(node.GlobalPosition);
+            return WorldToMap(localPosition);
+        }
+
+        public override bool IsAtPathTile(Vector2 tilePosition)
+        {
+            int cellNumber = GetCell((int)tilePosition.x, (int)tilePosition.y);
+            return cellNumber == PATH_TILE_CELL_NUMBER || cellNumber == DOWN_TILE_CELL_NUMBER;
+        }
+
+        public override bool IsAtIntersectionTile(Vector2 tilePosition)
+        {
+            int cellNumber = GetCell((int)tilePosition.x, (int)tilePosition.y);
+            return cellNumber == TURN_TILE_CELL_NUMBER;
+        }
+
 
         public void OnAnimationFinished(string anim_name)
         {

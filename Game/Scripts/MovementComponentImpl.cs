@@ -78,6 +78,11 @@ namespace Game
         public override void _PhysicsProcess(float delta)
         {
             AttemptDirectionChange();
+            MoveBody();
+        }
+
+        private void MoveBody()
+        {
             if (BodyToMove.IsValid())
             {
                 Vector2 velocity = _currentDirection * Speed;
@@ -100,11 +105,16 @@ namespace Game
             {
                 if (_currentDirection != _targetDirection)
                 {
-                    _currentDirection = _targetDirection;
-                    SetWallDetectorPosition(_currentDirection);
-                    EmitSignal("DirectionChanged", _currentDirection);
+                    ChangeCurrentDirection();
                 }
             }
+        }
+
+        private void ChangeCurrentDirection()
+        {
+            _currentDirection = _targetDirection;
+            SetWallDetectorPosition(_currentDirection);
+            EmitSignal("DirectionChanged", _currentDirection);
         }
 
         public override void ChangeDirection(Vector2 newDirection)

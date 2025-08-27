@@ -36,31 +36,41 @@ namespace Game.Pellets
             CheckIfFruitShouldSpawn();
             if (!_useGlobalCounter)
             {
-                _pelletsCollected++;
-                if (_pelletsCollected == _inkyDotLimit)
-                {
-                    GhostEventBus.Instance.EmitSignal("InkyReleased");
-                }
-                else if (_pelletsCollected == _clydeDotLimit)
-                {
-                    GhostEventBus.Instance.EmitSignal("ClydeReleased");
-                }
+                IncreaseLocalPelletCounter();
             }
             else
             {
-                _globalPelletsCollected++;
-                if (_globalPelletsCollected == PINKY_GLOBAL_PELLET_LIMIT)
-                {
-                    GhostEventBus.Instance.EmitSignal("PinkyReleased");
-                }
-                else if (_globalPelletsCollected == INKY_GLOBAL_PELLET_LIMIT)
-                {
-                    GhostEventBus.Instance.EmitSignal("InkyReleased");
-                }
-                else if (_globalPelletsCollected == CLYDE_GLOBAL_PELLET_LIMIT)
-                {
-                    GhostEventBus.Instance.EmitSignal("ClydeReleased");
-                }
+                IncreaseGlobalPelletCounter();
+            }
+        }
+
+        private void IncreaseLocalPelletCounter()
+        {
+            _pelletsCollected++;
+            if (_pelletsCollected == _inkyDotLimit)
+            {
+                GhostEventBus.Instance.EmitSignal("InkyReleased");
+            }
+            else if (_pelletsCollected == _clydeDotLimit)
+            {
+                GhostEventBus.Instance.EmitSignal("ClydeReleased");
+            }
+        }
+
+        private void IncreaseGlobalPelletCounter()
+        {
+            _globalPelletsCollected++;
+            if (_globalPelletsCollected == PINKY_GLOBAL_PELLET_LIMIT)
+            {
+                GhostEventBus.Instance.EmitSignal("PinkyReleased");
+            }
+            else if (_globalPelletsCollected == INKY_GLOBAL_PELLET_LIMIT)
+            {
+                GhostEventBus.Instance.EmitSignal("InkyReleased");
+            }
+            else if (_globalPelletsCollected == CLYDE_GLOBAL_PELLET_LIMIT)
+            {
+                GhostEventBus.Instance.EmitSignal("ClydeReleased");
             }
         }
 
@@ -70,31 +80,11 @@ namespace Game.Pellets
             CheckIfFruitShouldSpawn();
             if (!_useGlobalCounter)
             {
-                _pelletsCollected++;
-                if (_pelletsCollected == _inkyDotLimit)
-                {
-                    GhostEventBus.Instance.EmitSignal("InkyReleased");
-                }
-                if (_pelletsCollected == _clydeDotLimit)
-                {
-                    GhostEventBus.Instance.EmitSignal("ClydeReleased");
-                }
+                IncreaseLocalPelletCounter();
             }
             else
             {
-                _globalPelletsCollected++;
-                if (_globalPelletsCollected == PINKY_GLOBAL_PELLET_LIMIT)
-                {
-                    GhostEventBus.Instance.EmitSignal("PinkyReleased");
-                }
-                else if (_globalPelletsCollected == INKY_GLOBAL_PELLET_LIMIT)
-                {
-                    GhostEventBus.Instance.EmitSignal("InkyReleased");
-                }
-                else if (_globalPelletsCollected == CLYDE_GLOBAL_PELLET_LIMIT)
-                {
-                    GhostEventBus.Instance.EmitSignal("ClydeReleased");
-                }
+                IncreaseGlobalPelletCounter();
             }
         }
 

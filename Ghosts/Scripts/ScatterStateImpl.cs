@@ -25,12 +25,13 @@ public class ScatterStateImpl : ScatterState
         {
             if (CurrentLevel.IsValid())
             {
-                if (IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition) && !InIntersectionTile)
+                Vector2 positionInLevel = CurrentLevel.GetPositionInLevel(Movement.BodyToMove);
+                if (CurrentLevel.IsAtIntersectionTile(positionInLevel) && !InIntersectionTile)
                 {
                     InIntersectionTile = true;
-                    Movement.ChangeDirection(FindShortestPathToHome());
+                    Movement.ChangeDirection(FindShortestPathToHome(positionInLevel));
                 }
-                if (!IntersectionDetector.IsAtIntersection(Movement.BodyToMove.GlobalPosition))
+                if (!CurrentLevel.IsAtIntersectionTile(positionInLevel))
                 {
                     InIntersectionTile = false;
                 }
