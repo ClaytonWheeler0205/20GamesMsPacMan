@@ -8,6 +8,8 @@ namespace Game.Ghosts
     {
         private bool _inIntersectionTile = false;
         private const int PLAYER_TILE_OFFSET = 4;
+        // Priority is Up, Left, Down, Right
+        private static readonly Vector2[] _movementDirections = { Vector2.Up, Vector2.Left, Vector2.Down, Vector2.Right };
 
         public override void UpdateState(float delta)
         {
@@ -35,55 +37,18 @@ namespace Game.Ghosts
             Vector2 newDirection = Vector2.Zero;
             Vector2 currentDirection = Movement.GetCurrentDirection();
 
-            // Priority is Up, Left, Down, Right
-            if (currentDirection != Vector2.Down)
+            foreach (Vector2 direction in _movementDirections)
             {
-                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Up))
+                if (currentDirection != (-1 * direction) && CurrentLevel.IsAtPathTile(ghostPosition + direction))
                 {
-                    float distance = targetPosition.DistanceTo(ghostPosition + Vector2.Up);
+                    float distance = targetPosition.DistanceTo(ghostPosition + direction);
                     if (distance < minDistance)
                     {
-                        newDirection = Vector2.Up;
+                        newDirection = direction;
                         minDistance = distance;
                     }
                 }
             }
-            if (currentDirection != Vector2.Right)
-            {
-                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Left))
-                {
-                    float distance = targetPosition.DistanceTo(ghostPosition + Vector2.Left);
-                    if (distance < minDistance)
-                    {
-                        newDirection = Vector2.Left;
-                        minDistance = distance;
-                    }
-                }
-            }
-            if (currentDirection != Vector2.Up)
-            {
-                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Down))
-                {
-                    float distance = targetPosition.DistanceTo(ghostPosition + Vector2.Down);
-                    if (distance < minDistance)
-                    {
-                        newDirection = Vector2.Down;
-                        minDistance = distance;
-                    }
-                }
-            }
-            if (currentDirection != Vector2.Left)
-            {
-                if (CurrentLevel.IsAtPathTile(ghostPosition + Vector2.Right))
-                {
-                    float distance = targetPosition.DistanceTo(ghostPosition + Vector2.Right);
-                    if (distance < minDistance)
-                    {
-                        newDirection = Vector2.Right;
-                    }
-                }
-            }
-
             return newDirection;
         }
 
