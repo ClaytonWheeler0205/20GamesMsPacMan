@@ -424,9 +424,16 @@ namespace Game
             }
             else
             {
-                _player.Visible = false;
-                _gameOverLabelReference.Visible = true;
+                GameOver();
             }
+        }
+
+        private async void GameOver()
+        {
+            _player.Visible = false;
+            _gameOverLabelReference.Visible = true;
+            await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
+            GetTree().ChangeScene("res://Game/Scenes/Menu.tscn");
         }
 
         private void SetupPlayer()

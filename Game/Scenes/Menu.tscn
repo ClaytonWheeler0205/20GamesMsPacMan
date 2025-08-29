@@ -1,0 +1,144 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://UI/Fonts/TitleText.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Pellets/Assets/Pellet.png" type="Texture" id=2]
+[ext_resource path="res://Pellets/Assets/PowerPellet.png" type="Texture" id=3]
+[ext_resource path="res://MsPacManIcon.png" type="Texture" id=4]
+[ext_resource path="res://UI/Assets/PinkyIcon.png" type="Texture" id=5]
+[ext_resource path="res://UI/Assets/InkyIcon.png" type="Texture" id=6]
+[ext_resource path="res://UI/Assets/BlinkyIcon.png" type="Texture" id=7]
+[ext_resource path="res://UI/Assets/ClydeIcon.png" type="Texture" id=8]
+[ext_resource path="res://UI/Scripts/MainMenu.cs" type="Script" id=9]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 9 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -85.0
+margin_top = -85.0
+margin_right = 85.0
+margin_bottom = 85.0
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -80.0
+margin_top = -80.0
+margin_right = 80.0
+margin_bottom = 80.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -78.0
+margin_top = -82.0
+margin_right = 78.0
+margin_bottom = 82.0
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+margin_right = 156.0
+margin_bottom = 28.0
+custom_colors/font_color = Color( 0.921569, 1, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Ms. Pac Man"
+uppercase = true
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+margin_top = 32.0
+margin_right = 156.0
+margin_bottom = 48.0
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 52.0
+margin_right = 156.0
+margin_bottom = 80.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+margin_left = 18.0
+margin_right = 26.0
+margin_bottom = 28.0
+texture = ExtResource( 2 )
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 30.0
+margin_right = 138.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "10 Points"
+uppercase = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 84.0
+margin_right = 156.0
+margin_bottom = 112.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 14.0
+margin_right = 22.0
+margin_bottom = 28.0
+texture = ExtResource( 3 )
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 32.0
+margin_right = 142.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "50 Points"
+uppercase = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 116.0
+margin_right = 156.0
+margin_bottom = 132.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 40.0
+margin_right = 56.0
+margin_bottom = 16.0
+texture = ExtResource( 7 )
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 60.0
+margin_right = 76.0
+margin_bottom = 16.0
+texture = ExtResource( 5 )
+
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 80.0
+margin_right = 96.0
+margin_bottom = 16.0
+texture = ExtResource( 6 )
+
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 100.0
+margin_right = 116.0
+margin_bottom = 16.0
+texture = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_top = 136.0
+margin_right = 156.0
+margin_bottom = 164.0
+custom_fonts/font = ExtResource( 1 )
+text = "Press Space"
+align = 1
+uppercase = true
