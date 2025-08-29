@@ -51,7 +51,8 @@ margin_right = 156.0
 margin_bottom = 28.0
 custom_colors/font_color = Color( 0.921569, 1, 0, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "Ms. Pac Man"
+text = "Ms. Pac-Man"
+align = 1
 uppercase = true
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
