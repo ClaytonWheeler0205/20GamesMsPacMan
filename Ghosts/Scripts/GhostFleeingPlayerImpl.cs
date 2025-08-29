@@ -23,6 +23,7 @@ namespace Game.Ghosts
             if (_ghostsFleeing >= 1 && !Playing)
             {
                 Play();
+                EmitSignal("SoundStarted");
             }
         }
 
@@ -39,6 +40,7 @@ namespace Game.Ghosts
             {
                 _ghostsFleeing = 0;
                 Stop();
+                EmitSignal("SoundStopped");
             }
         }
 

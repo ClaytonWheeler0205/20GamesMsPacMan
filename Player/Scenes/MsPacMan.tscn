@@ -119,10 +119,12 @@ _bodyLeftPosition = Vector2( -6, 0 )
 position = Vector2( -6, 0 )
 enabled = true
 cast_to = Vector2( 0, 10.75 )
+collision_mask = 129
 
 [node name="WallDetectorComponent2" type="RayCast2D" parent="MovementComponent"]
 enabled = true
 cast_to = Vector2( 0, 10.75 )
+collision_mask = 129
 
 [node name="DeathAnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 2.0

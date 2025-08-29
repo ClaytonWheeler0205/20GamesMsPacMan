@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Ghosts/Scenes/Blinky.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Scenes/MsPacMan.tscn" type="PackedScene" id=2]
@@ -30,6 +30,8 @@
 [ext_resource path="res://Fruits/Assets/1000Points.png" type="Texture" id=28]
 [ext_resource path="res://Fruits/Audio/fruitEaten.wav" type="AudioStream" id=29]
 [ext_resource path="res://UI/Scenes/FruitUI.tscn" type="PackedScene" id=30]
+[ext_resource path="res://Game/Audio/siren.wav" type="AudioStream" id=31]
+[ext_resource path="res://UI/Scenes/GameStart.tscn" type="PackedScene" id=32]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -61,6 +63,8 @@ _1000PointsVisualPath = NodePath("PointsContainer/1000Points")
 _2000PointsVisualPath = NodePath("PointsContainer/2000Points")
 _5000PointsVisualPath = NodePath("PointsContainer/5000Points")
 _fruitCounterPath = NodePath("GUI/FruitUI")
+_sirenPlayerPath = NodePath("SirenPlayer")
+_readyUIPath = NodePath("GUI/GameStartUI")
 
 [node name="LevelContainer" type="Node2D" parent="."]
 
@@ -158,6 +162,10 @@ margin_top = -385.0
 margin_right = -216.0
 margin_bottom = -25.0
 
+[node name="GameStartUI" parent="GUI" instance=ExtResource( 32 )]
+margin_top = -164.0
+margin_bottom = 196.0
+
 [node name="StartJinglePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
@@ -193,3 +201,7 @@ script = ExtResource( 19 )
 
 [node name="FruitEatenPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 29 )
+
+[node name="SirenPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 31 )
+volume_db = -20.0

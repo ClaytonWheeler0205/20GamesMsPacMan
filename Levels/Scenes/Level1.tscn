@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=65 format=2]
 
 [ext_resource path="res://Levels/Assets/Level1Tiles.png" type="Texture" id=1]
 [ext_resource path="res://Levels/Scenes/Portal.tscn" type="PackedScene" id=2]
@@ -543,6 +543,9 @@ _data = {
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 124, 140, 0, 0, 0, 0, 124, 164, 0, 0, 0, 0, 196, 163, 0, 0, 0, 0, 196, 140, 0, 0, 0, 0, 232, 140 )
 }
+
+[sub_resource type="RectangleShape2D" id=57]
+extents = Vector2( 8, 2 )
 
 [node name="Level1" type="TileMap"]
 tile_set = SubResource( 1 )
@@ -1384,5 +1387,13 @@ curve = SubResource( 55 )
 
 [node name="BottomRightExit" type="Path2D" parent="FruitExits"]
 curve = SubResource( 56 )
+
+[node name="GhostHouseBarrier" type="StaticBody2D" parent="."]
+position = Vector2( 112, 102 )
+collision_layer = 128
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GhostHouseBarrier"]
+shape = SubResource( 57 )
 
 [connection signal="animation_finished" from="LevelFlashPlayer" to="." method="OnAnimationFinished"]

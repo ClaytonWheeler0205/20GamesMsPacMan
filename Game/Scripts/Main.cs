@@ -117,6 +117,12 @@ namespace Game
         [Export]
         private NodePath _fruitCounterPath;
         private FruitCounter _fruitCounterReference;
+        [Export]
+        private NodePath _sirenPlayerPath;
+        private AudioStreamPlayer _sirenPlayerReference;
+        [Export]
+        private NodePath _readyUIPath;
+        private Control _readyUIReference;
 
 
         public override void _Ready()
@@ -165,6 +171,7 @@ namespace Game
             _ghostEatenSoundReference = GetNode<AudioStreamPlayer>(_ghostEatenSoundPath);
             _fruitEatenSoundReference = GetNode<AudioStreamPlayer>(_fruitEatenSoundPath);
             _ghostFleeingSoundReference = GetNode<GhostFleeingPlayer>(_ghostFleeingSoundPath);
+            _sirenPlayerReference = GetNode<AudioStreamPlayer>(_sirenPlayerPath);
         }
 
         private void SetPointVisualReferences()
@@ -200,6 +207,7 @@ namespace Game
             _livesManagerReference = GetNode<LivesManager>(_livesManagerPath);
             _gameOverLabelReference = GetNode<Control>(_gameOverLabelPath);
             _fruitCounterReference = GetNode<FruitCounter>(_fruitCounterPath);
+            _readyUIReference = GetNode<Control>(_readyUIPath);
         }
 
         private void CheckNodeReferences()
@@ -372,6 +380,8 @@ namespace Game
             _scatterTimerReference.Connect("timeout", this, nameof(OnScatterTimerTimeout));
             FruitEventBus.Instance.Connect("FruitCollected", this, nameof(OnFruitCollected));
             _pelletCounterReference.Connect("PelletCountForFruitMet", this, nameof(OnPelletCountForFruitMet));
+            _ghostFleeingSoundReference.Connect("SoundStarted", this, nameof(OnGhostFleeingPlayerSoundStarted));
+            _ghostFleeingSoundReference.Connect("SoundStopped", this, nameof(OnGhostFleeingPlayerSoundStopped));
         }
 
         public async void OnPlayerHit()
@@ -388,6 +398,7 @@ namespace Game
                 _frightenedFlashTimerReference.Stop();
                 _frightenedTimerReference.Stop();
                 _ghostFleeingSoundReference.StopFleeingSound();
+                _sirenPlayerReference.Stop();
                 _ghostPointValue = 200;
                 await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
                 _currentLevel.DestroyFruit();
@@ -408,6 +419,7 @@ namespace Game
                 _ghostContainer.ResetGhostHomeTiles(_currentLevel);
                 ScatterChaseTracker.Instance.InScatterState = true;
                 _startJingle.Play();
+                _readyUIReference.Visible = true;
                 _playerDying = false;
             }
             else
@@ -686,6 +698,8 @@ namespace Game
             _frightenedFlashingTimerReference.Paused = false;
             _scatterTimerReference.Start(_scatterTimerDuration);
             _pelletCounterReference.StartCounting();
+            _sirenPlayerReference.Play();
+            _readyUIReference.Visible = false;
         }
 
         public async void OnLevelCleared()
@@ -701,6 +715,7 @@ namespace Game
             _ghostPointValue = 200;
             _pelletCounterReference.ResetCounter();
             _ghostFleeingSoundReference.StopFleeingSound();
+            _sirenPlayerReference.Stop();
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
             if (_currentLevel.IsValid())
             {
@@ -720,6 +735,7 @@ namespace Game
             SetLevel(_currentLevelNumber);
             _fruitCounterReference.IncreaseFruitCounter();
             _startJingle.Play();
+            _readyUIReference.Visible = true;
         }
 
         private void ResetPlayer()
@@ -840,6 +856,16 @@ namespace Game
         {
             _fruitEatenSoundReference.Play();
             DisplayFruitScore(fruit);
+        }
+
+        public void OnGhostFleeingPlayerSoundStarted()
+        {
+            _sirenPlayerReference.Stop();
+        }
+
+        public void OnGhostFleeingPlayerSoundStopped()
+        {
+            _sirenPlayerReference.Play();
         }
 
         private void DisplayFruitScore(Fruit fruit)

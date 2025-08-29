@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=65 format=2]
 
 [ext_resource path="res://Levels/Assets/Level4Tiles.png" type="Texture" id=1]
 [ext_resource path="res://Levels/Assets/LevelFlashTiles.tres" type="TileSet" id=2]
@@ -548,6 +548,9 @@ _data = {
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 124, 140, 0, 0, 0, 0, 124, 164, 0, 0, 0, 0, 172, 164, 0, 0, 0, 0, 172, 148, 0, 0, 0, 0, 196, 148, 0, 0, 0, 0, 196, 132, 0, 0, 0, 0, 232, 132 )
 }
+
+[sub_resource type="RectangleShape2D" id=57]
+extents = Vector2( 8, 2 )
 
 [node name="Level4" type="TileMap"]
 tile_set = SubResource( 1 )
@@ -1419,5 +1422,13 @@ curve = SubResource( 55 )
 
 [node name="BottomRightExit" type="Path2D" parent="FruitExits"]
 curve = SubResource( 56 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 112, 102 )
+collision_layer = 128
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource( 57 )
 
 [connection signal="animation_finished" from="LevelFlashPlayer" to="." method="OnAnimationFinished"]
