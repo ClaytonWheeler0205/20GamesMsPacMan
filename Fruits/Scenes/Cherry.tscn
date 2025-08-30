@@ -12,6 +12,7 @@ extents = Vector2( 8, 8 )
 rotate = false
 loop = false
 script = ExtResource( 2 )
+_speed = 25.0
 _animationPath = NodePath("AnimationPlayer")
 _bobbingSoundPath = NodePath("AudioStreamPlayer")
 

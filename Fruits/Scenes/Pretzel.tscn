@@ -13,6 +13,7 @@ rotate = false
 loop = false
 script = ExtResource( 2 )
 _pointValue = 700
+_speed = 25.0
 _animationPath = NodePath("AnimationPlayer")
 _bobbingSoundPath = NodePath("AudioStreamPlayer")
 
