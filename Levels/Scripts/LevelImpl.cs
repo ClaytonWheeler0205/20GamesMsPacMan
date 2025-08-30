@@ -169,7 +169,7 @@ namespace Game.Levels
         {
             if (_fruitExists)
             {
-                _fruit.IsMoving = false;
+                _fruit.Pause();
             }
         }
 
@@ -177,7 +177,7 @@ namespace Game.Levels
         {
             if (_fruitExists)
             {
-                _fruit.IsMoving = true;
+                _fruit.Resume();
             }
         }
 
