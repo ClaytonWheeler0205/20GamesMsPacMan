@@ -10,5 +10,5 @@ Arrow keys/WASD - Move<br>
 
 ## Special Thanks/Credits
  Special thanks to the [Godot Engine documentation](https://docs.godotengine.org/en/3.5/) for providing the resources I needed to learn the game engine.<br>
- Sound effects made with [ChipTone](https://sfbgames.itch.io/chiptone) by [SFBGames](https://sfbgames.itch.io/) and [jsfxr](https://sfxr.me/).
+ Sound effects made with [ChipTone](https://sfbgames.itch.io/chiptone) by [SFBGames](https://sfbgames.itch.io/) and [jsfxr](https://sfxr.me/).<br>
  Start and death jingles made by [Rolly-SFX](https://freesound.org/people/Rolly-SFX/).
